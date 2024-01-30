@@ -1,0 +1,7 @@
+{
+  "name": "care-service",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "react-vite"
+}
