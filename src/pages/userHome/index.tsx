@@ -1,6 +1,9 @@
 import {
+  IonButtons,
   IonContent,
   IonHeader,
+  IonMenu,
+  IonMenuButton,
   IonPage,
   IonTitle,
   IonToolbar,
@@ -9,9 +12,12 @@ import React from "react";
 
 const UserHome: React.FC = () => {
   return (
-    <IonPage>
+    <IonPage id="main-menu">
       <IonHeader>
         <IonToolbar>
+          <IonButtons slot="end">
+            <IonMenuButton></IonMenuButton>
+          </IonButtons>
           <IonTitle>User Home</IonTitle>
         </IonToolbar>
       </IonHeader>

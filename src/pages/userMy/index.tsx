@@ -1,6 +1,8 @@
 import {
+  IonButtons,
   IonContent,
   IonHeader,
+  IonMenuButton,
   IonPage,
   IonTitle,
   IonToolbar,
@@ -12,6 +14,9 @@ const UserMy: React.FC = () => {
     <IonPage>
       <IonHeader>
         <IonToolbar>
+          <IonButtons slot="end">
+            <IonMenuButton></IonMenuButton>
+          </IonButtons>
           <IonTitle>Page Title</IonTitle>
         </IonToolbar>
       </IonHeader>
