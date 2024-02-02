@@ -16,6 +16,7 @@ import UserHome from "./userHome";
 import UserMyPage from "./userMy";
 import { IonReactRouter } from "@ionic/react-router";
 import SlideMenu from "../../components/SlideMenu.jsx";
+import UserChatList from "./userChat";
 
 //유저 탭바
 const User: React.FC = () => {
@@ -31,6 +32,9 @@ const User: React.FC = () => {
             <IonTabButton tab="home" href="/user/home">
               Home
             </IonTabButton>
+            <IonTabButton tab="chatList" href="/user/chat">
+              Chat
+            </IonTabButton>
             <IonTabButton tab="myPage" href="/user/mypage">
               My Page
             </IonTabButton>
@@ -40,6 +44,7 @@ const User: React.FC = () => {
           <IonRouterOutlet>
             <Route path="/user/home" render={() => <UserHome />}></Route>
             <Route path="/user/mypage" render={() => <UserMyPage />}></Route>
+            <Route path="/user/chat" render={() => <UserChatList />}></Route>
             <Redirect exact path="/user" to="/user/home" />
           </IonRouterOutlet>
         </IonTabs>
