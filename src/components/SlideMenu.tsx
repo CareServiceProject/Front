@@ -6,9 +6,14 @@ import {
   IonMenu,
   IonTitle,
   IonToolbar,
+  useIonRouter,
 } from "@ionic/react";
 
 const SlideMenu: React.FC = () => {
+  const router = useIonRouter();
+  const doLogout = () => {
+    router.push("/", "root");
+  };
   return (
     <IonMenu side="end" contentId="main-menu">
       <IonHeader>
@@ -17,7 +22,7 @@ const SlideMenu: React.FC = () => {
         </IonToolbar>
       </IonHeader>
       <IonContent className="ion-padding">
-        <IonButton expand="full" fill="clear">
+        <IonButton expand="full" fill="clear" onClick={doLogout}>
           Log Out
         </IonButton>
       </IonContent>

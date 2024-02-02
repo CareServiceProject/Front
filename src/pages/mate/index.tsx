@@ -12,13 +12,15 @@ import {
 } from "@ionic/react";
 import React from "react";
 import { Redirect, Route } from "react-router-dom";
-import UserHome from "./userHome";
-import UserMyPage from "./userMy";
+import UserHome from "../user/userHome";
+import UserMyPage from "../user/userMy";
 import { IonReactRouter } from "@ionic/react-router";
 import SlideMenu from "../../components/SlideMenu.jsx";
+import MateHome from "./mateHome";
+import MateMy from "./mateMy";
 
 //유저 탭바
-const User: React.FC = () => {
+const Mate: React.FC = () => {
   return (
     <>
       {/* 햄버거 메뉴 */}
@@ -28,19 +30,19 @@ const User: React.FC = () => {
         <IonTabs>
           {/* 탭 바 */}
           <IonTabBar slot="bottom">
-            <IonTabButton tab="home" href="/user/home">
+            <IonTabButton tab="home" href="/mate/home">
               Home
             </IonTabButton>
-            <IonTabButton tab="myPage" href="/user/mypage">
+            <IonTabButton tab="myPage" href="/mate/mypage">
               My Page
             </IonTabButton>
           </IonTabBar>
 
           {/* 탭 페이지 */}
           <IonRouterOutlet>
-            <Route path="/user/home" render={() => <UserHome />}></Route>
-            <Route path="/user/mypage" render={() => <UserMyPage />}></Route>
-            <Redirect exact path="/user" to="/user/home" />
+            <Route path="/mate/home" render={() => <MateHome />}></Route>
+            <Route path="/mate/mypage" render={() => <MateMy />}></Route>
+            <Redirect exact path="/mate" to="/mate/home" />
           </IonRouterOutlet>
         </IonTabs>
       </IonReactRouter>
@@ -48,4 +50,4 @@ const User: React.FC = () => {
   );
 };
 
-export default User;
+export default Mate;

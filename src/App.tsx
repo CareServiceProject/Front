@@ -21,10 +21,12 @@ import "@ionic/react/css/display.css";
 
 /* Theme variables */
 import "./theme/variables.css";
-import UserHome from "./pages/userHome";
+import UserHome from "./pages/user/userHome";
 import User from "./pages/user/User";
 import Login from "./pages/login/Login";
 import Register from "./pages/register";
+import Mate from "./pages/mate";
+import Admin from "./pages/admin";
 
 setupIonicReact();
 
@@ -40,6 +42,12 @@ const App: React.FC = () => (
         </Route>
         <Route exact path="/user">
           <User />
+        </Route>
+        <Route exact path="/mate">
+          <Mate />
+        </Route>
+        <Route exact path="/admin">
+          <Admin />
         </Route>
       </IonRouterOutlet>
     </IonReactRouter>

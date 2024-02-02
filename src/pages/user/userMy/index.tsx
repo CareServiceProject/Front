@@ -11,7 +11,7 @@ import React from "react";
 
 const UserMy: React.FC = () => {
   return (
-    <IonPage>
+    <IonPage id="main-menu">
       <IonHeader>
         <IonToolbar>
           <IonButtons slot="end">

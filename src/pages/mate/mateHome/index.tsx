@@ -10,7 +10,7 @@ import {
 } from "@ionic/react";
 import React from "react";
 
-const UserHome: React.FC = () => {
+const MateHome: React.FC = () => {
   return (
     <IonPage id="main-menu">
       <IonHeader>
@@ -18,12 +18,12 @@ const UserHome: React.FC = () => {
           <IonButtons slot="end">
             <IonMenuButton></IonMenuButton>
           </IonButtons>
-          <IonTitle>User Home</IonTitle>
+          <IonTitle>MateHome</IonTitle>
         </IonToolbar>
       </IonHeader>
-      <IonContent className="ion-padding">User Home</IonContent>
+      <IonContent className="ion-padding">MateHome</IonContent>
     </IonPage>
   );
 };
 
-export default UserHome;
+export default MateHome;
