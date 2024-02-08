@@ -27,6 +27,7 @@ import Login from "./pages/login/Login";
 import Register from "./pages/register";
 import Mate from "./pages/mate";
 import Admin from "./pages/admin";
+import SignUpForm from "./pages/register/formPage";
 
 setupIonicReact();
 
@@ -39,6 +40,9 @@ const App: React.FC = () => (
         </Route>
         <Route exact path="/register">
           <Register />
+        </Route>
+        <Route exact path="/signup">
+          <SignUpForm />
         </Route>
         <Route exact path="/user">
           <User />
