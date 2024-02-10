@@ -11,14 +11,14 @@ import {
   IonText,
   IonTitle,
   IonToolbar,
-  useIonRouter,
 } from "@ionic/react";
 import React, { useState } from "react";
 import Logo from "../../components/Logo";
+import { useNavigate } from "react-router-dom";
 
 const SignUpForm: React.FC = () => {
-  const router = useIonRouter();
-  const signUpRole = router.routeInfo.routeOptions?.type;
+  const router = useNavigate();
+  const signUpRole = 1;
 
   const [userName, setUserName] = useState("");
   const [gender, setGender] = useState(0);
@@ -42,7 +42,7 @@ const SignUpForm: React.FC = () => {
     console.log("eeee", formData, signUpRole);
     // TODO:계정 생성
 
-    router.push("/user", "root", "replace");
+    router("/user/home");
   };
 
   const sendCode = () => {
@@ -63,8 +63,8 @@ const SignUpForm: React.FC = () => {
     <IonPage>
       <IonHeader>
         <IonToolbar>
-          <IonButtons slot="start">
-            <IonBackButton></IonBackButton>
+          <IonButtons slot="start" onClick={() => router(-1)}>
+            <IonBackButton defaultHref="/"></IonBackButton>
           </IonButtons>
           <IonTitle>Sign Up</IonTitle>
         </IonToolbar>

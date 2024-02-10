@@ -6,14 +6,14 @@ import {
   IonPage,
   IonTitle,
   IonToolbar,
-  useIonRouter,
 } from "@ionic/react";
 import React, { useState } from "react";
 import styles from "./login.module.css";
 import Logo from "../../components/Logo";
+import { useNavigate } from "react-router-dom";
 
 const Login: React.FC = () => {
-  const router = useIonRouter();
+  const navigate = useNavigate();
   const [userid, setUserid] = useState("");
   const [password, setPassword] = useState("");
   const doLogin = () => {
@@ -21,7 +21,7 @@ const Login: React.FC = () => {
       userid,
       password,
     };
-    router.push("/user", "root");
+    navigate("/user/home");
   };
   return (
     <IonPage>

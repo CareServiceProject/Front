@@ -1,7 +1,5 @@
-import { Redirect, Route } from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
 import { IonApp, IonRouterOutlet, setupIonicReact } from "@ionic/react";
-import { IonReactRouter } from "@ionic/react-router";
-import Home from "./pages/Home";
 
 /* Core CSS required for Ionic components to work properly */
 import "@ionic/react/css/core.css";
@@ -21,40 +19,40 @@ import "@ionic/react/css/display.css";
 
 /* Theme variables */
 import "./theme/variables.css";
-import UserHome from "./pages/user/userHome";
-import User from "./pages/user/User";
 import Login from "./pages/login/Login";
 import Register from "./pages/register";
-import Mate from "./pages/mate";
 import Admin from "./pages/admin";
 import SignUpForm from "./pages/register/formPage";
+import UserHome from "./pages/user/userHome";
+import UserChatList from "./pages/user/userChat";
+import UserMy from "./pages/user/userMy";
+import UserServiceList from "./pages/user/userServiceList";
+import NavLayout from "./pages/layout/NavLayout";
+import MateMy from "./pages/mate/mateMy";
+import MateHome from "./pages/mate/mateHome";
+import MateChatList from "./pages/mate/mateChat";
 
 setupIonicReact();
 
 const App: React.FC = () => (
   <IonApp>
-    <IonReactRouter>
-      <IonRouterOutlet>
-        <Route exact path="/">
-          <Login />
-        </Route>
-        <Route exact path="/register">
-          <Register />
-        </Route>
-        <Route exact path="/signup">
-          <SignUpForm />
-        </Route>
-        <Route exact path="/user">
-          <User />
-        </Route>
-        <Route exact path="/mate">
-          <Mate />
-        </Route>
-        <Route exact path="/admin">
-          <Admin />
-        </Route>
-      </IonRouterOutlet>
-    </IonReactRouter>
+    <Routes>
+      <Route path="/" element={<Login />} />
+      <Route path="/register" element={<Register />} />
+      <Route path="/signup" element={<SignUpForm />} />
+      <Route path="/admin" element={<Admin />} />
+      <Route path="/user/mypage/service_list" element={<UserServiceList />} />
+
+      {/* NavBar Contained Page */}
+      <Route element={<NavLayout />}>
+        <Route path="/user/home" element={<UserHome />} />
+        <Route path="/user/mypage" element={<UserMy />} />
+        <Route path="/user/chat" element={<UserChatList />} />
+        <Route path="/mate/home" element={<MateHome />} />
+        <Route path="/mate/chat" element={<MateChatList />} />
+        <Route path="/mate/mypage" element={<MateMy />} />
+      </Route>
+    </Routes>
   </IonApp>
 );
 

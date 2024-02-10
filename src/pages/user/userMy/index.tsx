@@ -1,4 +1,5 @@
 import {
+  IonAvatar,
   IonButtons,
   IonContent,
   IonHeader,
@@ -8,6 +9,9 @@ import {
   IonToolbar,
 } from "@ionic/react";
 import React from "react";
+import DefaultAvatar from "../../../assets/default_avatar.jpg";
+import StatusCard from "../../../components/StatusCard";
+import { useNavigate } from "react-router-dom";
 
 const UserMy: React.FC = () => {
   return (
@@ -20,7 +24,15 @@ const UserMy: React.FC = () => {
           <IonTitle>Page Title</IonTitle>
         </IonToolbar>
       </IonHeader>
-      <IonContent className="ion-padding">UserMyPage...</IonContent>
+      <IonContent className="ion-padding">
+        <div style={{ display: "flex" }} className="ion-margin">
+          <IonAvatar className="ion-margin-end">
+            <img src={DefaultAvatar}></img>
+          </IonAvatar>
+          <h2>000님</h2>
+        </div>
+        <StatusCard></StatusCard>
+      </IonContent>
     </IonPage>
   );
 };

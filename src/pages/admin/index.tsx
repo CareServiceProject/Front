@@ -24,7 +24,7 @@ const Admin: React.FC = () => {
             <IonTitle>Admin</IonTitle>
           </IonToolbar>
         </IonHeader>
-        <IonContent className="ion-padding">UI goes here...Admin</IonContent>
+        <IonContent className="ion-padding">Admin Main Page</IonContent>
       </IonPage>
     </>
   );

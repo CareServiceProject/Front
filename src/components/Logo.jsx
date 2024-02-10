@@ -1,5 +1,3 @@
-import React from "react";
-
 import LogoPic from "../assets/Logo.jpg";
 
 const Logo = () => {

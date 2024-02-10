@@ -8,34 +8,30 @@ import {
   IonPage,
   IonTitle,
   IonToolbar,
-  useIonRouter,
 } from "@ionic/react";
 import React from "react";
 import Logo from "../../components/Logo";
+import { useNavigate } from "react-router-dom";
 
 const Register: React.FC = () => {
-  const router = useIonRouter();
+  const router = useNavigate();
   const goSignUp = (type) => {
     const params = { type };
-    router.push("/signup", "root", "push", params);
+    router("/signup", { state: { type } });
   };
   return (
     <IonPage>
       <IonHeader>
         <IonToolbar>
-          <IonButtons slot="start">
-            <IonBackButton></IonBackButton>
+          <IonButtons slot="start" onClick={() => router(-1)}>
+            <IonBackButton defaultHref="/"></IonBackButton>
           </IonButtons>
           <IonTitle>Sign up</IonTitle>
         </IonToolbar>
       </IonHeader>
       <IonContent className="ion-padding">
         <Logo></Logo>
-        <IonButton
-          routerLink="/signup"
-          routerOptions={{ type: "user" }}
-          expand="block"
-        >
+        <IonButton expand="block" onClick={() => goSignUp("user")}>
           Sign up as a user
         </IonButton>
         <IonButton

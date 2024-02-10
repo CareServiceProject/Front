@@ -9,7 +9,7 @@ import {
 } from "@ionic/react";
 import React from "react";
 
-const UserChatList: React.FC = () => {
+const MateChatList: React.FC = () => {
   return (
     <IonPage>
       <IonHeader>
@@ -21,9 +21,9 @@ const UserChatList: React.FC = () => {
           <IonTitle>Page Title</IonTitle>
         </IonToolbar>
       </IonHeader>
-      <IonContent className="ion-padding">user Chat List</IonContent>
+      <IonContent className="ion-padding">Mate Chat List</IonContent>
     </IonPage>
   );
 };
 
-export default UserChatList;
+export default MateChatList;

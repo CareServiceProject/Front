@@ -6,21 +6,21 @@ import {
   IonMenu,
   IonTitle,
   IonToolbar,
-  useIonRouter,
 } from "@ionic/react";
+import { useNavigate } from "react-router-dom";
 
 const SlideMenu: React.FC = () => {
-  const router = useIonRouter();
+  const navigate = useNavigate();
   const doLogout = () => {
-    router.push("/", "root");
+    navigate("/");
   };
   return (
     <IonMenu side="end" contentId="main-menu">
-      <IonHeader>
+      {/* <IonHeader>
         <IonToolbar>
           <IonTitle>Menu Content</IonTitle>
         </IonToolbar>
-      </IonHeader>
+      </IonHeader> */}
       <IonContent className="ion-padding">
         <IonButton expand="full" fill="clear" onClick={doLogout}>
           Log Out
