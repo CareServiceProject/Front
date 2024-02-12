@@ -1,3 +1,4 @@
+import React from 'react';
 import {
   IonButtons,
   IonContent,
@@ -6,9 +7,10 @@ import {
   IonPage,
   IonTitle,
   IonToolbar,
-} from "@ionic/react";
-import React from "react";
-import SlideMenu from "../../../components/SlideMenu";
+} from '@ionic/react';
+import SlideMenu from '../../../components/SlideMenu';
+import './style.css';
+import { Link } from 'react-router-dom';
 
 const UserHome: React.FC = () => {
   return (
@@ -16,14 +18,21 @@ const UserHome: React.FC = () => {
       <IonPage id="main-menu">
         <IonHeader>
           <IonToolbar>
-            {/* 햄버거버튼 */}
-            <IonButtons slot="end">
-              <IonMenuButton></IonMenuButton>
-            </IonButtons>
-            <IonTitle>User Home</IonTitle>
+            <IonTitle></IonTitle>
           </IonToolbar>
         </IonHeader>
-        <IonContent className="ion-padding">User Home</IonContent>
+        <IonContent className="ion-padding">
+          <div className="logo-container">
+            <Link to="/other-page">
+              <img src="logo.png" alt="Logo" className="logo-img" />
+            </Link>
+          </div>
+          <div className="body-image-container">
+            <Link to="/other-page">
+              <img src="body-image.png" alt="Body Image" className="body-img" />
+            </Link>
+          </div>
+        </IonContent>
       </IonPage>
     </>
   );
