@@ -8,6 +8,7 @@ import {
   IonToolbar,
 } from "@ionic/react";
 import React from "react";
+import ChatList from "../../../components/ChatList";
 
 const MateChatList: React.FC = () => {
   return (
@@ -21,7 +22,9 @@ const MateChatList: React.FC = () => {
           <IonTitle>Page Title</IonTitle>
         </IonToolbar>
       </IonHeader>
-      <IonContent className="ion-padding">Mate Chat List</IonContent>
+      <IonContent className="ion-padding">
+        <ChatList></ChatList>
+      </IonContent>
     </IonPage>
   );
 };

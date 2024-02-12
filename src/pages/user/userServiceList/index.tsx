@@ -16,25 +16,9 @@ import ServiceCard from "../../../components/ServiceCard";
 const UserServiceList: React.FC = () => {
   const router = useNavigate();
   const data = [1, 2, 3, 4, 5];
-  const modal = useRef(null);
-  const page = useRef(null);
-
-  const [presentingElement, setPresentingElement] = useState(null);
-
-  useEffect(() => {
-    setPresentingElement(page.current);
-  }, []);
-
-  function dismiss() {
-    modal.current?.dismiss();
-  }
-
-  async function canDismiss(data, role) {
-    return role !== "gesture";
-  }
 
   return (
-    <IonPage ref={page}>
+    <IonPage>
       <IonHeader>
         <IonToolbar>
           <IonButtons slot="start" onClick={() => router(-1)}>
@@ -45,30 +29,9 @@ const UserServiceList: React.FC = () => {
       </IonHeader>
       <IonContent className="ion-padding">
         {data.map((item, index) => {
-          return <ServiceCard key={index}></ServiceCard>;
+          return <ServiceCard key={index} data={item}></ServiceCard>;
         })}
       </IonContent>
-      <IonModal
-        ref={modal}
-        trigger="open-modal"
-        canDismiss={canDismiss}
-        presentingElement={presentingElement!}
-      >
-        <IonHeader>
-          <IonToolbar>
-            <IonTitle>Modal</IonTitle>
-            <IonButtons slot="end">
-              <IonButton onClick={() => dismiss()}>Close</IonButton>
-            </IonButtons>
-          </IonToolbar>
-        </IonHeader>
-        <IonContent className="ion-padding">
-          <p>
-            To close this modal, please use the "Close" button provided. Note
-            that swiping the modal will not dismiss it.
-          </p>
-        </IonContent>
-      </IonModal>
     </IonPage>
   );
 };
