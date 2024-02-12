@@ -27,7 +27,7 @@ import UserHome from "./pages/user/userHome";
 import UserChatList from "./pages/user/userChat";
 import UserMy from "./pages/user/userMy";
 import UserServiceList from "./pages/user/userServiceList";
-import NavLayout from "./pages/layout/NavLayout";
+import NavLayout from "./layout/NavLayout";
 import MateMy from "./pages/mate/mateMy";
 import MateHome from "./pages/mate/mateHome";
 import MateChatList from "./pages/mate/mateChat";
@@ -36,6 +36,7 @@ import ManagerSignUp from "./pages/manager/managerLogin/managerSignUp";
 import SelectAdmin from "./pages/manager/selectAdmin";
 import UserInfo from "./pages/manager/adminInfo/userInfo";
 import MateInfo from "./pages/manager/adminInfo/mateInfo";
+import Chatting from "./pages/mate/mateChat/chatting";
 
 setupIonicReact();
 
@@ -52,6 +53,7 @@ const App: React.FC = () => (
       <Route path="/selectAdmin" element={<SelectAdmin />} />
       <Route path="/userInfo" element={<UserInfo />} />
       <Route path="/mateInfo" element={<MateInfo />} />
+      <Route path="/mate/chatting" element={<Chatting />} />
 
       {/* NavBar Contained Page */}
       <Route element={<NavLayout />}>

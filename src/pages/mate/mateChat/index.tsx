@@ -12,7 +12,7 @@ import ChatList from "../../../components/ChatList";
 
 const MateChatList: React.FC = () => {
   return (
-    <IonPage>
+    <IonPage id="main-menu">
       <IonHeader>
         <IonToolbar>
           {/* 햄버거버튼 */}
