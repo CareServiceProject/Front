@@ -18,8 +18,10 @@ import {
 import React, { useEffect, useRef, useState } from "react";
 import DefaultAvatar from "../assets/default_avatar.jpg";
 import { Modal, Rate } from "antd-mobile";
+import { useNavigate } from "react-router-dom";
 
 const ServiceCard = ({ data }) => {
+  const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
   const [rate, setRate] = useState(0);
 
@@ -35,7 +37,9 @@ const ServiceCard = ({ data }) => {
               <img src={DefaultAvatar}></img>
               <p>{data}</p>
             </IonAvatar>
-            <IonButton fill="clear">채팅</IonButton>
+            <IonButton fill="clear" onClick={() => navigate("/mate/chatting")}>
+              채팅
+            </IonButton>
           </div>
         </IonCardHeader>
 
@@ -52,8 +56,10 @@ const ServiceCard = ({ data }) => {
                   style={{
                     display: "flex",
                     flex: 1,
-                    backgroundColor: "pink",
+                    borderRadius: "8px",
+                    backgroundColor: "var(--ion-color-medium)",
                     padding: "5px",
+                    color: "white",
                   }}
                   className="ion-margin-start"
                 >
