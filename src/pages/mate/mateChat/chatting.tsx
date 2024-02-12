@@ -45,7 +45,12 @@ const Chatting: React.FC = () => {
       </IonHeader>
       <IonContent className="ion-padding" scrollEvents={true} ref={contentRef}>
         <div
-          style={{ display: "flex", flexDirection: "column", height: "100%" }}
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            minHeight: "100%",
+            paddingBottom: "60px",
+          }}
         >
           <div
             style={{
@@ -120,6 +125,13 @@ const Chatting: React.FC = () => {
             style={{
               display: "flex",
               alignItems: "center",
+              position: "fixed",
+              bottom: 0,
+              left: 0,
+              width: "100%",
+              height: "60px",
+              padding: "0 10px 0 10px",
+              backgroundColor: "white",
             }}
           >
             <input
@@ -131,7 +143,7 @@ const Chatting: React.FC = () => {
             <IonButton onClick={onSendMsg}>
               <IonIcon icon={sendOutline}></IonIcon>
             </IonButton>
-            <button onClick={onRecieveMsg}>aaaa</button>
+            <button onClick={onRecieveMsg}>aaa</button>
           </div>
         </div>
       </IonContent>
