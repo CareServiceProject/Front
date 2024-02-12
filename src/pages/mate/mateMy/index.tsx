@@ -39,7 +39,8 @@ const MateMy: React.FC = () => {
             <h6>내 별점</h6>
           </IonCardHeader>
           <IonCardContent>
-            <Rate readOnly value={4} />
+            <Rate readOnly value={4.5} allowHalf />
+            4.5
           </IonCardContent>
         </IonCard>
         <StatusCard></StatusCard>
