@@ -31,6 +31,11 @@ import NavLayout from "./pages/layout/NavLayout";
 import MateMy from "./pages/mate/mateMy";
 import MateHome from "./pages/mate/mateHome";
 import MateChatList from "./pages/mate/mateChat";
+import ManagerLogin from "./pages/manager/managerLogin";
+import ManagerSignUp from "./pages/manager/managerLogin/managerSignUp";
+import SelectAdmin from "./pages/manager/selectAdmin";
+import UserInfo from "./pages/manager/adminInfo/userInfo";
+import MateInfo from "./pages/manager/adminInfo/mateInfo";
 
 setupIonicReact();
 
@@ -42,6 +47,11 @@ const App: React.FC = () => (
       <Route path="/signup" element={<SignUpForm />} />
       <Route path="/admin" element={<Admin />} />
       <Route path="/user/mypage/service_list" element={<UserServiceList />} />
+      <Route path="/managerLogin" element={<ManagerLogin />} />
+      <Route path="/managerSignUp" element={<ManagerSignUp />} />
+      <Route path="/selectAdmin" element={<SelectAdmin />} />
+      <Route path="/userInfo" element={<UserInfo />} />
+      <Route path="/mateInfo" element={<MateInfo />} />
 
       {/* NavBar Contained Page */}
       <Route element={<NavLayout />}>
