@@ -1,0 +1,32 @@
+.logo-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: aliceblue;
+  width: 80%;
+
+  height: 35%;
+  margin: 10% auto;
+  cursor: pointer;
+}
+
+.body-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-top: 15%;
+  background-color: aqua;
+  width: 80%;
+  margin: auto;
+  height: 35%;
+  cursor: pointer;
+}
+
+.logo-container a,
+.body-container a {
+  text-decoration: none;
+
+  color: black;
+}
