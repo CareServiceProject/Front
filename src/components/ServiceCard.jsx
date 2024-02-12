@@ -1,4 +1,5 @@
 import {
+  IonAlert,
   IonAvatar,
   IonButton,
   IonButtons,
@@ -16,9 +17,11 @@ import {
 } from "@ionic/react";
 import React, { useEffect, useRef, useState } from "react";
 import DefaultAvatar from "../assets/default_avatar.jpg";
+import { Modal, Rate } from "antd-mobile";
 
 const ServiceCard = ({ data }) => {
   const [isOpen, setIsOpen] = useState(false);
+  const [rate, setRate] = useState(0);
 
   const Contens = ({ isDetail }) => {
     const label = isDetail
@@ -68,6 +71,43 @@ const ServiceCard = ({ data }) => {
             상세 내역
           </IonButton>
           <IonButton fill="clear">취소</IonButton>
+          <IonButton
+            fill="clear"
+            onClick={() => {
+              Modal.show({
+                title: "오늘 동행해드린 메이트는 어떠셨나요?",
+                header: "평가해주세요!",
+                content: (
+                  <div style={{ display: "flex", justifyContent: "center" }}>
+                    <Rate
+                      allowHalf
+                      onChange={(v) => {
+                        setRate(v);
+                      }}
+                    />
+                  </div>
+                ),
+                closeOnMaskClick: true,
+                closeOnAction: true,
+                actions: [
+                  {
+                    key: "submit",
+                    text: "제출하기",
+                    primary: true,
+                    onClick() {
+                      console.log("rate submit");
+                    },
+                    style: {
+                      backgroundColor: "var(--ion-color-primary)",
+                      border: "none",
+                    },
+                  },
+                ],
+              });
+            }}
+          >
+            평가하기
+          </IonButton>
         </div>
       </IonCard>
     );
