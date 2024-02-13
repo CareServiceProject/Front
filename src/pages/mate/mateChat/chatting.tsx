@@ -60,9 +60,10 @@ const Chatting: React.FC = () => {
               justifyContent: "flex-end",
             }}
           >
-            {messages.map((msg) => {
+            {messages.map((msg, index) => {
               return msg.from === "me" ? (
                 <div
+                  key={index}
                   style={{
                     marginBottom: "6px",
                     display: "flex",
@@ -92,6 +93,7 @@ const Chatting: React.FC = () => {
                 </div>
               ) : (
                 <div
+                  key={index}
                   style={{
                     marginBottom: "6px",
                     display: "flex",
