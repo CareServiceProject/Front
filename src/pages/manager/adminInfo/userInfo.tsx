@@ -31,7 +31,7 @@ interface UserInfo {
   phoneNumber?: string;
 }
 
-const UserInfoComponent: React.FC = () => {
+const UserInfo: React.FC = () => {
   const [userList, setUserList] = useState<UserInfo[]>([
     {
       id: 1,
@@ -211,4 +211,4 @@ const UserInfoComponent: React.FC = () => {
   );
 };
 
-export default UserInfoComponent;
+export default UserInfo;
