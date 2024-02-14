@@ -1,6 +1,229 @@
-import React, { useState, useRef, useEffect } from "react";
+// import React, { useState, useEffect } from "react";
+// import {
+//   IonPage,
+//   IonGrid,
+//   IonRow,
+//   IonCol,
+//   IonHeader,
+//   IonToolbar,
+//   IonTitle,
+//   IonContent,
+//   IonDatetime,
+//   IonButton,
+//   IonInput,
+//   IonLabel,
+//   IonSelect,
+//   IonSelectOption,
+//   IonAlert,
+//   IonList,
+//   IonItem,
+//   IonDatetimeButton,
+//   IonModal,
+// } from "@ionic/react";
 
-import DatePicker from "react-datepicker";
+// const UserRequest: React.FC = () => {
+//   const [selectedDate, setSelectedDate] = useState<string>(
+//     new Date().toISOString()
+//   );
+//   const [selectedStartTime, setSelectedStartTime] = useState<string>("00:00");
+//   const [selectedEndTime, setSelectedEndTime] = useState<string>("00:00");
+//   const [destination, setDestination] = useState("");
+//   const [pickupLocation, setPickupLocation] = useState("");
+//   const [serviceAmount, setServiceAmount] = useState("");
+//   const [preferredGender, setPreferredGender] = useState<number>(0);
+//   const [isSubmitEnabled, setIsSubmitEnabled] = useState(false);
+//   const [isOpen, setIsOpen] = useState(false);
+
+//   useEffect(() => {
+//     const areFieldsFilled =
+//       selectedDate &&
+//       selectedStartTime &&
+//       selectedEndTime &&
+//       destination.trim() !== "" &&
+//       pickupLocation.trim() !== "" &&
+//       serviceAmount.trim() !== "" &&
+//       preferredGender !== 0;
+
+//     setIsSubmitEnabled(areFieldsFilled);
+//   }, [
+//     selectedDate,
+//     selectedStartTime,
+//     selectedEndTime,
+//     destination,
+//     pickupLocation,
+//     serviceAmount,
+//     preferredGender,
+//   ]);
+
+//   const submitForm = () => {
+//     setIsOpen(true);
+//   };
+
+//   return (
+//     <IonPage>
+//       <IonHeader>
+//         <IonToolbar>
+//           <IonTitle>동행 서비스</IonTitle>
+//         </IonToolbar>
+//       </IonHeader>
+
+//       <IonContent className="ion-padding">
+//         <IonList lines="none">
+//           <IonItem>
+//             <IonGrid>
+//               <IonRow>
+//                 <IonCol size="1">
+//                   <IonLabel>날짜:</IonLabel>
+//                 </IonCol>
+//                 {/* <IonDatetimeButton
+//                   datetime="date"
+//                   value={selectedDate}
+//                   onIonChange={(e) => setSelectedDate(e.detail.value!)}
+//                 ></IonDatetimeButton>
+
+//                 <IonModal keepContentsMounted={true}>
+//                   <IonDatetime id="date"></IonDatetime>
+//                 </IonModal> */}
+//                 <IonDatetime
+//                   presentation="date"
+//                   value={selectedDate}
+//                   onIonChange={(e) => setSelectedDate(e.detail.value!)}
+//                 ></IonDatetime>
+//               </IonRow>
+//             </IonGrid>
+//           </IonItem>
+
+//           <IonItem>
+//             <IonGrid>
+//               <IonRow>
+//                 <IonCol size="1">
+//                   <IonLabel>시작 시간:</IonLabel>
+//                 </IonCol>
+//                 <IonCol size="9">
+//                   <IonDatetime
+//                     presentation="time"
+//                     value={selectedStartTime}
+//                     onIonChange={(e) => setSelectedStartTime(e.detail.value!)}
+//                   ></IonDatetime>
+//                 </IonCol>
+//               </IonRow>
+//             </IonGrid>
+//           </IonItem>
+
+//           <IonItem>
+//             <IonGrid>
+//               <IonRow>
+//                 <IonCol size="1">
+//                   <IonLabel>종료 시간:</IonLabel>
+//                 </IonCol>
+//                 <IonCol size="9">
+//                   <IonDatetime
+//                     presentation="time"
+//                     value={selectedEndTime}
+//                     onIonChange={(e) => setSelectedEndTime(e.detail.value!)}
+//                   ></IonDatetime>
+//                 </IonCol>
+//               </IonRow>
+//             </IonGrid>
+//           </IonItem>
+
+//           <IonItem>
+//             <IonGrid>
+//               <IonRow>
+//                 <IonCol size="1">
+//                   <IonLabel>목적지:</IonLabel>
+//                 </IonCol>
+//                 <IonCol size="9">
+//                   <IonInput
+//                     type="text"
+//                     fill="outline"
+//                     value={destination}
+//                     onIonChange={(e) => setDestination(e.detail.value!)}
+//                   />
+//                 </IonCol>
+//               </IonRow>
+//             </IonGrid>
+//           </IonItem>
+
+//           <IonItem>
+//             <IonGrid>
+//               <IonRow>
+//                 <IonCol size="1">
+//                   <IonLabel>픽업장소:</IonLabel>
+//                 </IonCol>
+//                 <IonCol size="1">
+//                   <IonInput
+//                     type="text"
+//                     fill="outline"
+//                     value={pickupLocation}
+//                     onIonChange={(e) => setPickupLocation(e.detail.value!)}
+//                     labelPlacement="floating"
+//                   ></IonInput>
+//                 </IonCol>
+//               </IonRow>
+//             </IonGrid>
+//           </IonItem>
+
+//           <IonItem>
+//             <IonGrid>
+//               <IonRow>
+//                 <IonCol size="1">
+//                   <IonLabel>서비스금액:</IonLabel>
+//                 </IonCol>
+//                 <IonCol size="4">
+//                   <IonInput
+//                     type="text"
+//                     fill="outline"
+//                     value={serviceAmount}
+//                     onIonChange={(e) => setServiceAmount(e.detail.value!)}
+//                   />
+//                 </IonCol>
+//               </IonRow>
+//             </IonGrid>
+//           </IonItem>
+
+//           <IonItem>
+//             <IonGrid>
+//               <IonRow>
+//                 <IonCol size="1">
+//                   <IonLabel>선호 성별:</IonLabel>
+//                 </IonCol>
+
+//                 <IonSelect
+//                   interface="popover"
+//                   fill="outline"
+//                   value={preferredGender}
+//                   onIonChange={(e) => setPreferredGender(e.detail.value)}
+//                 >
+//                   <IonSelectOption value={1}>여</IonSelectOption>
+//                   <IonSelectOption value={2}>남</IonSelectOption>
+//                   <IonSelectOption value={3}>무관</IonSelectOption>
+//                 </IonSelect>
+//               </IonRow>
+//             </IonGrid>
+//           </IonItem>
+//         </IonList>
+//       </IonContent>
+
+//       <IonContent className="ion-padding">
+//         <IonButton onClick={submitForm} disabled={!isSubmitEnabled}>
+//           신청하기
+//         </IonButton>
+//         <IonAlert
+//           isOpen={isOpen}
+//           header="신청 완료!"
+//           subHeader="요청하신 동행이 성공적으로 신청 완료되었습니다."
+//           buttons={["닫기"]}
+//           onDidDismiss={() => setIsOpen(false)}
+//         ></IonAlert>
+//       </IonContent>
+//     </IonPage>
+//   );
+// };
+
+// export default UserRequest;
+
+import React, { useState, useRef, useEffect } from "react";
 import {
   IonPage,
   IonHeader,
@@ -13,15 +236,20 @@ import {
   IonLabel,
   IonSelect,
   IonSelectOption,
+  IonAlert,
   IonModal,
   IonButtons,
   IonButton as IonModalButton,
 } from "@ionic/react";
+import { useNavigate } from "react-router-dom";
+import DatePicker from "react-datepicker";
 import TimePicker from "react-time-picker";
 import "react-datepicker/dist/react-datepicker.css";
 
 const UserRequest: React.FC = () => {
-  const [startDate, setStartDate] = useState(new Date());
+  const [selectedDate, setSelectedDate] = useState<string>(
+    new Date().toISOString()
+  );
   const [startTime, setStartTime] = useState("00:00");
   const [endTime, setEndTime] = useState("00:00");
   const [destination, setDestination] = useState("");
@@ -30,6 +258,8 @@ const UserRequest: React.FC = () => {
   const [preferredGender, setPreferredGender] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isSubmitEnabled, setIsSubmitEnabled] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
+
   const modal = useRef<HTMLIonModalElement>(null);
 
   const generateHourOptions = () => {
@@ -59,20 +289,8 @@ const UserRequest: React.FC = () => {
   };
 
   useEffect(() => {
-    // setPresentingElement(page.current)
-  }, []);
-
-  function dismiss() {
-    modal.current?.dismiss();
-  }
-
-  async function canDismiss(data, role) {
-    return role !== "gesture";
-  }
-
-  useEffect(() => {
     const areFieldsFilled =
-      startDate &&
+      selectedDate &&
       startTime &&
       endTime &&
       destination.trim() !== "" &&
@@ -82,7 +300,7 @@ const UserRequest: React.FC = () => {
 
     setIsSubmitEnabled(areFieldsFilled);
   }, [
-    startDate,
+    selectedDate,
     startTime,
     endTime,
     destination,
@@ -110,10 +328,47 @@ const UserRequest: React.FC = () => {
         <div>
           <label>날짜:</label>
           <DatePicker
-            selected={startDate}
-            onChange={(date) => setStartDate(date)}
+            selected={Date}
+            onChange={(date) => setSelectedDate(date)}
           />
         </div>
+        {/* 
+        <div>
+          <label>시작 시간:</label>
+          <TimePicker
+            value={startTime}
+            onChange={(time) => setStartTime(time)}
+          />
+        </div>
+
+        <div>
+          <label>종료 시간:</label>
+          <TimePicker value={endTime} onChange={(time) => setEndTime(time)} />
+        </div> */}
+
+        {/* <div>
+          <label>시작 시간:</label>
+          <IonSelect
+            placeholder="시작 시간을 선택하세요"
+            value={startTime}
+            onIonChange={(e) => setStartTime(e.detail.value)}
+          >
+            <IonSelectOption value="00:00">00:00</IonSelectOption>
+            <IonSelectOption value="01:00">01:00</IonSelectOption>
+          </IonSelect>
+        </div>
+
+        <div>
+          <label>종료 시간:</label>
+          <IonSelect
+            placeholder="종료 시간을 선택하세요"
+            value={endTime}
+            onIonChange={(e) => setEndTime(e.detail.value)}
+          >
+            <IonSelectOption value="00:00">00:00</IonSelectOption>
+            <IonSelectOption value="01:00">01:00</IonSelectOption>
+          </IonSelect>
+        </div> */}
 
         <div>
           <label>시작 시간:</label>
@@ -203,32 +458,16 @@ const UserRequest: React.FC = () => {
       </IonContent>
 
       <IonContent className="ion-padding">
-        <IonButton
-          expand="full"
-          onClick={submitForm}
-          disabled={!isSubmitEnabled}
-        >
+        <IonButton onClick={submitForm} disabled={!isSubmitEnabled}>
           신청하기
         </IonButton>
-        <IonModal
-          ref={modal}
-          isOpen={isModalOpen}
-          onDidDismiss={closeModal}
-          canDismiss={canDismiss}
-        >
-          <IonHeader>
-            <IonToolbar>
-              <IonTitle>Modal</IonTitle>
-              <IonButtons slot="end">
-                <IonModalButton onClick={() => dismiss()}>X</IonModalButton>
-              </IonButtons>
-            </IonToolbar>
-          </IonHeader>
-          <IonContent className="ion-padding">
-            <h2>신청 완료!</h2>
-            <p>요청하신 동행이 성공적으로 신청되었습니다.</p>
-          </IonContent>
-        </IonModal>
+        <IonAlert
+          isOpen={isOpen}
+          header="신청 완료!"
+          subHeader="요청하신 동행이 성공적으로 신청 완료되었습니다."
+          buttons={["닫기"]}
+          onDidDismiss={() => setIsOpen(false)}
+        ></IonAlert>
       </IonContent>
     </IonPage>
   );

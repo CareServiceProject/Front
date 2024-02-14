@@ -18,6 +18,8 @@
     "@capacitor/keyboard": "5.0.8",
     "@capacitor/status-bar": "5.0.7",
     "@ionic/react": "^7.0.0",
+    "@maskito/core": "^2.0.2",
+    "@maskito/react": "^2.0.2",
     "antd-mobile": "^5.34.0",
     "ionicons": "^7.0.0",
     "react": "^18.2.0",

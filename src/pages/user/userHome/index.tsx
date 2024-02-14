@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 import {
   IonButtons,
   IonContent,
@@ -7,10 +7,10 @@ import {
   IonPage,
   IonTitle,
   IonToolbar,
-} from '@ionic/react';
-import SlideMenu from '../../../components/SlideMenu';
-import './style.css';
-import { Link } from 'react-router-dom';
+} from "@ionic/react";
+import SlideMenu from "../../../components/SlideMenu";
+import "./style.css";
+import { Link } from "react-router-dom";
 
 const UserHome: React.FC = () => {
   return (
