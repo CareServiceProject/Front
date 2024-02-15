@@ -1,0 +1,28 @@
+main {
+  background-color: rgb(163, 236, 236);
+}
+.userHome {
+  --ion-background-color: #cebbbb;
+}
+.apply-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  margin: 16% auto;
+  background-color: aqua;
+  width: 200px; /* 너비를 200px로 설정 */
+  height: 100px;
+
+  cursor: pointer;
+}
+
+.logo-container {
+  text-align: center;
+  background-color: rgb(93, 157, 212);
+  width: 2px;
+  height: 1px;
+
+  cursor: pointer;
+  background-color: aquamarine;
+}

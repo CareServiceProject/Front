@@ -9,8 +9,9 @@ import {
   IonToolbar,
 } from '@ionic/react';
 import SlideMenu from '../../../components/SlideMenu';
-import './style.css';
+import './style0.css';
 import { Link } from 'react-router-dom';
+import bodyImg from '../../mate/mateJudge/body-logo.png';
 
 const UserHome: React.FC = () => {
   return (
@@ -24,15 +25,15 @@ const UserHome: React.FC = () => {
             <IonTitle></IonTitle>
           </IonToolbar>
         </IonHeader>
-        <IonContent className="ion-padding">
+        <IonContent className="userHome">
           <div className="logo-container">
             <Link to="/other-page">
-              <img src="logo.png" alt="Logo" className="logo-img" />
+              <img src={bodyImg} alt="Logo" className="logo-img" />
             </Link>
           </div>
-          <div className="body-image-container">
+          <div className="apply-container">
             <Link to="/other-page">
-              <img src="body-image.png" alt="Body Image" className="body-img" />
+              <h1 className="body-content"> 동행 서비스</h1>
             </Link>
           </div>
         </IonContent>
