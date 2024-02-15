@@ -69,25 +69,25 @@ const SignUpForm: React.FC = () => {
           <IonTitle>Sign Up</IonTitle>
         </IonToolbar>
       </IonHeader>
-      <IonContent className="ion-padding">
+      <IonContent className="ion-padding signUp">
         <Logo></Logo>
         <form onSubmit={doCreateAccount}>
           <div style={{ display: "flex" }}>
             <IonInput
               label="이름"
-              labelPlacement="floating"
-              fill="outline"
+              labelPlacement="start"
               required
               onIonChange={(e) => setUserName(e.detail.value)}
+              className="ion-padding login"
             ></IonInput>
 
             <IonSelect
               interface="popover"
               label="Gender"
-              fill="outline"
-              labelPlacement="floating"
-              className="ion-margin-start"
+              labelPlacement="start"
+              className="ion-margin-start "
               onIonChange={(e) => setGender(e.detail.value)}
+              style={{ background: "white", padding: " 0 12px 0 12px" }}
             >
               <IonSelectOption value={1}>여</IonSelectOption>
               <IonSelectOption value={2}>남</IonSelectOption>
@@ -95,35 +95,30 @@ const SignUpForm: React.FC = () => {
           </div>
           <IonInput
             label="아이디(닉네임)"
-            labelPlacement="floating"
-            fill="outline"
-            className="ion-margin-top"
+            labelPlacement="start"
+            className="ion-margin-top ion-padding"
             required
             onIonChange={(e) => setNickName(e.detail.value)}
           ></IonInput>
           <IonInput
             label="이메일"
-            labelPlacement="floating"
-            fill="outline"
-            className="ion-margin-top"
+            labelPlacement="start"
+            className="ion-margin-top ion-padding"
             required
             onIonChange={(e) => setEmail(e.detail.value)}
           ></IonInput>
           <IonInput
             label="비밀번호"
-            labelPlacement="floating"
-            fill="outline"
-            className="ion-margin-top"
+            labelPlacement="start"
+            className="ion-margin-top ion-padding"
             required
             onIonChange={(e) => setPassword(e.detail.value)}
           ></IonInput>
           <IonInput
-            className="ion-margin-top"
+            className="ion-margin-top ion-padding"
             label="비밀번호확인"
-            labelPlacement="floating"
-            fill="outline"
+            labelPlacement="start"
             required
-            disabled={password ? false : true}
             onIonInput={(event) => validate(event)}
           ></IonInput>
           {isPasswordValid === false && (
@@ -134,17 +129,16 @@ const SignUpForm: React.FC = () => {
 
           <IonInput
             label="휴대폰번호"
-            labelPlacement="floating"
-            fill="outline"
-            className="ion-margin-top"
+            labelPlacement="start"
+            className="ion-margin-top ion-padding"
             required
             onIonChange={(e) => setPhone(e.detail.value)}
           ></IonInput>
           {/* <div style={{ display: "flex" }}>
             <IonInput
               label="인증번호"
-              labelPlacement="floating"
-              fill="outline"
+              labelPlacement="start"
+              
               className="ion-margin-top"
               required
             ></IonInput>

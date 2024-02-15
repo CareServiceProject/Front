@@ -29,7 +29,7 @@ const Register: React.FC = () => {
           <IonTitle>Sign up</IonTitle>
         </IonToolbar>
       </IonHeader>
-      <IonContent className="ion-padding">
+      <IonContent className="ion-padding login">
         <Logo></Logo>
         <IonButton expand="block" onClick={() => goSignUp("user")}>
           Sign up as a user
