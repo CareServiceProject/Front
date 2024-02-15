@@ -13,6 +13,7 @@
   },
   "dependencies": {
     "@capacitor/app": "5.0.7",
+    "@capacitor/camera": "^5.0.9",
     "@capacitor/core": "5.6.0",
     "@capacitor/haptics": "5.0.7",
     "@capacitor/keyboard": "5.0.8",
@@ -29,6 +30,7 @@
     "react-router": "^5.3.4",
     "react-router-dom": "^6.22.0",
     "react-time-picker": "^6.6.0",
+    "react-time-range": "^1.0.4",
     "redux": "^5.0.1"
   },
   "devDependencies": {

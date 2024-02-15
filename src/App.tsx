@@ -38,6 +38,7 @@ import UserInfo from "./pages/manager/adminInfo/userInfo";
 import MateInfo from "./pages/manager/adminInfo/mateInfo";
 import Chatting from "./pages/mate/mateChat/chatting";
 import UserRequest from "./pages/user/userRequest";
+import UserProfile from "./pages/user/userProfile";
 
 setupIonicReact();
 
@@ -56,6 +57,7 @@ const App: React.FC = () => (
       <Route path="/mateInfo" element={<MateInfo />} />
       <Route path="/mate/chatting" element={<Chatting />} />
       <Route path="/user/request" element={<UserRequest />} />
+      <Route path="/user/profile" element={<UserProfile />} />
 
       {/* NavBar Contained Page */}
       <Route element={<NavLayout />}>

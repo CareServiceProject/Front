@@ -31,7 +31,7 @@ const UserHome: React.FC = () => {
             </Link>
           </div>
           <div className="body-image-container">
-            <Link to="/other-page">
+            <Link to="/user/request">
               <img src="body-image.png" alt="Body Image" className="body-img" />
             </Link>
           </div>
