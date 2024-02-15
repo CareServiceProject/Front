@@ -4,55 +4,79 @@ import {
   IonHeader,
   IonItem,
   IonLabel,
+  IonCardTitle,
+  IonCardContent,
+  IonCardHeader,
   IonList,
-  IonMenuButton,
+  IonBackButton,
   IonModal,
   IonPage,
   IonTitle,
   IonToolbar,
   IonButton,
   IonToggle,
+  IonCard,
+  IonText,
 } from "@ionic/react";
+import DefaultAvatar from "../../../assets/default_avatar.jpg";
 import React, { useState } from "react";
 
 interface UserInfo {
   id: number;
+  nickname: string;
   name: string;
-  details: string;
   blacklisted: boolean;
+  gender?: string;
+  email?: string;
+  phoneNumber?: string;
 }
 
-const UserInfoComponent: React.FC = () => {
+const UserInfo: React.FC = () => {
   const [userList, setUserList] = useState<UserInfo[]>([
     {
       id: 1,
-      name: "User 1",
-      details: "Details for User 1",
+      nickname: "User ID 1",
+      name: "라이언",
       blacklisted: false,
+      gender: "남성",
+      email: "user1@example.com",
+      phoneNumber: "010-1234-5678",
     },
     {
       id: 2,
-      name: "User 2",
-      details: "Details for User 2",
+      nickname: "User ID 2",
+      name: "어피치",
       blacklisted: false,
+      gender: "여성",
+      email: "user2@example.com",
+      phoneNumber: "110-1234-5678",
     },
     {
       id: 3,
-      name: "User 3",
-      details: "Details for User 3",
+      nickname: "User ID 3",
+      name: "신짱구",
       blacklisted: false,
+      gender: "여성",
+      email: "user3@example.com",
+      phoneNumber: "210-1234-5678",
     },
     {
       id: 4,
-      name: "User 4",
-      details: "Details for User 4",
+      nickname: "User ID 4",
+      name: "뽀로로",
       blacklisted: false,
+      gender: "남성",
+      email: "user4@example.com",
+      phoneNumber: "310-1234-5678",
     },
     {
       id: 5,
-      name: "User 5",
-      details: "Details for User 5",
+      nickname: "User ID 5",
+      name: "크로롱",
       blacklisted: false,
+      gender: "남성",
+      email: "user5@example.com",
+      phoneNumber: "410-1234-5678",
     },
   ]);
 
@@ -93,8 +117,9 @@ const UserInfoComponent: React.FC = () => {
     <IonPage id="main-menu">
       <IonHeader>
         <IonToolbar>
-          <IonButtons slot="end">
-            <IonMenuButton></IonMenuButton>
+          {" "}
+          <IonButtons slot="start">
+            <IonBackButton defaultHref="/selectAdmin" />
           </IonButtons>
           <IonTitle>유저 관리</IonTitle>
         </IonToolbar>
@@ -103,7 +128,24 @@ const UserInfoComponent: React.FC = () => {
         <IonList>
           {userList.map((user) => (
             <IonItem key={user.id} button onClick={() => openModal(user)}>
-              <IonLabel>{user.name}</IonLabel>
+              <IonLabel style={{ display: "flex", alignItems: "center" }}>
+                <img
+                  src={DefaultAvatar}
+                  alt="avatar"
+                  style={{
+                    width: "70px",
+                    height: "70px",
+                    borderRadius: "50%",
+                    marginRight: "20px",
+                  }}
+                />
+                <IonText>
+                  {user.nickname} _{" "}
+                  {user.blacklisted ? "일반유저" : "블랙리스트유저"}
+                  <br />
+                  {user.name} / {user.gender}{" "}
+                </IonText>
+              </IonLabel>
               <IonToggle
                 slot="end"
                 checked={user.blacklisted}
@@ -119,17 +161,49 @@ const UserInfoComponent: React.FC = () => {
         <IonModal isOpen={showModal} onDidDismiss={closeModal}>
           <IonContent>
             {selectedUser && (
-              <>
-                <IonLabel>{selectedUser.name}</IonLabel>
-                <IonLabel>{selectedUser.details}</IonLabel>
-                <IonToggle
-                  checked={selectedUser.blacklisted}
-                  onIonChange={toggleBlacklist}
-                  style={{ margin: "10px 0" }}
-                />
-              </>
+              <IonCard>
+                <IonCardHeader>
+                  <IonCardTitle>{selectedUser.nickname}</IonCardTitle>
+                </IonCardHeader>
+                <IonCardContent>
+                  <IonItem>
+                    <IonLabel>이름:</IonLabel>
+                    <IonText>{selectedUser.name}</IonText>
+                  </IonItem>
+                  <IonItem>
+                    <IonLabel>성별:</IonLabel>
+                    <IonText>{selectedUser.gender}</IonText>
+                  </IonItem>
+                  <IonItem>
+                    <IonLabel>이메일:</IonLabel>
+                    <IonText>{selectedUser.email}</IonText>
+                  </IonItem>
+                  <IonItem>
+                    <IonLabel>전화번호:</IonLabel>
+                    <IonText>{selectedUser.phoneNumber}</IonText>
+                  </IonItem>
+                  <IonItem>
+                    <IonLabel>유저 상태:</IonLabel>
+                    <IonText>
+                      {selectedUser.blacklisted
+                        ? "일반 유저"
+                        : "블랙리스트 유저"}
+                    </IonText>
+                  </IonItem>
+                  <IonToggle
+                    checked={selectedUser.blacklisted}
+                    onIonChange={toggleBlacklist}
+                    style={{ margin: "20px 10px 20px 0", float: "right" }}
+                  />
+                </IonCardContent>
+              </IonCard>
             )}
-            <IonButton onClick={closeModal}>닫기</IonButton>
+            <IonButton
+              onClick={closeModal}
+              style={{ float: "right", margin: "10px 20px" }}
+            >
+              닫기
+            </IonButton>
           </IonContent>
         </IonModal>
       </IonContent>
@@ -137,4 +211,4 @@ const UserInfoComponent: React.FC = () => {
   );
 };
 
-export default UserInfoComponent;
+export default UserInfo;

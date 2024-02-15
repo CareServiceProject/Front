@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 import {
   IonButtons,
   IonContent,
@@ -7,11 +7,18 @@ import {
   IonPage,
   IonTitle,
   IonToolbar,
+<<<<<<< HEAD
 } from '@ionic/react';
 import SlideMenu from '../../../components/SlideMenu';
 import './style0.css';
 import { Link } from 'react-router-dom';
 import bodyImg from '../../mate/mateJudge/body-logo.png';
+=======
+} from "@ionic/react";
+import SlideMenu from "../../../components/SlideMenu";
+import "./style.css";
+import { Link } from "react-router-dom";
+>>>>>>> 15f1ee43e0ba7880dbe38c226745047d26dd8aff
 
 const UserHome: React.FC = () => {
   return (
@@ -31,9 +38,15 @@ const UserHome: React.FC = () => {
               <img src={bodyImg} alt="Logo" className="logo-img" />
             </Link>
           </div>
+<<<<<<< HEAD
           <div className="apply-container">
             <Link to="/other-page">
               <h1 className="body-content"> 동행 서비스</h1>
+=======
+          <div className="body-image-container">
+            <Link to="/user/request">
+              <img src="body-image.png" alt="Body Image" className="body-img" />
+>>>>>>> 15f1ee43e0ba7880dbe38c226745047d26dd8aff
             </Link>
           </div>
         </IonContent>

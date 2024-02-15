@@ -17,16 +17,25 @@ import {
   closeOutline,
   heartCircleOutline,
 } from "ionicons/icons";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const StatusCard = (props) => {
   const router = useNavigate();
-  const status = [
-    { title: "대기중", count: 0, icon: radioOutline, status: 0 },
-    { title: "진행중", count: 0, icon: heartCircleOutline, status: 1 },
-    { title: "완료", count: 0, icon: checkmarkDoneOutline, status: 2 },
-    { title: "취소", count: 0, icon: closeOutline, status: 3 },
-  ];
+  const location = useLocation();
+  const prefix = location.pathname.split("/")[1];
+  const status =
+    prefix === "user"
+      ? [
+          { title: "대기중", count: 0, icon: radioOutline, status: 0 },
+          { title: "진행중", count: 0, icon: heartCircleOutline, status: 1 },
+          { title: "완료", count: 0, icon: checkmarkDoneOutline, status: 2 },
+          { title: "취소", count: 0, icon: closeOutline, status: 3 },
+        ]
+      : [
+          { title: "진행중", count: 0, icon: heartCircleOutline, status: 1 },
+          { title: "완료", count: 0, icon: checkmarkDoneOutline, status: 2 },
+          { title: "취소", count: 0, icon: closeOutline, status: 3 },
+        ];
 
   return (
     <IonCard>
@@ -38,8 +47,11 @@ const StatusCard = (props) => {
           return (
             <IonList key={item.title}>
               <IonItem
-                // routerOptions={{ status: item.status }}
-                onClick={() => router("/user/mypage/service_list")}
+                onClick={() =>
+                  router(`/${prefix}/mypage/service_list`, {
+                    state: { status: item.status },
+                  })
+                }
               >
                 <IonIcon icon={item.icon} className="ion-margin"></IonIcon>
                 <IonLabel>{item.title}</IonLabel>

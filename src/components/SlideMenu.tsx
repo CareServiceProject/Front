@@ -14,6 +14,10 @@ const SlideMenu: React.FC = () => {
   const doLogout = () => {
     navigate("/");
   };
+  const userProfile = () => {
+    navigate("/user/profile");
+  };
+
   return (
     <IonMenu side="end" contentId="main-menu">
       {/* <IonHeader>
@@ -21,6 +25,11 @@ const SlideMenu: React.FC = () => {
           <IonTitle>Menu Content</IonTitle>
         </IonToolbar>
       </IonHeader> */}
+      <IonContent className="ion-padding">
+        <IonButton expand="full" fill="clear" onClick={userProfile}>
+          개인정보 수정
+        </IonButton>
+      </IonContent>
       <IonContent className="ion-padding">
         <IonButton expand="full" fill="clear" onClick={doLogout}>
           Log Out

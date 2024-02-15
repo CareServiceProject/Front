@@ -11,28 +11,89 @@ import {
   IonTitle,
   IonToolbar,
 } from "@ionic/react";
-import { sendOutline } from "ionicons/icons";
+import { sendOutline as vvvv } from "ionicons/icons";
 import React, { useEffect, useRef, useState } from "react";
 import DefaultAvatar from "../../../assets/default_avatar.jpg";
 import { useNavigate } from "react-router-dom";
+import { Client, Message } from "@stomp/stompjs";
 
 const Chatting: React.FC = () => {
   const navigate = useNavigate();
   const [text, setText] = useState("");
-  const [messages, setMessages] = useState([]);
   const contentRef = useRef();
 
-  const onSendMsg = () => {
-    setMessages((prev) => [...prev, { text: text, from: "me" }]);
-    setText("");
-    contentRef?.current?.scrollToBottom();
+  const [messages, setMessages] = useState([]);
+  const [stompClient, setStompClient] = useState(null);
+  const roomCid = 1;
+
+  useEffect(() => {
+    const client = new Client({
+      brokerURL: "ws://localhost:8080/ws/chat",
+      connectHeaders: {
+        login: "user",
+        passcode: "password",
+      },
+      debug: function (str) {
+        console.log(str);
+      },
+      reconnectDelay: 5000,
+      heartbeatIncoming: 4000,
+      heartbeatOutgoing: 4000,
+    });
+
+    setStompClient(client);
+
+    client.onConnect = function (frame) {
+      console.log("Connected to WebSocket");
+      // Do something, all subscribes must be done is this callback
+      // This is needed because this will be executed after a (re)connect
+      client.subscribe(`/topic/chat/${roomCid}`, (message) => {
+        const newMessages = [...messages, JSON.parse(message.body)];
+        setMessages(newMessages);
+      });
+    };
+
+    client.onStompError = function (frame) {
+      // Will be invoked in case of error encountered at Broker
+      // Bad login/passcode typically will cause an error
+      // Complaint brokers will set `message` header with a brief message. Body may contain details.
+      // Compliant brokers will terminate the connection after any error
+      console.log("Broker reported error: " + frame.headers["message"]);
+      console.log("Additional details: " + frame.body);
+    };
+
+    client.activate();
+
+    return () => {
+      client.deactivate();
+    };
+  }, []);
+
+  const sendMessage = () => {
+    const message = {
+      message: text,
+      sender: "me",
+    };
+
+    stompClient?.publish({
+      destination: `/app/send/message/${roomCid}`,
+      body: message,
+      skipContentLengthHeader: true,
+    });
   };
 
-  const onRecieveMsg = () => {
-    setMessages((prev) => [...prev, { text: text, from: "other" }]);
-    setText("");
-    contentRef?.current?.scrollToBottom();
-  };
+  // const onSendMsg = () => {
+  //   setMessages((prev) => [...prev, { text: text, from: "me" }]);
+  //   setText("");
+  //   contentRef?.current?.scrollToBottom();
+  // };
+
+  // const onRecieveMsg = () => {
+  //   setMessages((prev) => [...prev, { text: text, from: "other" }]);
+  //   setText("");
+  //   contentRef?.current?.scrollToBottom();
+  // };
+
   return (
     <IonPage>
       <IonHeader>
@@ -60,9 +121,10 @@ const Chatting: React.FC = () => {
               justifyContent: "flex-end",
             }}
           >
-            {messages.map((msg) => {
-              return msg.from === "me" ? (
+            {messages.map((msg, index) => {
+              return msg.sender === "me" ? (
                 <div
+                  key={index}
                   style={{
                     marginBottom: "6px",
                     display: "flex",
@@ -78,7 +140,7 @@ const Chatting: React.FC = () => {
                       maxWidth: "200px",
                     }}
                   >
-                    {msg.text}
+                    {msg.message}
                   </div>
                   <img
                     src={DefaultAvatar}
@@ -92,6 +154,7 @@ const Chatting: React.FC = () => {
                 </div>
               ) : (
                 <div
+                  key={index}
                   style={{
                     marginBottom: "6px",
                     display: "flex",
@@ -115,7 +178,7 @@ const Chatting: React.FC = () => {
                       maxWidth: "200px",
                     }}
                   >
-                    {msg.text}
+                    {msg.message}
                   </div>
                 </div>
               );
@@ -140,10 +203,10 @@ const Chatting: React.FC = () => {
               value={text}
               onChange={(v) => setText(v.target.value)}
             ></input>
-            <IonButton onClick={onSendMsg}>
-              <IonIcon icon={sendOutline}></IonIcon>
+            <IonButton onClick={sendMessage}>
+              <IonIcon icon={vvvv}></IonIcon>
             </IonButton>
-            <button onClick={onRecieveMsg}>aaa</button>
+            {/* <button onClick={onRecieveMsg}>aaa</button> */}
           </div>
         </div>
       </IonContent>
