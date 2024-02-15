@@ -141,7 +141,7 @@ const UserInfo: React.FC = () => {
                 />
                 <IonText>
                   {user.nickname} _{" "}
-                  {user.blacklisted ? "블랙리스트유저" : "일반유저"}
+                  {user.blacklisted ? "일반유저" : "블랙리스트유저"}
                   <br />
                   {user.name} / {user.gender}{" "}
                 </IonText>
@@ -186,8 +186,8 @@ const UserInfo: React.FC = () => {
                     <IonLabel>유저 상태:</IonLabel>
                     <IonText>
                       {selectedUser.blacklisted
-                        ? "블랙리스트 유저"
-                        : "일반 유저"}
+                        ? "일반 유저"
+                        : "블랙리스트 유저"}
                     </IonText>
                   </IonItem>
                   <IonToggle
