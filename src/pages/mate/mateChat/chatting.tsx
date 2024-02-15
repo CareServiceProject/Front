@@ -16,6 +16,7 @@ import React, { useEffect, useRef, useState } from "react";
 import DefaultAvatar from "../../../assets/default_avatar.jpg";
 import { useNavigate } from "react-router-dom";
 import { Client, Message } from "@stomp/stompjs";
+import "./style.css";
 
 const Chatting: React.FC = () => {
   const navigate = useNavigate();
@@ -112,6 +113,7 @@ const Chatting: React.FC = () => {
             minHeight: "100%",
             paddingBottom: "60px",
           }}
+          className="aaaaaa"
         >
           <div
             style={{

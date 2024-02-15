@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState } from "react";
 import {
   IonButtons,
   IonContent,
@@ -7,9 +7,9 @@ import {
   IonPage,
   IonTitle,
   IonToolbar,
-} from '@ionic/react';
-import { Link } from 'react-router-dom';
-import './style.css';
+} from "@ionic/react";
+import { Link } from "react-router-dom";
+import "./style.css";
 
 const MateHome: React.FC = () => {
   const [count, setCount] = useState(0);
@@ -18,12 +18,12 @@ const MateHome: React.FC = () => {
     const fetchData = async () => {
       try {
         const response = await fetch(
-          'https://jsonplaceholder.typicode.com/todos/3'
+          "https://jsonplaceholder.typicode.com/todos/3"
         );
         const data = await response.json();
         setCount(data.id);
       } catch (error) {
-        console.error('Error fetching data:', error);
+        console.error("Error fetching data:", error);
       }
     };
 
