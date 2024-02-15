@@ -63,7 +63,7 @@ const MateJudge: React.FC = () => {
         <div className="body-container-guide">
           <div className="body-guide">
             <h1>Welcome!</h1> <h2>귀하의 정보를 검토중입니다.</h2>
-            <h2>완료까지 1~2일 정도 시간이 소요될 수 있습니다!</h2>
+            <h2>완료까지 1~2일 정도 시간이 소요될 수 있습니다!!</h2>
             <h2>문의 사항은 00-000-000으로 부탁드립니다.</h2>
           </div>
         </div>
