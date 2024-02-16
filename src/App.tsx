@@ -37,8 +37,9 @@ import SelectAdmin from './pages/manager/selectAdmin';
 import UserInfo from './pages/manager/adminInfo/userInfo';
 import MateInfo from './pages/manager/adminInfo/mateInfo';
 import Chatting from './pages/mate/mateChat/chatting';
-import UserRequest from './pages/user/userRequest';
-import UserProfile from './pages/user/userProfile';
+import MateJudge from './pages/mate/mateJudge';
+import MatePass from './pages/mate/mateJudge/pass';
+import MateFail from './pages/mate/mateJudge/fail';
 
 setupIonicReact();
 
@@ -50,15 +51,12 @@ const App: React.FC = () => (
       <Route path="/signup" element={<SignUpForm />} />
       <Route path="/admin" element={<Admin />} />
       <Route path="/user/mypage/service_list" element={<UserServiceList />} />
-      <Route path="/mate/mypage/service_list" element={<UserServiceList />} />
       <Route path="/managerLogin" element={<ManagerLogin />} />
       <Route path="/managerSignUp" element={<ManagerSignUp />} />
       <Route path="/selectAdmin" element={<SelectAdmin />} />
       <Route path="/userInfo" element={<UserInfo />} />
       <Route path="/mateInfo" element={<MateInfo />} />
       <Route path="/mate/chatting" element={<Chatting />} />
-      <Route path="/user/request" element={<UserRequest />} />
-      <Route path="/user/profile" element={<UserProfile />} />
 
       {/* NavBar Contained Page */}
       <Route element={<NavLayout />}>
