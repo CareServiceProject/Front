@@ -1,24 +1,23 @@
-import { Route, Routes } from "react-router-dom";
-import { IonApp, IonRouterOutlet, setupIonicReact } from "@ionic/react";
+import { Route, Routes } from 'react-router-dom';
+import { IonApp, IonRouterOutlet, setupIonicReact } from '@ionic/react';
 
 /* Core CSS required for Ionic components to work properly */
-import "@ionic/react/css/core.css";
+import '@ionic/react/css/core.css';
 
 /* Basic CSS for apps built with Ionic */
-import "@ionic/react/css/normalize.css";
-import "@ionic/react/css/structure.css";
-import "@ionic/react/css/typography.css";
+import '@ionic/react/css/normalize.css';
+import '@ionic/react/css/structure.css';
+import '@ionic/react/css/typography.css';
 
 /* Optional CSS utils that can be commented out */
-import "@ionic/react/css/padding.css";
-import "@ionic/react/css/float-elements.css";
-import "@ionic/react/css/text-alignment.css";
-import "@ionic/react/css/text-transformation.css";
-import "@ionic/react/css/flex-utils.css";
-import "@ionic/react/css/display.css";
+import '@ionic/react/css/padding.css';
+import '@ionic/react/css/float-elements.css';
+import '@ionic/react/css/text-alignment.css';
+import '@ionic/react/css/text-transformation.css';
+import '@ionic/react/css/flex-utils.css';
+import '@ionic/react/css/display.css';
 
 /* Theme variables */
-<<<<<<< HEAD
 import './theme/variables.css';
 import Login from './pages/login/Login';
 import Register from './pages/register';
@@ -38,35 +37,11 @@ import SelectAdmin from './pages/manager/selectAdmin';
 import UserInfo from './pages/manager/adminInfo/userInfo';
 import MateInfo from './pages/manager/adminInfo/mateInfo';
 import Chatting from './pages/mate/mateChat/chatting';
+import UserRequest from './pages/user/userRequest';
+import UserProfile from './pages/user/userProfile';
 import MateJudge from './pages/mate/mateJudge';
 import MatePass from './pages/mate/mateJudge/pass';
 import MateFail from './pages/mate/mateJudge/fail';
-=======
-import "./theme/variables.css";
-import Login from "./pages/login/Login";
-import Register from "./pages/register";
-import Admin from "./pages/admin";
-import SignUpForm from "./pages/register/formPage";
-import UserHome from "./pages/user/userHome";
-import UserChatList from "./pages/user/userChat";
-import UserMy from "./pages/user/userMy";
-import UserServiceList from "./pages/user/userServiceList";
-import NavLayout from "./layout/NavLayout";
-import MateMy from "./pages/mate/mateMy";
-import MateHome from "./pages/mate/mateHome";
-import MateChatList from "./pages/mate/mateChat";
-import ManagerLogin from "./pages/manager/managerLogin";
-import ManagerSignUp from "./pages/manager/managerLogin/managerSignUp";
-import SelectAdmin from "./pages/manager/selectAdmin";
-import UserInfo from "./pages/manager/adminInfo/userInfo";
-import MateInfo from "./pages/manager/adminInfo/mateInfo";
-import Chatting from "./pages/mate/mateChat/chatting";
-import UserRequest from "./pages/user/userRequest";
-import UserProfile from "./pages/user/userProfile";
-import MateJudge from "./pages/mate/mateJudge";
-import MatePass from "./pages/mate/mateJudge/pass";
-import MateFail from "./pages/mate/mateJudge/fail";
->>>>>>> 04f7449e3b6c77737a0af6c7186e232cb026c1f2
 
 setupIonicReact();
 
