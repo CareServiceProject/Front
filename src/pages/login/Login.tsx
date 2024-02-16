@@ -42,6 +42,10 @@ const Login: React.FC = () => {
       }
     });
   };
+
+  const onPasswordChange = (e) => {
+    setPassword(e.target.value);
+  };
   return (
     <div style={{ backgroundColor: "#005F69" }}>
       <IonPage>
@@ -53,7 +57,7 @@ const Login: React.FC = () => {
               labelPlacement="start"
               placeholder="Please input your user id"
               required
-              onIonChange={(e) => setUserid(e.detail.value)}
+              onInput={(e) => setUserid(e.target.value)}
               className="ion-padding"
             ></IonInput>
             <IonInput
@@ -62,7 +66,7 @@ const Login: React.FC = () => {
               placeholder="Please input your password"
               className="ion-margin-top ion-padding"
               required
-              onIonChange={(e) => setPassword(e.detail.value)}
+              onInput={(e) => onPasswordChange(e)}
             ></IonInput>
             <IonButton expand="block" className="ion-margin-top" type="submit">
               Login
