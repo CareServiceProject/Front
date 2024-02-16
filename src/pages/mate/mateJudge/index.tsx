@@ -10,6 +10,10 @@ import {
   IonPage,
   IonTitle,
   IonToolbar,
+  IonGrid,
+  IonRow,
+  IonCol,
+  IonButton,
 } from '@ionic/react';
 import React, { useState, useEffect } from 'react';
 import { Rate } from 'antd-mobile';
@@ -23,10 +27,10 @@ const MateJudge: React.FC = () => {
   const [isApproved, setIsApproved] = useState<boolean | null>(null);
 
   useEffect(() => {
-    fetch('https://jsonplaceholder.typicode.com/posts/1')
+    fetch('http://43.203.89.178:8080/api/master/approve/{mateCid}')
       .then((response) => response.json())
       .then((data) => {
-        const isApproved = Math.random() < 0.5;
+        const isApproved = data.approved; // 예시로 받아온 데이터에서 승인 여부 확인
         setIsApproved(isApproved);
       })
       .catch((error) => {
@@ -37,41 +41,57 @@ const MateJudge: React.FC = () => {
   const handleApproval = () => {
     if (isApproved !== null) {
       if (isApproved) {
-        window.location.href = '/mate/fail';
-      } else {
         window.location.href = '/mate/pass';
+      } else {
+        window.location.href = '/mate/fail';
       }
     }
   };
 
   return (
-    <IonPage id="main-menu">
-      <IonHeader>
-        <IonToolbar>
-          <IonButtons slot="end">
-            <IonMenuButton />
-          </IonButtons>
-          <IonTitle>Mate Judge</IonTitle>
-        </IonToolbar>
-      </IonHeader>
-      <div className="ion-padding">
-        <div className="logo-container">
-          <Link to="/other-page">
-            <img src={bodyImg} alt="Logo" className="logo-img" />
-          </Link>
-        </div>
-        <div className="body-container-guide">
-          <div className="body-guide">
-            <h1>Welcome!</h1> <h2>귀하의 정보를 검토중입니다.</h2>
-            <h2>완료까지 1~2일 정도 시간이 소요될 수 있습니다!!</h2>
-            <h2>문의 사항은 00-000-000으로 부탁드립니다.</h2>
-          </div>
-        </div>
-        <button className="btn-guide" onClick={handleApproval}>
-          확인하기1
-        </button>
+    <div style={{ backgroundColor: 'black', padding: '31px' }}>
+      <div
+        style={{
+          backgroundColor: '#ffffff',
+          width: 'auto',
+          height: 'auto',
+          display: 'flex',
+          justifyContent: 'center',
+          margin: '30px 30px 20px',
+        }}
+      >
+        <Link to="/other-page">
+          <img
+            src={bodyImg}
+            alt="Logo"
+            style={{
+              width: '200px',
+              height: '100%',
+              cursor: 'pointer',
+            }}
+          />
+        </Link>
       </div>
-    </IonPage>
+      <div
+        style={{
+          marginTop: '55px',
+          color: 'blue',
+          textAlign: 'center',
+          marginBottom: '20px',
+          fontSize: '1rem',
+        }}
+      >
+        <h1 style={{ fontSize: '20px' }}>Welcome!</h1>
+        <h2 style={{ fontSize: '20px' }}>귀하의 정보를 검토 중입니다.</h2>
+        <h2 style={{ fontSize: '20px' }}>
+          완료까지 1~2일 정도 시간이 소요될 수 있습니다!!
+        </h2>
+        <h2 style={{ fontSize: '20px' }}>
+          문의 사항은 00-000-000으로 부탁드립니다.
+        </h2>
+      </div>
+      <div style={{ textAlign: 'center' }}></div>
+    </div>
   );
 };
 
