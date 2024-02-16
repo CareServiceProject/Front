@@ -21,7 +21,7 @@ import StatusCard from '../../../components/StatusCard';
 import DefaultAvatar from '../../../assets/default_avatar.jpg';
 import { Link } from 'react-router-dom';
 import './style.css';
-import bodyImg from './body-logo.png';
+import bodyImg from '../../../assets/logo-big-greenRed.png';
 
 const MateJudge: React.FC = () => {
   const [isApproved, setIsApproved] = useState<boolean | null>(null);
@@ -52,12 +52,15 @@ const MateJudge: React.FC = () => {
     <div style={{ backgroundColor: 'black', padding: '31px' }}>
       <div
         style={{
-          backgroundColor: '#ffffff',
-          width: 'auto',
-          height: 'auto',
           display: 'flex',
+          alignItems: 'center',
           justifyContent: 'center',
+          width: 'auto',
+          height: '250px',
+          backgroundColor: '#ffffff',
           margin: '30px 30px 20px',
+          textDecoration: 'none',
+          color: 'black',
         }}
       >
         <Link to="/other-page">
@@ -65,9 +68,11 @@ const MateJudge: React.FC = () => {
             src={bodyImg}
             alt="Logo"
             style={{
+              flexDirection: 'column',
+              cursor: 'pointer',
               width: '200px',
               height: '100%',
-              cursor: 'pointer',
+              objectFit: 'cover',
             }}
           />
         </Link>

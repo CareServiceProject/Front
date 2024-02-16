@@ -11,12 +11,12 @@ import {
   IonText,
   IonTitle,
   IonToolbar,
-} from "@ionic/react";
-import React, { useState } from "react";
-import Logo from "../../components/Logo";
-import { useLocation, useNavigate } from "react-router-dom";
-import { userSignUp, mateSignUp } from "../../api/authApi";
-import { Toast } from "antd-mobile";
+} from '@ionic/react';
+import React, { useState } from 'react';
+import Logo from '../../components/Logo';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { userSignUp, mateSignUp } from '../../api/authApi';
+import { Toast } from 'antd-mobile';
 
 const SignUpForm: React.FC = () => {
   const router = useNavigate();
@@ -24,14 +24,14 @@ const SignUpForm: React.FC = () => {
 
   const signUpRole = location.state.role;
 
-  const [userName, setUserName] = useState("");
+  const [userName, setUserName] = useState('');
   const [gender, setGender] = useState(0);
-  const [ID, setID] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [ID, setID] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const [isPasswordValid, setIsPasswordValid] = useState(undefined);
   const [regNum, setRegNum] = useState();
-  const [phone, setPhone] = useState("");
+  const [phone, setPhone] = useState('');
 
   const doCreateAccount = (e) => {
     e.preventDefault();
@@ -43,11 +43,11 @@ const SignUpForm: React.FC = () => {
       email,
       password,
       phone_number: phone,
-      roles: signUpRole === "user" ? 3 : 2,
+      roles: signUpRole === 'user' ? 3 : 2,
       registration_num: regNum,
     };
 
-    console.log("eeee", formData, signUpRole);
+    console.log('eeee', formData, signUpRole);
     // TODO:계정 생성
     userSignUp(formData).then((res) => {
       if (res.code === 200) {
@@ -55,7 +55,7 @@ const SignUpForm: React.FC = () => {
           content: res.message,
           maskClickable: false,
           afterClose: () => {
-            router("/");
+            router('/');
           },
         });
       }
@@ -69,10 +69,10 @@ const SignUpForm: React.FC = () => {
   const validate = (ev: Event) => {
     const value = (ev.target as HTMLInputElement).value;
 
-    console.log("vvv", value);
+    console.log('vvv', value);
     setIsPasswordValid(undefined);
 
-    if (value === "") return;
+    if (value === '') return;
 
     password === value ? setIsPasswordValid(true) : setIsPasswordValid(false);
   };
@@ -89,7 +89,7 @@ const SignUpForm: React.FC = () => {
       <IonContent className="ion-padding signUp">
         <Logo></Logo>
         <form onSubmit={doCreateAccount}>
-          <div style={{ display: "flex" }}>
+          <div style={{ display: 'flex' }}>
             <IonInput
               label="아이디"
               labelPlacement="start"
@@ -103,7 +103,7 @@ const SignUpForm: React.FC = () => {
               labelPlacement="start"
               className="ion-margin-start "
               onIonChange={(e) => setGender(e.detail.value)}
-              style={{ background: "white", padding: "0 12px 0 12px" }}
+              style={{ background: 'white', padding: '0 12px 0 12px' }}
             >
               <IonSelectOption value={1}>여</IonSelectOption>
               <IonSelectOption value={2}>남</IonSelectOption>

@@ -11,7 +11,7 @@ import {
 import SlideMenu from '../../../components/SlideMenu';
 
 import { Link } from 'react-router-dom';
-import bodyImg from './body-logo.png';
+import bodyImg from '../../../assets/logo-big-greenRed.png';
 
 const UserHome: React.FC = () => {
   return (
@@ -32,9 +32,9 @@ const UserHome: React.FC = () => {
               alignItems: 'center',
               justifyContent: 'center',
               width: 'auto',
-              height: 'auto',
+              height: '250px',
               backgroundColor: '#ffffff',
-              margin: '30px 30px 20px',
+              margin: '23px 30px 20px',
               textDecoration: 'none',
               color: 'black',
             }}
@@ -69,8 +69,24 @@ const UserHome: React.FC = () => {
             }}
             className="apply-container"
           >
-            <Link style={{ textDecoration: 'none' }} to="/other-page">
-              <h1 className="body-content"> 동행 서비스</h1>
+            <Link
+              style={{
+                textDecoration: 'none',
+                color: '#fee0d4',
+              }}
+              to="/other-page"
+            >
+              <h1
+                style={{
+                  fontSize: '27px',
+                  fontFamily: 'Georgia, serif',
+                  color: 'black',
+                }}
+                className="body-content"
+              >
+                {' '}
+                동행 서비스
+              </h1>
             </Link>
           </div>
         </IonContent>

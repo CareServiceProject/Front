@@ -9,26 +9,24 @@ import {
   IonToolbar,
 } from '@ionic/react';
 import { Link } from 'react-router-dom';
-
-import bodyImg from './body-logo.png';
+import bodyImg from '../../../assets/logo-big-greenRed.png';
+import { fetchWaitingCareList } from '../../../api/userHome';
 
 const MateHome: React.FC = () => {
   const [waitingCareList, setWaitingCareList] = useState([]);
 
   useEffect(() => {
-    const fetchWaitingCareList = async () => {
+    const fetchWaitingCare = async () => {
       try {
-        const response = await fetch(
-          'http://43.203.89.178:8080/api/mate/waitingCarelist'
-        );
-        const data = await response.json();
+        const data = await fetchWaitingCareList();
         setWaitingCareList(data);
+        console.log(data);
       } catch (error) {
         console.error('Error fetching waiting care list:', error);
       }
     };
 
-    fetchWaitingCareList();
+    fetchWaitingCare();
   }, []);
 
   return (
@@ -48,9 +46,9 @@ const MateHome: React.FC = () => {
             alignItems: 'center',
             justifyContent: 'center',
             width: 'auto',
-            height: 'auto',
+            height: '250px',
             backgroundColor: '#ffffff',
-            margin: '30px 30px 20px',
+            margin: '23px 30px 20px',
             textDecoration: 'none',
             color: 'black',
           }}
