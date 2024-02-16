@@ -7,11 +7,19 @@ import {
   IonPage,
   IonTitle,
   IonToolbar,
+<<<<<<< HEAD
 } from '@ionic/react';
 import SlideMenu from '../../../components/SlideMenu';
 
 import { Link } from 'react-router-dom';
 import bodyImg from './body-logo.png';
+=======
+} from "@ionic/react";
+import SlideMenu from "../../../components/SlideMenu";
+import "./style0.css";
+import { Link } from "react-router-dom";
+import bodyImg from "../../mate/mateJudge/body-logo.png";
+>>>>>>> 04f7449e3b6c77737a0af6c7186e232cb026c1f2
 
 const UserHome: React.FC = () => {
   return (
@@ -55,6 +63,7 @@ const UserHome: React.FC = () => {
               />
             </Link>
           </div>
+<<<<<<< HEAD
           <div
             style={{
               display: 'flex',
@@ -71,6 +80,11 @@ const UserHome: React.FC = () => {
           >
             <Link style={{ textDecoration: 'none' }} to="/other-page">
               <h1 className="body-content"> 동행 서비스</h1>
+=======
+          <div className="body-image-container">
+            <Link to="/user/request">
+              <img src="body-image.png" alt="Body Image" className="body-img" />
+>>>>>>> 04f7449e3b6c77737a0af6c7186e232cb026c1f2
             </Link>
           </div>
         </IonContent>
