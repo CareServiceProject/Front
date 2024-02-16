@@ -54,8 +54,8 @@ const App: React.FC = () => (
       <Route path="/admin" element={<Admin />} />
       <Route path="/user/mypage/service_list" element={<UserServiceList />} />
       <Route path="/mate/mypage/service_list" element={<UserServiceList />} />
-      <Route path="/managerLogin" element={<ManagerLogin />} />
-      <Route path="/managerSignUp" element={<ManagerSignUp />} />
+      {/* <Route path="/managerLogin" element={<ManagerLogin />} />
+      <Route path="/managerSignUp" element={<ManagerSignUp />} /> */}
       <Route path="/selectAdmin" element={<SelectAdmin />} />
       <Route path="/userInfo" element={<UserInfo />} />
       <Route path="/mateInfo" element={<MateInfo />} />

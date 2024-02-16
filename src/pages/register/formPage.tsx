@@ -14,35 +14,52 @@ import {
 } from "@ionic/react";
 import React, { useState } from "react";
 import Logo from "../../components/Logo";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
+import { userSignUp, mateSignUp } from "../../api/authApi";
+import { Toast } from "antd-mobile";
 
 const SignUpForm: React.FC = () => {
   const router = useNavigate();
-  const signUpRole = 1;
+  const location = useLocation();
+
+  const signUpRole = location.state.role;
 
   const [userName, setUserName] = useState("");
   const [gender, setGender] = useState(0);
-  const [nickName, setNickName] = useState("");
+  const [ID, setID] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isPasswordValid, setIsPasswordValid] = useState(undefined);
+  const [regNum, setRegNum] = useState();
   const [phone, setPhone] = useState("");
 
   const doCreateAccount = (e) => {
     e.preventDefault();
     if (isPasswordValid === false) return;
     const formData = {
-      userName,
+      user_id: ID,
       gender,
-      nickName,
+      name: userName,
       email,
       password,
-      phone,
+      phone_number: phone,
+      roles: signUpRole === "user" ? 3 : 2,
+      registration_num: regNum,
     };
+
     console.log("eeee", formData, signUpRole);
     // TODO:계정 생성
-
-    router("/user/home");
+    userSignUp(formData).then((res) => {
+      if (res.code === 200) {
+        Toast.show({
+          content: res.message,
+          maskClickable: false,
+          afterClose: () => {
+            router("/");
+          },
+        });
+      }
+    });
   };
 
   const sendCode = () => {
@@ -74,31 +91,30 @@ const SignUpForm: React.FC = () => {
         <form onSubmit={doCreateAccount}>
           <div style={{ display: "flex" }}>
             <IonInput
-              label="이름"
+              label="아이디"
               labelPlacement="start"
+              className="ion-padding"
               required
-              onIonChange={(e) => setUserName(e.detail.value)}
-              className="ion-padding login"
+              onIonChange={(e) => setID(e.detail.value)}
             ></IonInput>
-
             <IonSelect
               interface="popover"
               label="Gender"
               labelPlacement="start"
               className="ion-margin-start "
               onIonChange={(e) => setGender(e.detail.value)}
-              style={{ background: "white", padding: " 0 12px 0 12px" }}
+              style={{ background: "white", padding: "0 12px 0 12px" }}
             >
               <IonSelectOption value={1}>여</IonSelectOption>
               <IonSelectOption value={2}>남</IonSelectOption>
             </IonSelect>
           </div>
           <IonInput
-            label="아이디(닉네임)"
+            label="이름"
             labelPlacement="start"
-            className="ion-margin-top ion-padding"
             required
-            onIonChange={(e) => setNickName(e.detail.value)}
+            onIonChange={(e) => setUserName(e.detail.value)}
+            className="ion-padding ion-margin-top"
           ></IonInput>
           <IonInput
             label="이메일"
@@ -133,6 +149,13 @@ const SignUpForm: React.FC = () => {
             className="ion-margin-top ion-padding"
             required
             onIonChange={(e) => setPhone(e.detail.value)}
+          ></IonInput>
+          <IonInput
+            label="주민등록번호"
+            labelPlacement="start"
+            className="ion-margin-top ion-padding"
+            required
+            onIonChange={(e) => setRegNum(e.detail.value)}
           ></IonInput>
           {/* <div style={{ display: "flex" }}>
             <IonInput

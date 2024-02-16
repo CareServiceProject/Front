@@ -15,9 +15,8 @@ import { useNavigate } from "react-router-dom";
 
 const Register: React.FC = () => {
   const router = useNavigate();
-  const goSignUp = (type) => {
-    const params = { type };
-    router("/signup", { state: { type } });
+  const goSignUp = (role) => {
+    router("/signup", { state: { role } });
   };
   return (
     <IonPage>

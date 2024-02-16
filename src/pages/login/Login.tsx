@@ -11,17 +11,36 @@ import React, { useState } from "react";
 import "./login.css";
 import Logo from "../../components/Logo";
 import { useNavigate } from "react-router-dom";
+import { login } from "../../api/authApi";
+import { localToken } from "../../utils/auth";
 
 const Login: React.FC = () => {
   const navigate = useNavigate();
   const [userid, setUserid] = useState("");
   const [password, setPassword] = useState("");
-  const doLogin = () => {
+  const doLogin = (e) => {
+    e.preventDefault();
     const data = {
-      userid,
+      user_id: userid,
       password,
     };
-    navigate("/user/home");
+    login(data).then((res) => {
+      console.log("res", res);
+      localToken.set(res.access_token);
+      switch (res.roles) {
+        case "ROLE_MASTER":
+          navigate("/selectAdmin");
+          break;
+        case "ROLE_USER":
+          navigate("/user/home");
+          break;
+        case "ROLE_MATE":
+          navigate("/mate/home");
+          break;
+        default:
+          break;
+      }
+    });
   };
   return (
     <div style={{ backgroundColor: "#005F69" }}>
