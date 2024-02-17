@@ -61,6 +61,7 @@ const Login: React.FC = () => {
               className="ion-padding"
             ></IonInput>
             <IonInput
+              type="password"
               label="Password"
               labelPlacement="start"
               placeholder="Please input your password"

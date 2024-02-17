@@ -11,12 +11,12 @@ import {
   IonText,
   IonTitle,
   IonToolbar,
-} from '@ionic/react';
-import React, { useState } from 'react';
-import Logo from '../../components/Logo';
-import { useLocation, useNavigate } from 'react-router-dom';
-import { userSignUp, mateSignUp } from '../../api/authApi';
-import { Toast } from 'antd-mobile';
+} from "@ionic/react";
+import React, { useState } from "react";
+import Logo from "../../components/Logo";
+import { useLocation, useNavigate } from "react-router-dom";
+import { userSignUp, mateSignUp } from "../../api/authApi";
+import { Toast } from "antd-mobile";
 
 const SignUpForm: React.FC = () => {
   const router = useNavigate();
@@ -24,42 +24,61 @@ const SignUpForm: React.FC = () => {
 
   const signUpRole = location.state.role;
 
-  const [userName, setUserName] = useState('');
-  const [gender, setGender] = useState(0);
-  const [ID, setID] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [userName, setUserName] = useState("");
+  const [gender, setGender] = useState(null);
+  const [ID, setID] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [isPasswordValid, setIsPasswordValid] = useState(undefined);
   const [regNum, setRegNum] = useState();
-  const [phone, setPhone] = useState('');
+  const [phone, setPhone] = useState("");
 
   const doCreateAccount = (e) => {
     e.preventDefault();
     if (isPasswordValid === false) return;
+
+    if (gender === null) {
+      Toast.show({
+        content: "젠더를 선택해 주세요.",
+      });
+      return;
+    }
+    const i_d = signUpRole === "user" ? "user_id" : "mate_id";
     const formData = {
-      user_id: ID,
+      [i_d]: ID,
       gender,
       name: userName,
       email,
       password,
       phone_number: phone,
-      roles: signUpRole === 'user' ? 3 : 2,
+      roles: signUpRole === "user" ? 3 : 2,
       registration_num: regNum,
     };
 
-    console.log('eeee', formData, signUpRole);
     // TODO:계정 생성
-    userSignUp(formData).then((res) => {
-      if (res.code === 200) {
-        Toast.show({
-          content: res.message,
-          maskClickable: false,
-          afterClose: () => {
-            router('/');
-          },
+    signUpRole === "user"
+      ? userSignUp(formData).then((res) => {
+          if (res.code === 200) {
+            Toast.show({
+              content: res.message,
+              maskClickable: false,
+              afterClose: () => {
+                router("/");
+              },
+            });
+          }
+        })
+      : mateSignUp(formData).then((res) => {
+          if (res.code === 200) {
+            Toast.show({
+              content: res.message,
+              maskClickable: false,
+              afterClose: () => {
+                router("/");
+              },
+            });
+          }
         });
-      }
-    });
   };
 
   const sendCode = () => {
@@ -69,10 +88,10 @@ const SignUpForm: React.FC = () => {
   const validate = (ev: Event) => {
     const value = (ev.target as HTMLInputElement).value;
 
-    console.log('vvv', value);
+    console.log("vvv", value);
     setIsPasswordValid(undefined);
 
-    if (value === '') return;
+    if (value === "") return;
 
     password === value ? setIsPasswordValid(true) : setIsPasswordValid(false);
   };
@@ -83,27 +102,27 @@ const SignUpForm: React.FC = () => {
           <IonButtons slot="start" onClick={() => router(-1)}>
             <IonBackButton defaultHref="/"></IonBackButton>
           </IonButtons>
-          <IonTitle>Sign Up</IonTitle>
+          <IonTitle>{signUpRole}</IonTitle>
         </IonToolbar>
       </IonHeader>
       <IonContent className="ion-padding signUp">
         <Logo></Logo>
         <form onSubmit={doCreateAccount}>
-          <div style={{ display: 'flex' }}>
+          <div style={{ display: "flex" }}>
             <IonInput
               label="아이디"
               labelPlacement="start"
               className="ion-padding"
               required
-              onIonChange={(e) => setID(e.detail.value)}
+              onIonInput={(e) => setID(e.target.value)}
             ></IonInput>
             <IonSelect
               interface="popover"
               label="Gender"
               labelPlacement="start"
-              className="ion-margin-start "
+              className="ion-margin-start"
               onIonChange={(e) => setGender(e.detail.value)}
-              style={{ background: 'white', padding: '0 12px 0 12px' }}
+              style={{ background: "white", padding: "0 12px 0 12px" }}
             >
               <IonSelectOption value={1}>여</IonSelectOption>
               <IonSelectOption value={2}>남</IonSelectOption>
@@ -113,7 +132,7 @@ const SignUpForm: React.FC = () => {
             label="이름"
             labelPlacement="start"
             required
-            onIonChange={(e) => setUserName(e.detail.value)}
+            onIonInput={(e) => setUserName(e.target.value)}
             className="ion-padding ion-margin-top"
           ></IonInput>
           <IonInput
@@ -121,16 +140,18 @@ const SignUpForm: React.FC = () => {
             labelPlacement="start"
             className="ion-margin-top ion-padding"
             required
-            onIonChange={(e) => setEmail(e.detail.value)}
+            onIonInput={(e) => setEmail(e.target.value)}
           ></IonInput>
           <IonInput
+            type="password"
             label="비밀번호"
             labelPlacement="start"
             className="ion-margin-top ion-padding"
             required
-            onIonChange={(e) => setPassword(e.detail.value)}
+            onIonInput={(e) => setPassword(e.target.value)}
           ></IonInput>
           <IonInput
+            type="password"
             className="ion-margin-top ion-padding"
             label="비밀번호확인"
             labelPlacement="start"
@@ -139,7 +160,9 @@ const SignUpForm: React.FC = () => {
           ></IonInput>
           {isPasswordValid === false && (
             <div slot="label">
-              <IonText color="danger">not same</IonText>
+              <IonText color="danger" className="ion-margin-start">
+                일치하지 않습니다.
+              </IonText>
             </div>
           )}
 
@@ -148,14 +171,14 @@ const SignUpForm: React.FC = () => {
             labelPlacement="start"
             className="ion-margin-top ion-padding"
             required
-            onIonChange={(e) => setPhone(e.detail.value)}
+            onIonInput={(e) => setPhone(e.target.value)}
           ></IonInput>
           <IonInput
             label="주민등록번호"
             labelPlacement="start"
             className="ion-margin-top ion-padding"
             required
-            onIonChange={(e) => setRegNum(e.detail.value)}
+            onIonInput={(e) => setRegNum(e.target.value)}
           ></IonInput>
           {/* <div style={{ display: "flex" }}>
             <IonInput
