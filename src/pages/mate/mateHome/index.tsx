@@ -10,7 +10,8 @@ import {
 } from '@ionic/react';
 import { Link } from 'react-router-dom';
 import bodyImg from '../../../assets/logo-big-greenRed.png';
-import { fetchWaitingCareList } from '../../../api/userHome';
+import { fetchWaitingCareList } from '../../../api/mateHome';
+import ServiceCard from '../../../components/ServiceCard';
 
 const MateHome: React.FC = () => {
   const [waitingCareList, setWaitingCareList] = useState([]);
@@ -83,7 +84,7 @@ const MateHome: React.FC = () => {
           }}
           className="request-container"
         >
-          <Link to="/other-page">
+          <Link to="/waitingList">
             <div
               style={{ textDecoration: 'none', color: 'black' }}
               className="request-top"
