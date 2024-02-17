@@ -10,11 +10,11 @@ import {
   IonPage,
   IonTitle,
   IonToolbar,
-} from "@ionic/react";
-import React from "react";
-import { Rate } from "antd-mobile";
-import StatusCard from "../../../components/StatusCard";
-import DefaultAvatar from "../../../assets/default_avatar.jpg";
+} from '@ionic/react';
+import React from 'react';
+import { Rate } from 'antd-mobile';
+import StatusCard from '../../../components/StatusCard';
+import DefaultAvatar from '../../../assets/default_avatar.jpg';
 
 const MateMy: React.FC = () => {
   return (
@@ -28,7 +28,7 @@ const MateMy: React.FC = () => {
         </IonToolbar>
       </IonHeader>
       <IonContent className="ion-padding">
-        <div style={{ display: "flex" }} className="ion-margin">
+        <div style={{ display: 'flex' }} className="ion-margin">
           <IonAvatar className="ion-margin-end">
             <img src={DefaultAvatar}></img>
           </IonAvatar>

@@ -8,28 +8,28 @@ import {
   IonPage,
   IonTitle,
   IonToolbar,
-} from "@ionic/react";
-import React, { useEffect, useRef, useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
-import ServiceCard from "../../../components/ServiceCard";
+} from '@ionic/react';
+import React, { useEffect, useRef, useState } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
+import ServiceCard from '../../../components/ServiceCard';
 
 const UserServiceList: React.FC = () => {
   const router = useNavigate();
   const location = useLocation();
-  const prefix = location.pathname.split("/")[1];
+  const prefix = location.pathname.split('/')[1];
   const status = location.state.status;
   const data = [1, 2, 3, 4, 5];
 
   const titleDisplay = () => {
     switch (status) {
       case 0:
-        return "대기중";
+        return '대기중';
       case 1:
-        return "진행중";
+        return '진행중';
       case 2:
-        return "완료";
+        return '완료';
       case 3:
-        return "취소";
+        return '취소';
       default:
     }
   };
