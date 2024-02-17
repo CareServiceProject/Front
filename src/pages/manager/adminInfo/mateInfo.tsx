@@ -23,7 +23,12 @@ import {
 import DefaultAvatar from "../../../assets/default_avatar.jpg";
 import React, { useState, useEffect } from "react";
 import { closeOutline } from "ionicons/icons";
-import { getMateList, getMateDetail } from "../../../api/managerApi";
+import {
+  getMateList,
+  getMateDetail,
+  approveMate,
+  unapproveMate,
+} from "../../../api/managerApi";
 interface MateInfo {
   cid: string;
   mateId: number;
@@ -34,6 +39,7 @@ interface MateInfo {
   mateGender?: string;
   email?: string;
   phoneNum?: string;
+  approval?: boolean;
 }
 
 const MateInfo: React.FC = () => {
@@ -50,7 +56,6 @@ const MateInfo: React.FC = () => {
         setMateList(res);
       });
     };
-
     fetchUserList();
   }, []);
 
@@ -63,7 +68,6 @@ const MateInfo: React.FC = () => {
         });
       }
     };
-
     fetchMateDetail();
   }, [selectedMate]);
 
@@ -90,32 +94,54 @@ const MateInfo: React.FC = () => {
       closeModal();
     }
   };
+  interface ApprovalResponse {
+    success: boolean;
+    message: string;
+  }
 
-  const approveMate = () => {
-    if (selectedMate) {
-      setMateList((prevMateList) => {
-        const updatedList = prevMateList.map((mate) =>
-          mate.mateId === selectedMate.mateId
-            ? { ...mate, approval: true }
-            : mate
-        );
-        return updatedList;
+  const handleApproveClick = () => {
+    const mateCid = selectedMate?.cid;
+
+    if (mateCid) {
+      approveMate(mateCid).then((response: ApprovalResponse) => {
+        console.log("서버 응답:", response);
+
+        if (selectedMate && response.success) {
+          setMateList((prevMateList) => {
+            return prevMateList.map((mate) =>
+              mate.mateId === selectedMate.mateId
+                ? { ...mate, approval: true, mateStatus: true }
+                : mate
+            );
+          });
+          closeModal();
+          console.log(response.message);
+        } else {
+          console.error(response.message);
+        }
       });
-      closeModal();
     }
   };
+  const handleUnApproveClick = () => {
+    const mateCid = selectedMate?.cid;
+    if (mateCid) {
+      unapproveMate(mateCid).then((response: ApprovalResponse) => {
+        console.log("서버 응답:", response);
 
-  const rejectMate = () => {
-    if (selectedMate) {
-      setMateList((prevMateList) => {
-        const updatedList = prevMateList.map((mate) =>
-          mate.mateId === selectedMate.mateId
-            ? { ...mate, approval: false }
-            : mate
-        );
-        return updatedList;
+        if (selectedMate && response.success) {
+          setMateList((prevMateList) => {
+            return prevMateList.map((mate) =>
+              mate.mateId === selectedMate.mateId
+                ? { ...mate, approval: false, mateStatus: false }
+                : mate
+            );
+          });
+          closeModal();
+          console.log(response.message);
+        } else {
+          console.error(response.message);
+        }
       });
-      closeModal();
     }
   };
 
@@ -153,8 +179,12 @@ const MateInfo: React.FC = () => {
                     {mate.blacklisted ? "일반메이트" : "블랙리스트메이트"}
                     <br />
                     {mate.mateName} / {mate.mateGender}
-                    <span style={{ color: mate.mateStatus ? "blue" : "red" }}>
-                      {mate.mateStatus ? " 가입승인" : " 가입미승인"}
+                    <span
+                      style={{
+                        color: mate.approval ? "green" : "red",
+                      }}
+                    >
+                      {mate.approval ? " 가입승인" : " 가입미승인"}
                     </span>
                   </IonText>
                 </IonLabel>
@@ -229,7 +259,7 @@ const MateInfo: React.FC = () => {
                   <IonItem>
                     <IonLabel>가입승인여부:</IonLabel>
                     <IonText>
-                      {mateDetail.mateStatus ? "가입승인" : "가입미승인"}
+                      {mateDetail.approval ? "가입미승인" : "가입승인"}
                     </IonText>
                   </IonItem>
                   <IonItem>
@@ -265,7 +295,7 @@ const MateInfo: React.FC = () => {
               </IonCard>
             )}
             <IonButton
-              onClick={approveMate}
+              onClick={handleApproveClick}
               style={{
                 margin: "10px",
                 width: "250px",
@@ -276,7 +306,7 @@ const MateInfo: React.FC = () => {
               승인
             </IonButton>
             <IonButton
-              onClick={rejectMate}
+              onClick={handleUnApproveClick}
               color="danger"
               style={{
                 margin: "20px",
