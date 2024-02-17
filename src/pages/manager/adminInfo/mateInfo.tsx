@@ -21,84 +21,36 @@ import {
   IonText,
 } from "@ionic/react";
 import DefaultAvatar from "../../../assets/default_avatar.jpg";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { closeOutline } from "ionicons/icons";
-
+import { getMateList } from "../../../api/managerApi";
 interface MateInfo {
-  id: number;
-  nickname: string;
-  name: string;
+  mateId: number;
+  mateName: string;
   residentNumber: string;
   blacklisted: boolean;
   approval: boolean;
-  gender?: string;
+  mateGender?: string;
   email?: string;
   phoneNumber?: string;
 }
 
 const MateInfo: React.FC = () => {
-  const [mateList, setMateList] = useState<MateInfo[]>([
-    {
-      id: 1,
-      nickname: "Mate ID 1",
-      name: "라이언",
-      residentNumber: "123456-1000000",
-      approval: false,
-      blacklisted: false,
-      gender: "남성",
-      email: "mate1@example.com",
-      phoneNumber: "010-1234-5678",
-    },
-    {
-      id: 2,
-      nickname: "Mate ID 2",
-      name: "어피치",
-      residentNumber: "123456-2000000",
-      approval: false,
-      blacklisted: false,
-      gender: "여성",
-      email: "mate2@example.com",
-      phoneNumber: "110-1234-5678",
-    },
-    {
-      id: 3,
-      nickname: "Mate ID 3",
-      name: "신짱구",
-      residentNumber: "223456-1000000",
-      approval: false,
-      blacklisted: false,
-      gender: "여성",
-      email: "mate3@example.com",
-      phoneNumber: "210-1234-5678",
-    },
-    {
-      id: 4,
-      nickname: "Mate ID 4",
-      name: "뽀로로",
-      residentNumber: "323456-2000000",
-      approval: false,
-      blacklisted: false,
-      gender: "남성",
-      email: "mate4@example.com",
-      phoneNumber: "310-1234-5678",
-    },
-    {
-      id: 5,
-      nickname: "Mate ID 5",
-      name: "크로롱",
-      residentNumber: "423456-1000000",
-      approval: false,
-      blacklisted: false,
-      gender: "남성",
-      email: "mate5@example.com",
-      phoneNumber: "410-1234-5678",
-    },
-  ]);
-
+  const [mateList, setMateList] = useState<MateInfo[]>([]);
   const [showModal, setShowModal] = useState(false);
   const [selectedMate, setSelectedMate] = useState<MateInfo | null>(null);
   const [rejectReason, setRejectReason] = useState("");
 
+  useEffect(() => {
+    const fetchUserList = async () => {
+      getMateList().then((res: MateInfo[]) => {
+        console.log(res);
+        setMateList(res);
+      });
+    };
+
+    fetchUserList();
+  }, []);
   const openModal = (mate: MateInfo) => {
     setSelectedMate(mate);
     setShowModal(true);
@@ -112,7 +64,7 @@ const MateInfo: React.FC = () => {
     if (selectedMate) {
       setMateList((prevMateList) => {
         const updatedList = prevMateList.map((mate) =>
-          mate.id === selectedMate.id
+          mate.mateId === selectedMate.mateId
             ? { ...mate, blacklisted: !mate.blacklisted }
             : mate
         );
@@ -127,7 +79,9 @@ const MateInfo: React.FC = () => {
     if (selectedMate) {
       setMateList((prevMateList) => {
         const updatedList = prevMateList.map((mate) =>
-          mate.id === selectedMate.id ? { ...mate, approval: true } : mate
+          mate.mateId === selectedMate.mateId
+            ? { ...mate, approval: true }
+            : mate
         );
         return updatedList;
       });
@@ -139,7 +93,9 @@ const MateInfo: React.FC = () => {
     if (selectedMate) {
       setMateList((prevMateList) => {
         const updatedList = prevMateList.map((mate) =>
-          mate.id === selectedMate.id ? { ...mate, approval: false } : mate
+          mate.mateId === selectedMate.mateId
+            ? { ...mate, approval: false }
+            : mate
         );
         return updatedList;
       });
@@ -164,7 +120,7 @@ const MateInfo: React.FC = () => {
             .sort((a, b) => (a.approval ? 1 : b.approval ? -1 : 0))
             .sort((a, b) => (a.blacklisted ? 1 : b.blacklisted ? -1 : 0))
             .map((mate) => (
-              <IonItem key={mate.id} button onClick={() => openModal(mate)}>
+              <IonItem key={mate.mateId} button onClick={() => openModal(mate)}>
                 <IonLabel style={{ display: "flex", alignItems: "center" }}>
                   <img
                     src={DefaultAvatar}
@@ -177,10 +133,10 @@ const MateInfo: React.FC = () => {
                     }}
                   />
                   <IonText>
-                    {mate.nickname} _{" "}
+                    {mate.mateId} _{" "}
                     {mate.blacklisted ? "일반메이트" : "블랙리스트메이트"}
                     <br />
-                    {mate.name} / {mate.gender}
+                    {mate.mateName} / {mate.mateGender}
                     <span style={{ color: mate.approval ? "blue" : "red" }}>
                       {mate.approval ? " 가입승인" : " 가입미승인"}
                     </span>
@@ -229,14 +185,14 @@ const MateInfo: React.FC = () => {
                         margin: "20px 20px 0 10px",
                       }}
                     >
-                      {selectedMate.nickname}
+                      {selectedMate.mateName}
                     </IonCardTitle>
                   </div>
                 </IonCardHeader>
                 <IonCardContent>
                   <IonItem>
                     <IonLabel>이름:</IonLabel>
-                    <IonText>{selectedMate.name}</IonText>
+                    <IonText>{selectedMate.mateName}</IonText>
                   </IonItem>
                   <IonItem>
                     <IonLabel>주민번호:</IonLabel>
@@ -244,7 +200,7 @@ const MateInfo: React.FC = () => {
                   </IonItem>
                   <IonItem>
                     <IonLabel>성별:</IonLabel>
-                    <IonText>{selectedMate.gender}</IonText>
+                    <IonText>{selectedMate.mateGender}</IonText>
                   </IonItem>
                   <IonItem>
                     <IonLabel>이메일:</IonLabel>
@@ -274,7 +230,7 @@ const MateInfo: React.FC = () => {
                   <IonItem>
                     <IonInput
                       value={rejectReason}
-                      onIonChange={(e) => setRejectReason(e.detail.value!)} // 입력 상태를 업데이트하는 함수
+                      onIonChange={(e) => setRejectReason(e.detail.value!)}
                       style={{
                         border: "1px solid #ccc",
                         borderRadius: "2px",

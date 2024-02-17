@@ -20,17 +20,16 @@ import {
 } from "@ionic/react";
 import DefaultAvatar from "../../../assets/default_avatar.jpg";
 import React, { useState, useEffect } from "react";
-import { getUserList } from "../../../api/managerApi";
+import { getUserList, getUserDetail } from "../../../api/managerApi";
 
 interface UserInfo {
+  cid: string;
   userId: string;
-  userCid: string;
-  // nickname: string;
   userName: string;
   blacklisted: boolean;
   userGender?: string;
-  email?: string;
-  phone?: string;
+  email: string;
+  phone: string;
 }
 
 const UserInfo: React.FC = () => {
@@ -39,71 +38,12 @@ const UserInfo: React.FC = () => {
   const [userList, setUserList] = useState<UserInfo[]>([]);
   const [userDetail, setUserDetail] = useState<UserInfo | null>(null);
 
-  // const [userList, setUserList] = useState<UserInfo[]>([
-  //   {
-  //     id: 1,
-  //     nickname: "User ID 1",
-  //     name: "라이언",
-  //     blacklisted: false,
-  //     gender: "남성",
-  //     email: "user1@example.com",
-  //     phoneNumber: "010-1234-5678",
-  //   },
-  //   {
-  //     id: 2,
-  //     nickname: "User ID 2",
-  //     name: "어피치",
-  //     blacklisted: false,
-  //     gender: "여성",
-  //     email: "user2@example.com",
-  //     phoneNumber: "110-1234-5678",
-  //   },
-  //   {
-  //     id: 3,
-  //     nickname: "User ID 3",
-  //     name: "신짱구",
-  //     blacklisted: false,
-  //     gender: "여성",
-  //     email: "user3@example.com",
-  //     phoneNumber: "210-1234-5678",
-  //   },
-  //   {
-  //     id: 4,
-  //     nickname: "User ID 4",
-  //     name: "뽀로로",
-  //     blacklisted: false,
-  //     gender: "남성",
-  //     email: "user4@example.com",
-  //     phoneNumber: "310-1234-5678",
-  //   },
-  //   {
-  //     id: 5,
-  //     nickname: "User ID 5",
-  //     name: "크로롱",
-  //     blacklisted: false,
-  //     gender: "남성",
-  //     email: "user5@example.com",
-  //     phoneNumber: "410-1234-5678",
-  //   },
-  // ]);
   useEffect(() => {
     const fetchUserList = async () => {
-      getUserList().then((res) => {
+      getUserList().then((res: UserInfo[]) => {
         console.log(res);
         setUserList(res);
       });
-
-      // try {
-      //   const serverUrl = "http://43.203.89.178:8080";
-      //   const apiEndpoint = "/api/master/user";
-
-      //   const response = await fetch(`${serverUrl}${apiEndpoint}`);
-      //   const data = await response.json();
-
-      //   setUserList(data);
-      // } catch (error) {
-      //   console.error("Error fetching user data:", error);
-      // }
     };
 
     fetchUserList();
@@ -111,23 +51,11 @@ const UserInfo: React.FC = () => {
 
   useEffect(() => {
     const fetchUserDetail = async () => {
-      try {
-        if (selectedUser) {
-          const serverUrl = "http://43.203.89.178:8080";
-          const apiEndpoint = `/api/master/user/${selectedUser.cid}`;
-
-          const response = await fetch(`${serverUrl}${apiEndpoint}`);
-          // 만약에 해당 유저 ID에 대한 정보가 없을 경우 404 에러가 날 수 있습니다.
-          if (response.ok) {
-            const data = await response.json();
-            setUserDetail(data);
-          } else {
-            // API에서 404 Not Found를 반환하면 setUserDetail을 null로 설정하여 모달에서 에러를 처리할 수 있도록 합니다.
-            setUserDetail(null);
-          }
-        }
-      } catch (error) {
-        console.error("Error fetching user detail:", error);
+      if (selectedUser) {
+        getUserDetail(selectedUser.cid).then((res: UserInfo) => {
+          console.log(res);
+          setUserDetail(res);
+        });
       }
     };
 
@@ -136,6 +64,7 @@ const UserInfo: React.FC = () => {
 
   const openModal = (user: UserInfo) => {
     setSelectedUser(user);
+    setUserDetail(user);
     setShowModal(true);
   };
 
@@ -151,8 +80,6 @@ const UserInfo: React.FC = () => {
             ? { ...user, blacklisted: !user.blacklisted }
             : user
         );
-
-        // 토글된 항목을 리스트의 맨 아래로 이동
         updatedList.sort((a, b) =>
           a.blacklisted ? 1 : b.blacklisted ? -1 : 0
         );
@@ -211,38 +138,36 @@ const UserInfo: React.FC = () => {
 
         <IonModal isOpen={showModal} onDidDismiss={closeModal}>
           <IonContent>
-            {selectedUser && userDetail ? (
+            {userDetail && userDetail ? (
               <IonCard>
                 <IonCardHeader>
-                  <IonCardTitle>{selectedUser.userId}</IonCardTitle>
+                  <IonCardTitle>{userDetail.userId}</IonCardTitle>
                 </IonCardHeader>
                 <IonCardContent>
                   <IonItem>
                     <IonLabel>이름:</IonLabel>
-                    <IonText>{selectedUser.userName}</IonText>
+                    <IonText>{userDetail.userName}</IonText>
                   </IonItem>
                   <IonItem>
                     <IonLabel>성별:</IonLabel>
-                    <IonText>{selectedUser.userGender}</IonText>
+                    <IonText>{userDetail.userGender}</IonText>
                   </IonItem>
                   <IonItem>
                     <IonLabel>이메일:</IonLabel>
-                    <IonText>{selectedUser.email}</IonText>
+                    <IonText>{userDetail.email}</IonText>
                   </IonItem>
                   <IonItem>
                     <IonLabel>전화번호:</IonLabel>
-                    <IonText>{selectedUser.phone}</IonText>
+                    <IonText>{userDetail.phone}</IonText>
                   </IonItem>
                   <IonItem>
                     <IonLabel>유저 상태:</IonLabel>
                     <IonText>
-                      {selectedUser.blacklisted
-                        ? "일반 유저"
-                        : "블랙리스트 유저"}
+                      {userDetail.blacklisted ? "일반 유저" : "블랙리스트 유저"}
                     </IonText>
                   </IonItem>
                   <IonToggle
-                    checked={selectedUser.blacklisted}
+                    checked={userDetail.blacklisted}
                     onIonChange={toggleBlacklist}
                     style={{ margin: "20px 10px 20px 0", float: "right" }}
                   />
