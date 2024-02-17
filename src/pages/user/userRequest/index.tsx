@@ -20,6 +20,7 @@ import {
 } from "@ionic/react";
 import toISOLocal from "../../../utils/getLocalISO";
 import { Toast } from "antd-mobile";
+import { applyRequest } from "../../../api/user";
 
 const UserRequest: React.FC = () => {
   const router = useNavigate();
@@ -28,7 +29,6 @@ const UserRequest: React.FC = () => {
   const [pickupLocation, setPickupLocation] = useState(null);
   const [serviceAmount, setServiceAmount] = useState(null);
   const [preferredGender, setPreferredGender] = useState(null);
-  const [isOpen, setIsOpen] = useState(false);
 
   const [startTime, setStartTime] = useState(toISOLocal(new Date()));
   const [endTime, setEndTime] = useState(toISOLocal(new Date()));
@@ -36,8 +36,8 @@ const UserRequest: React.FC = () => {
   const submitForm = () => {
     const data = {
       meetingDate: startTime.slice(0, 10),
-      startTime: startTime.slice(11, 19),
-      endTime: endTime ? endTime.slice(11, 19) : null,
+      startTime: startTime.slice(11, 16),
+      endTime: endTime ? endTime.slice(11, 16) : null,
       meetingLoc: pickupLocation,
       destination: destination,
       gender: preferredGender,
@@ -53,6 +53,13 @@ const UserRequest: React.FC = () => {
       endTime
     ) {
       // TODO
+      applyRequest(data).then((res) => {
+        console.log(res);
+        Toast.show({
+          content: "요청하신 동행이 성공적으로 신청 완료되었습니다.",
+        });
+        router(-1);
+      });
     } else {
       Toast.show({
         content: "작성 완료해주세요.",
@@ -81,6 +88,7 @@ const UserRequest: React.FC = () => {
             min={toISOLocal(new Date())}
             onIonChange={(v) => {
               setStartTime(v.detail.value);
+              setEndTime(null);
             }}
           ></IonDatetime>
         </IonModal>
@@ -92,6 +100,7 @@ const UserRequest: React.FC = () => {
         ></IonDatetimeButton>
         <IonModal keepContentsMounted={true}>
           <IonDatetime
+            value={endTime}
             id="endTime"
             min={startTime}
             max={startTime.slice(0, 11) + "23:59:59" + startTime.slice(19)}
@@ -133,19 +142,10 @@ const UserRequest: React.FC = () => {
           onIonChange={(e) => setPreferredGender(e.detail.value)}
           style={{ backgroundColor: "white", padding: "0 12px 0 12px" }}
         >
-          <IonSelectOption value="여">여</IonSelectOption>
-          <IonSelectOption value="남">남</IonSelectOption>
-          <IonSelectOption value="무관">무관</IonSelectOption>
+          <IonSelectOption value="WOMEN">여</IonSelectOption>
+          <IonSelectOption value="MEN">남</IonSelectOption>
         </IonSelect>
         <IonButton onClick={submitForm}>신청하기</IonButton>
-
-        <IonAlert
-          isOpen={isOpen}
-          header="신청 완료!"
-          subHeader="요청하신 동행이 성공적으로 신청 완료되었습니다."
-          buttons={["닫기"]}
-          onDidDismiss={() => setIsOpen(false)}
-        ></IonAlert>
       </IonContent>
     </IonPage>
   );
