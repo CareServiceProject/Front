@@ -10,13 +10,24 @@ import {
   IonPage,
   IonTitle,
   IonToolbar,
-} from '@ionic/react';
-import React from 'react';
-import { Rate } from 'antd-mobile';
-import StatusCard from '../../../components/StatusCard';
-import DefaultAvatar from '../../../assets/default_avatar.jpg';
+} from "@ionic/react";
+import React, { useEffect, useState } from "react";
+import { Rate } from "antd-mobile";
+import StatusCard from "../../../components/StatusCard";
+import DefaultAvatar from "../../../assets/default_avatar.jpg";
+import { mateCareHistory, mateMy } from "../../../api/mateApi";
 
 const MateMy: React.FC = () => {
+  const [data, setData] = useState({});
+
+  useEffect(() => {
+    const requestInfo = () => {
+      mateMy().then((res) => {
+        setData(res);
+      });
+    };
+    requestInfo();
+  }, []);
   return (
     <IonPage id="main-menu">
       <IonHeader>
@@ -28,7 +39,7 @@ const MateMy: React.FC = () => {
         </IonToolbar>
       </IonHeader>
       <IonContent className="ion-padding">
-        <div style={{ display: 'flex' }} className="ion-margin">
+        <div style={{ display: "flex" }} className="ion-margin">
           <IonAvatar className="ion-margin-end">
             <img src={DefaultAvatar}></img>
           </IonAvatar>
@@ -39,11 +50,12 @@ const MateMy: React.FC = () => {
             <h6>내 별점</h6>
           </IonCardHeader>
           <IonCardContent>
-            <Rate readOnly value={4.5} allowHalf />
-            4.5
+            <Rate readOnly value={data.mateRating} allowHalf />{" "}
+            {data.mateRating}
+            {"점"}
           </IonCardContent>
         </IonCard>
-        <StatusCard></StatusCard>
+        <StatusCard data={data}></StatusCard>
       </IonContent>
     </IonPage>
   );

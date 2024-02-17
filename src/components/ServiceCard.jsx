@@ -17,15 +17,17 @@ import {
 } from "@ionic/react";
 import React, { useEffect, useRef, useState } from "react";
 import DefaultAvatar from "../assets/default_avatar.jpg";
-import { Modal, Rate } from "antd-mobile";
+import { Modal, Rate, Toast } from "antd-mobile";
 import { useNavigate } from "react-router-dom";
+import { userCancelService } from "../api/user";
+import { mateFinish, waitingDetail } from "../api/mateApi";
 
-const ServiceCard = ({ data, role, status }) => {
+const ServiceCard = ({ data, role, status, onAccept, onReload }) => {
   const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
   const [rate, setRate] = useState(0);
-
-  // status : 0 대기중, 1 진행중, 2 완료, 3 취소
+  const [datas, setDatas] = useState(data);
+  console.log("dddd", data);
 
   const Contens = ({ isDetail }) => {
     const label = isDetail
@@ -35,18 +37,57 @@ const ServiceCard = ({ data, role, status }) => {
     const contentShow = (item) => {
       switch (item) {
         case "내용":
-          return data.content;
+          return datas.content;
         case "일정":
-          return data.date;
+          return role === "user"
+            ? datas.date
+            : datas.date + "/" + datas.startTime;
         case "위치":
-          return data.location;
+          return role === "user" ? datas.location : datas.arrivalLoc;
         case "성별":
-          return data.content;
+          return datas.gender;
         case "금액":
-          return data.content;
+          return datas.cost;
         default:
-          return data.content;
+          return datas.content;
       }
+    };
+
+    const oncancel = (id) => {
+      const userCancel = () => {
+        userCancelService(id).then((res) => {
+          console.log(res);
+          Toast.show({
+            content: "성공적으로 취소되었습니다.",
+          });
+          setTimeout(() => {
+            onReload();
+          }, 1000);
+        });
+      };
+      const mateCancel = () => {
+        console.log("zzz");
+      };
+
+      role === "user" ? userCancel() : mateCancel();
+    };
+
+    const onFinish = (id) => {
+      mateFinish(id).then((res) => {
+        Toast.show({
+          content: "완료되었습니다.",
+        });
+        setInterval(() => {
+          onReload();
+        }, 1000);
+      });
+    };
+    const onDetailClick = () => {
+      waitingDetail(data.careCid).then((res) => {
+        console.log(res);
+        setDatas(res);
+      });
+      setIsOpen(true);
     };
     return (
       <IonCard>
@@ -102,19 +143,27 @@ const ServiceCard = ({ data, role, status }) => {
           className="ion-margin"
         >
           {!isDetail && role === "mate" && (
-            <IonButton fill="clear" onClick={() => setIsOpen(true)}>
+            <IonButton fill="clear" onClick={onDetailClick}>
               상세 내역
             </IonButton>
           )}
 
           {/* 유저 && 대기중 || 진행중 */}
           {((role === "user" && status === "waiting") ||
-            status === "proceeding") && (
-            <IonButton fill="clear">취소</IonButton>
+            status === "proceeding" ||
+            status === "IN_PROGRESS") && (
+            <IonButton fill="clear" onClick={() => oncancel(data.careCid)}>
+              취소
+            </IonButton>
           )}
 
+          {role === "mate" && status === "IN_PROGRESS" && (
+            <IonButton fill="clear" onClick={() => onFinish(data.careCid)}>
+              완료
+            </IonButton>
+          )}
           {/* 메이트 && 완료 */}
-          {role === "mate" && status === "completed" && (
+          {role === "mate" && status === "HELP_DONE" && (
             <>
               <IonButton fill="clear">결제완료</IonButton>
               <IonButton fill="clear">결제미완</IonButton>
@@ -123,7 +172,14 @@ const ServiceCard = ({ data, role, status }) => {
 
           {/* 메이트 && 대기중 */}
           {role === "mate" && status === "waiting" && (
-            <IonButton fill="clear">수락</IonButton>
+            <IonButton
+              fill="clear"
+              onClick={() => {
+                onAccept(data.careCid);
+              }}
+            >
+              수락
+            </IonButton>
           )}
 
           {/* 유저 && 완료 */}
@@ -177,7 +233,7 @@ const ServiceCard = ({ data, role, status }) => {
       <IonModal isOpen={isOpen}>
         <IonHeader>
           <IonToolbar>
-            <IonTitle>Modal {data}</IonTitle>
+            <IonTitle></IonTitle>
             <IonButtons slot="end">
               <IonButton onClick={() => setIsOpen(false)}>Close</IonButton>
             </IonButtons>

@@ -13,6 +13,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import ServiceCard from "../../../components/ServiceCard";
 import { userGetServiceList } from "../../../api/user";
+import { mateCareHistory } from "../../../api/mateApi";
 
 const UserServiceList: React.FC = () => {
   const router = useNavigate();
@@ -22,23 +23,44 @@ const UserServiceList: React.FC = () => {
   const [data, setData] = useState([]);
   // waiting, cancel, proceeding, completed
   const titleDisplay = () => {
-    switch (status) {
-      case "waiting":
-        return "대기중";
-      case "proceeding":
-        return "진행중";
-      case "completed":
-        return "완료";
-      case "cancel":
-        return "취소";
-      default:
+    if (prefix === "user") {
+      switch (status) {
+        case "waiting":
+          return "대기중";
+        case "proceeding":
+          return "진행중";
+        case "completed":
+          return "완료";
+        case "cancel":
+          return "취소";
+        default:
+      }
+    } else {
+      switch (status) {
+        case "IN_PROGRESS":
+          return "진행중";
+        case "HELP_DONE":
+          return "완료";
+        case "cancel":
+          return "취소";
+        default:
+      }
     }
   };
   useEffect(() => {
-    userGetServiceList({ status: status }).then((res) => {
-      console.log(res);
-      setData(res);
-    });
+    const userList = () => {
+      userGetServiceList({ status: status }).then((res) => {
+        console.log(res);
+        setData(res);
+      });
+    };
+    const mateList = () => {
+      mateCareHistory({ careStatus: status }).then((res) => {
+        console.log(res);
+        setData(res);
+      });
+    };
+    prefix === "user" ? userList() : mateList();
   }, []);
 
   return (
@@ -59,6 +81,7 @@ const UserServiceList: React.FC = () => {
               data={item}
               role={prefix}
               status={status}
+              onReload={() => window.location.reload()}
             ></ServiceCard>
           );
         })}

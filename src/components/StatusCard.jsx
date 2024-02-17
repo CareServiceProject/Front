@@ -53,9 +53,24 @@ const StatusCard = ({ data }) => {
           },
         ]
       : [
-          { title: "진행중", count: 0, icon: heartCircleOutline, status: 1 },
-          { title: "완료", count: 0, icon: checkmarkDoneOutline, status: 2 },
-          { title: "취소", count: 0, icon: closeOutline, status: 3 },
+          {
+            title: "진행중",
+            count: data.inProgressCount,
+            icon: heartCircleOutline,
+            status: "IN_PROGRESS",
+          },
+          {
+            title: "완료",
+            count: data.finishCount,
+            icon: checkmarkDoneOutline,
+            status: "HELP_DONE",
+          },
+          {
+            title: "취소",
+            count: data.cancelCount,
+            icon: closeOutline,
+            status: "CANCEL",
+          },
         ];
 
   return (

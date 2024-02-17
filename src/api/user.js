@@ -6,3 +6,6 @@ export const applyRequest = (data) =>
 export const userMyPage = () => http.get(`/api/users/mypage`);
 
 export const userGetServiceList = (data) => http.get(`/api/users/status`, data);
+
+export const userCancelService = (data) =>
+  http.put(`/api/users/cancel-service/${data}`);
