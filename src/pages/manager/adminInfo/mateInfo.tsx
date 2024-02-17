@@ -23,16 +23,17 @@ import {
 import DefaultAvatar from "../../../assets/default_avatar.jpg";
 import React, { useState, useEffect } from "react";
 import { closeOutline } from "ionicons/icons";
-import { getMateList } from "../../../api/managerApi";
+import { getMateList, getMateDetail } from "../../../api/managerApi";
 interface MateInfo {
+  cid: string;
   mateId: number;
   mateName: string;
-  residentNumber: string;
+  registrationNum: string;
   blacklisted: boolean;
-  approval: boolean;
+  mateStatus: boolean;
   mateGender?: string;
   email?: string;
-  phoneNumber?: string;
+  phoneNum?: string;
 }
 
 const MateInfo: React.FC = () => {
@@ -40,6 +41,7 @@ const MateInfo: React.FC = () => {
   const [showModal, setShowModal] = useState(false);
   const [selectedMate, setSelectedMate] = useState<MateInfo | null>(null);
   const [rejectReason, setRejectReason] = useState("");
+  const [mateDetail, setMateDetail] = useState<MateInfo | null>(null);
 
   useEffect(() => {
     const fetchUserList = async () => {
@@ -51,6 +53,20 @@ const MateInfo: React.FC = () => {
 
     fetchUserList();
   }, []);
+
+  useEffect(() => {
+    const fetchMateDetail = async () => {
+      if (selectedMate) {
+        getMateDetail(selectedMate.cid).then((res: MateInfo) => {
+          console.log(res);
+          setMateDetail(res);
+        });
+      }
+    };
+
+    fetchMateDetail();
+  }, [selectedMate]);
+
   const openModal = (mate: MateInfo) => {
     setSelectedMate(mate);
     setShowModal(true);
@@ -117,7 +133,7 @@ const MateInfo: React.FC = () => {
       <IonContent className="ion-padding">
         <IonList>
           {mateList
-            .sort((a, b) => (a.approval ? 1 : b.approval ? -1 : 0))
+            .sort((a, b) => (a.mateStatus ? 1 : b.mateStatus ? -1 : 0))
             .sort((a, b) => (a.blacklisted ? 1 : b.blacklisted ? -1 : 0))
             .map((mate) => (
               <IonItem key={mate.mateId} button onClick={() => openModal(mate)}>
@@ -137,8 +153,8 @@ const MateInfo: React.FC = () => {
                     {mate.blacklisted ? "일반메이트" : "블랙리스트메이트"}
                     <br />
                     {mate.mateName} / {mate.mateGender}
-                    <span style={{ color: mate.approval ? "blue" : "red" }}>
-                      {mate.approval ? " 가입승인" : " 가입미승인"}
+                    <span style={{ color: mate.mateStatus ? "blue" : "red" }}>
+                      {mate.mateStatus ? " 가입승인" : " 가입미승인"}
                     </span>
                   </IonText>
                 </IonLabel>
@@ -166,7 +182,7 @@ const MateInfo: React.FC = () => {
               </IonToolbar>
             </IonHeader>
 
-            {selectedMate && (
+            {mateDetail && (
               <IonCard>
                 <IonCardHeader>
                   <div style={{ display: "flex", alignItems: "center" }}>
@@ -185,41 +201,41 @@ const MateInfo: React.FC = () => {
                         margin: "20px 20px 0 10px",
                       }}
                     >
-                      {selectedMate.mateName}
+                      {mateDetail.mateName}
                     </IonCardTitle>
                   </div>
                 </IonCardHeader>
                 <IonCardContent>
                   <IonItem>
                     <IonLabel>이름:</IonLabel>
-                    <IonText>{selectedMate.mateName}</IonText>
+                    <IonText>{mateDetail.mateName}</IonText>
                   </IonItem>
                   <IonItem>
                     <IonLabel>주민번호:</IonLabel>
-                    <IonText>{selectedMate.residentNumber}</IonText>
+                    <IonText>{mateDetail.registrationNum}</IonText>
                   </IonItem>
                   <IonItem>
                     <IonLabel>성별:</IonLabel>
-                    <IonText>{selectedMate.mateGender}</IonText>
+                    <IonText>{mateDetail.mateGender}</IonText>
                   </IonItem>
                   <IonItem>
                     <IonLabel>이메일:</IonLabel>
-                    <IonText>{selectedMate.email}</IonText>
+                    <IonText>{mateDetail.email}</IonText>
                   </IonItem>
                   <IonItem>
                     <IonLabel>전화번호:</IonLabel>
-                    <IonText>{selectedMate.phoneNumber}</IonText>
+                    <IonText>{mateDetail.phoneNum}</IonText>
                   </IonItem>
                   <IonItem>
                     <IonLabel>가입승인여부:</IonLabel>
                     <IonText>
-                      {selectedMate.approval ? "가입승인" : "가입미승인"}
+                      {mateDetail.mateStatus ? "가입승인" : "가입미승인"}
                     </IonText>
                   </IonItem>
                   <IonItem>
                     <IonLabel>메이트 상태:</IonLabel>
                     <IonText>
-                      {selectedMate.blacklisted
+                      {mateDetail.blacklisted
                         ? "일반 메이트"
                         : "블랙리스트 메이트"}
                     </IonText>
@@ -241,7 +257,7 @@ const MateInfo: React.FC = () => {
                   </IonItem>
 
                   <IonToggle
-                    checked={selectedMate.blacklisted}
+                    checked={mateDetail.blacklisted}
                     onIonChange={toggleBlacklist}
                     style={{ margin: "20px 15px 20px 0", float: "right" }}
                   />
