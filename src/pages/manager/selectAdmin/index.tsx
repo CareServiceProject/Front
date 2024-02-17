@@ -1,10 +1,12 @@
 import {
+  IonButtons,
   IonCard,
   IonCardContent,
   IonCardHeader,
   IonCardTitle,
   IonContent,
   IonHeader,
+  IonMenuButton,
   IonPage,
   IonTitle,
   IonToolbar,
@@ -12,6 +14,7 @@ import {
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import Logo from "../../../components/Logo";
+import SlideMenu from "../../../components/SlideMenu";
 
 const SelectAdmin: React.FC = () => {
   const navigate = useNavigate();
@@ -22,33 +25,39 @@ const SelectAdmin: React.FC = () => {
   };
 
   return (
-    <IonPage>
-      <IonHeader>
-        <IonToolbar>
-          <IonTitle>관리계정선택</IonTitle>
-        </IonToolbar>
-      </IonHeader>
-      <Logo></Logo>
-      <IonContent className="ion-padding">
-        <IonCard onClick={() => handleCardClick("UserInfo")}>
-          <IonCardHeader>
-            <IonCardTitle style={{ padding: "10px" }}>User</IonCardTitle>
-          </IonCardHeader>
-          <IonCardContent style={{ padding: "10px 0 20px 25px" }}>
-            Click here to navigate to User Info page.
-          </IonCardContent>
-        </IonCard>
+    <>
+      <SlideMenu isAdmin={true}></SlideMenu>
+      <IonPage id="main-menu">
+        <IonHeader>
+          <IonToolbar>
+            <IonButtons slot="end">
+              <IonMenuButton></IonMenuButton>
+            </IonButtons>
+            <IonTitle>관리계정선택</IonTitle>
+          </IonToolbar>
+        </IonHeader>
+        <Logo></Logo>
+        <IonContent className="ion-padding">
+          <IonCard onClick={() => handleCardClick("UserInfo")}>
+            <IonCardHeader>
+              <IonCardTitle style={{ padding: "10px" }}>User</IonCardTitle>
+            </IonCardHeader>
+            <IonCardContent style={{ padding: "10px 0 20px 25px" }}>
+              Click here to navigate to User Info page.
+            </IonCardContent>
+          </IonCard>
 
-        <IonCard onClick={() => handleCardClick("MateInfo")}>
-          <IonCardHeader>
-            <IonCardTitle style={{ padding: "10px" }}>Mate</IonCardTitle>
-          </IonCardHeader>
-          <IonCardContent style={{ padding: "10px 0 20px 25px" }}>
-            Click here to navigate to Mate Info page.
-          </IonCardContent>
-        </IonCard>
-      </IonContent>
-    </IonPage>
+          <IonCard onClick={() => handleCardClick("MateInfo")}>
+            <IonCardHeader>
+              <IonCardTitle style={{ padding: "10px" }}>Mate</IonCardTitle>
+            </IonCardHeader>
+            <IonCardContent style={{ padding: "10px 0 20px 25px" }}>
+              Click here to navigate to Mate Info page.
+            </IonCardContent>
+          </IonCard>
+        </IonContent>
+      </IonPage>
+    </>
   );
 };
 

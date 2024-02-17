@@ -11,7 +11,7 @@ import { useNavigate } from "react-router-dom";
 import { localToken } from "../utils/auth";
 import { Toast } from "antd-mobile";
 
-const SlideMenu: React.FC = () => {
+const SlideMenu: React.FC = ({ isAdmin }) => {
   const navigate = useNavigate();
   const doLogout = () => {
     localToken.remove();
@@ -27,9 +27,12 @@ const SlideMenu: React.FC = () => {
   return (
     <IonMenu side="end" contentId="main-menu">
       <IonContent className="ion-padding">
-        <IonButton expand="full" fill="clear" onClick={userProfile}>
-          개인정보 수정
-        </IonButton>
+        {!isAdmin === true ? (
+          <IonButton expand="full" fill="clear" onClick={userProfile}>
+            개인정보 수정
+          </IonButton>
+        ) : null}
+
         <IonButton expand="full" fill="solid" onClick={doLogout}>
           Log Out
         </IonButton>

@@ -21,7 +21,6 @@ import "@ionic/react/css/display.css";
 import "./theme/variables.css";
 import Login from "./pages/login/Login";
 import Register from "./pages/register";
-import Admin from "./pages/admin";
 import SignUpForm from "./pages/register/formPage";
 import UserHome from "./pages/user/userHome";
 import UserChatList from "./pages/user/userChat";
@@ -31,8 +30,6 @@ import NavLayout from "./layout/NavLayout";
 import MateMy from "./pages/mate/mateMy";
 import MateHome from "./pages/mate/mateHome";
 import MateChatList from "./pages/mate/mateChat";
-import ManagerLogin from "./pages/manager/managerLogin";
-import ManagerSignUp from "./pages/manager/managerLogin/managerSignUp";
 import SelectAdmin from "./pages/manager/selectAdmin";
 import UserInfo from "./pages/manager/adminInfo/userInfo";
 import MateInfo from "./pages/manager/adminInfo/mateInfo";
@@ -52,11 +49,8 @@ const App: React.FC = () => (
       <Route path="/" element={<Login />} />
       <Route path="/register" element={<Register />} />
       <Route path="/signup" element={<SignUpForm />} />
-      <Route path="/admin" element={<Admin />} />
       <Route path="/user/mypage/service_list" element={<UserServiceList />} />
       <Route path="/mate/mypage/service_list" element={<UserServiceList />} />
-      {/* <Route path="/managerLogin" element={<ManagerLogin />} />
-      <Route path="/managerSignUp" element={<ManagerSignUp />} /> */}
       <Route path="/selectAdmin" element={<SelectAdmin />} />
       <Route path="/userInfo" element={<UserInfo />} />
       <Route path="/mateInfo" element={<MateInfo />} />
