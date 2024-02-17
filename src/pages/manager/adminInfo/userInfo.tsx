@@ -20,6 +20,7 @@ import {
 } from "@ionic/react";
 import DefaultAvatar from "../../../assets/default_avatar.jpg";
 import React, { useState, useEffect } from "react";
+import { getUserList } from "../../../api/managerApi";
 
 interface UserInfo {
   userId: string;
@@ -87,17 +88,22 @@ const UserInfo: React.FC = () => {
   // ]);
   useEffect(() => {
     const fetchUserList = async () => {
-      try {
-        const serverUrl = "http://43.203.89.178:8080";
-        const apiEndpoint = "/api/master/user";
+      getUserList().then((res) => {
+        console.log(res);
+        setUserList(res);
+      });
 
-        const response = await fetch(`${serverUrl}${apiEndpoint}`);
-        const data = await response.json();
+      // try {
+      //   const serverUrl = "http://43.203.89.178:8080";
+      //   const apiEndpoint = "/api/master/user";
 
-        setUserList(data);
-      } catch (error) {
-        console.error("Error fetching user data:", error);
-      }
+      //   const response = await fetch(`${serverUrl}${apiEndpoint}`);
+      //   const data = await response.json();
+
+      //   setUserList(data);
+      // } catch (error) {
+      //   console.error("Error fetching user data:", error);
+      // }
     };
 
     fetchUserList();
@@ -108,7 +114,7 @@ const UserInfo: React.FC = () => {
       try {
         if (selectedUser) {
           const serverUrl = "http://43.203.89.178:8080";
-          const apiEndpoint = `/api/master/user/${selectedUser.userCid}`;
+          const apiEndpoint = `/api/master/user/${selectedUser.cid}`;
 
           const response = await fetch(`${serverUrl}${apiEndpoint}`);
           // 만약에 해당 유저 ID에 대한 정보가 없을 경우 404 에러가 날 수 있습니다.
