@@ -42,7 +42,7 @@ const UserRequest: React.FC = () => {
       destination: destination,
       gender: preferredGender,
       cost: serviceAmount,
-      content: "",
+      content: pickupLocation + "~" + destination + "동행 서비스",
     };
     if (
       destination &&
@@ -145,7 +145,9 @@ const UserRequest: React.FC = () => {
           <IonSelectOption value="WOMEN">여</IonSelectOption>
           <IonSelectOption value="MEN">남</IonSelectOption>
         </IonSelect>
-        <IonButton onClick={submitForm}>신청하기</IonButton>
+        <IonButton onClick={submitForm} className="ion-margin">
+          신청하기
+        </IonButton>
       </IonContent>
     </IonPage>
   );

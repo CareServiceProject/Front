@@ -31,6 +31,23 @@ const ServiceCard = ({ data, role, status }) => {
     const label = isDetail
       ? ["내용", "일정", "위치", "성별", "금액"]
       : ["내용", "일정", "위치"];
+
+    const contentShow = (item) => {
+      switch (item) {
+        case "내용":
+          return data.content;
+        case "일정":
+          return data.date;
+        case "위치":
+          return data.location;
+        case "성별":
+          return data.content;
+        case "금액":
+          return data.content;
+        default:
+          return data.content;
+      }
+    };
     return (
       <IonCard>
         <IonCardHeader>
@@ -38,7 +55,7 @@ const ServiceCard = ({ data, role, status }) => {
             <IonAvatar className="ion-margin-end">
               <img src={DefaultAvatar}></img>
             </IonAvatar>
-            {(status === 1 || status === 2) && (
+            {(status === "proceeding" || status === "completed") && (
               <IonButton
                 fill="clear"
                 onClick={() => navigate("/mate/chatting")}
@@ -50,9 +67,10 @@ const ServiceCard = ({ data, role, status }) => {
         </IonCardHeader>
 
         <IonCardContent>
-          {label.map((item) => {
+          {label.map((item, index) => {
             return (
               <div
+                key={index}
                 style={{ display: "flex", alignItems: "center" }}
                 className="ion-margin"
               >
@@ -69,7 +87,7 @@ const ServiceCard = ({ data, role, status }) => {
                   }}
                   className="ion-margin-start"
                 >
-                  sjaskdjflskjflsjfls
+                  {contentShow(item)}
                 </div>
               </div>
             );
@@ -83,20 +101,20 @@ const ServiceCard = ({ data, role, status }) => {
           }}
           className="ion-margin"
         >
-          {/* 공통 */}
-          {!isDetail && (
+          {!isDetail && role === "mate" && (
             <IonButton fill="clear" onClick={() => setIsOpen(true)}>
               상세 내역
             </IonButton>
           )}
 
           {/* 유저 && 대기중 || 진행중 */}
-          {((role === "user" && status === 0) || status === 1) && (
+          {((role === "user" && status === "waiting") ||
+            status === "proceeding") && (
             <IonButton fill="clear">취소</IonButton>
           )}
 
           {/* 메이트 && 완료 */}
-          {role === "mate" && status === 2 && (
+          {role === "mate" && status === "completed" && (
             <>
               <IonButton fill="clear">결제완료</IonButton>
               <IonButton fill="clear">결제미완</IonButton>
@@ -104,12 +122,12 @@ const ServiceCard = ({ data, role, status }) => {
           )}
 
           {/* 메이트 && 대기중 */}
-          {role === "mate" && status === 0 && (
+          {role === "mate" && status === "waiting" && (
             <IonButton fill="clear">수락</IonButton>
           )}
 
           {/* 유저 && 완료 */}
-          {role === "user" && status === 2 && (
+          {role === "user" && status === "completed" && (
             <IonButton
               fill="clear"
               onClick={() => {

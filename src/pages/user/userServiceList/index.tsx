@@ -12,27 +12,34 @@ import {
 import React, { useEffect, useRef, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import ServiceCard from "../../../components/ServiceCard";
+import { userGetServiceList } from "../../../api/user";
 
 const UserServiceList: React.FC = () => {
   const router = useNavigate();
   const location = useLocation();
   const prefix = location.pathname.split("/")[1];
   const status = location.state.status;
-  const data = [1, 2, 3, 4, 5];
-
+  const [data, setData] = useState([]);
+  // waiting, cancel, proceeding, completed
   const titleDisplay = () => {
     switch (status) {
-      case 0:
+      case "waiting":
         return "대기중";
-      case 1:
+      case "proceeding":
         return "진행중";
-      case 2:
+      case "completed":
         return "완료";
-      case 3:
+      case "cancel":
         return "취소";
       default:
     }
   };
+  useEffect(() => {
+    userGetServiceList({ status: status }).then((res) => {
+      console.log(res);
+      setData(res);
+    });
+  }, []);
 
   return (
     <IonPage>
