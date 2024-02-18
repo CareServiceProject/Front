@@ -24,7 +24,7 @@ import {
 import { editUserInfo, getUserInfo } from "../../../api/user";
 import DefaultAvatar from "../../../assets/default_avatar.jpg";
 
-const UserProfile: React.FC = () => {
+const UserProfile = () => {
   const router = useNavigate();
 
   const [avatar, setAvatar] = useState(null);
@@ -36,9 +36,7 @@ const UserProfile: React.FC = () => {
   const [isPasswordValid, setIsPasswordValid] = useState(undefined);
   const [pswDisabled, setPswDisabled] = useState(true);
   const [phone, setPhone] = useState("");
-  const [profilePicture, setProfilePicture] = useState<string | undefined>(
-    undefined
-  );
+  const [profilePicture, setProfilePicture] = useState(undefined);
 
   const [data, setData] = useState({
     cid: null,
@@ -55,7 +53,7 @@ const UserProfile: React.FC = () => {
     });
   }, []);
 
-  const profileSetting = (e: React.FormEvent) => {
+  const profileSetting = (e) => {
     e.preventDefault();
     if (isPasswordValid === false) return;
     const editedData = data;
@@ -181,7 +179,7 @@ const UserProfile: React.FC = () => {
             className="ion-margin-top ion-padding"
             required
             disabled={pswDisabled}
-            onIonInput={(e) => setPassword(e.target.value!)}
+            onIonInput={(e) => setPassword(e.target.value)}
           ></IonInput>
           <IonButton
             fill="outline"
