@@ -35,7 +35,7 @@ interface MateInfo {
   mateId: number;
   mateName: string;
   registrationNum: string;
-  blacklisted: boolean;
+  isBlacklisted: boolean;
   mateStatus: boolean;
   mateGender?: string;
   email?: string;
@@ -81,9 +81,9 @@ const MateInfo: React.FC = () => {
 
   const toggleBlacklist = () => {
     if (selectedMate) {
-      const { mateId, blacklisted } = selectedMate;
+      const { mateId, isBlacklisted } = selectedMate;
 
-      mateBlacklisted(selectedMate?.cid, !mateDetail?.blacklisted).then(
+      mateBlacklisted(selectedMate?.cid, !mateDetail?.isBlacklisted).then(
         (response: ApprovalResponse) => {
           console.log("서버 응답:", response);
 
@@ -91,7 +91,7 @@ const MateInfo: React.FC = () => {
             setMateList((prevMateList) => {
               const updatedList = prevMateList.map((mate) =>
                 mate.mateId === selectedMate.mateId
-                  ? { ...mate, blacklisted: !mate.blacklisted }
+                  ? { ...mate, blacklisted: !mate.isBlacklisted }
                   : mate
               );
 
@@ -172,7 +172,7 @@ const MateInfo: React.FC = () => {
         <IonList>
           {mateList
             .sort((a, b) => (a.mateStatus ? 1 : b.mateStatus ? -1 : 0))
-            .sort((a, b) => (a.blacklisted ? 1 : b.blacklisted ? -1 : 0))
+            .sort((a, b) => (a.isBlacklisted ? 1 : b.isBlacklisted ? -1 : 0))
             .map((mate) => (
               <IonItem key={mate.mateId} button onClick={() => openModal(mate)}>
                 <IonLabel style={{ display: "flex", alignItems: "center" }}>
@@ -188,7 +188,7 @@ const MateInfo: React.FC = () => {
                   />
                   <IonText>
                     {mate.mateId} _{" "}
-                    {mate.blacklisted ? "일반메이트" : "블랙리스트메이트"}
+                    {mate.isBlacklisted ? "블랙리스트메이트" : "일반메이트"}
                     <br />
                     {mate.mateName} / {mate.mateGender}
                     <span
@@ -202,7 +202,7 @@ const MateInfo: React.FC = () => {
                 </IonLabel>
                 <IonToggle
                   slot="end"
-                  checked={mate.blacklisted}
+                  checked={mate.isBlacklisted}
                   onClick={(e) => {
                     e.stopPropagation();
                     openModal(mate);
@@ -277,9 +277,9 @@ const MateInfo: React.FC = () => {
                   <IonItem>
                     <IonLabel>메이트 상태:</IonLabel>
                     <IonText>
-                      {mateDetail.blacklisted
-                        ? "일반 메이트"
-                        : "블랙리스트 메이트"}
+                      {mateDetail.isBlacklisted
+                        ? "블랙리스트 메이트"
+                        : "일반 메이트"}
                     </IonText>
                   </IonItem>
                   <IonItem lines="none">
@@ -299,7 +299,7 @@ const MateInfo: React.FC = () => {
                   </IonItem>
 
                   <IonToggle
-                    checked={mateDetail.blacklisted}
+                    checked={mateDetail.isBlacklisted}
                     onIonChange={toggleBlacklist}
                     style={{ margin: "20px 15px 20px 0", float: "right" }}
                   />

@@ -76,28 +76,28 @@ const UserInfo: React.FC = () => {
     setShowModal(false);
   };
 
-  const toggleBlacklist = () => {
-    if (selectedUser) {
-      const newBlacklistedState = !selectedUser.isBlacklisted;
+  // const toggleBlacklist = () => {
+  //   if (selectedUser) {
+  //     const newBlacklistedState = !selectedUser.isBlacklisted;
 
-      // 서버에 새로운 블랙리스트 상태를 전송
-      userBlacklisted(selectedUser.cid, newBlacklistedState).then(() => {
-        setUserList((prevUserList) => {
-          const updatedList = prevUserList.map((user) =>
-            user.userId === selectedUser.userId
-              ? { ...user, blacklisted: newBlacklistedState }
-              : user
-          );
-          updatedList.sort((a, b) =>
-            a.isBlacklisted ? 1 : b.isBlacklisted ? -1 : 0
-          );
+  //     // 서버에 새로운 블랙리스트 상태를 전송
+  //     userBlacklisted(selectedUser.cid, newBlacklistedState).then(() => {
+  //       setUserList((prevUserList) => {
+  //         const updatedList = prevUserList.map((user) =>
+  //           user.userId === selectedUser.userId
+  //             ? { ...user, blacklisted: newBlacklistedState }
+  //             : user
+  //         );
+  //         updatedList.sort((a, b) =>
+  //           a.isBlacklisted ? 1 : b.isBlacklisted ? -1 : 0
+  //         );
 
-          return updatedList;
-        });
-        closeModal();
-      });
-    }
-  };
+  //         return updatedList;
+  //       });
+  //       closeModal();
+  //     });
+  //   }
+  // };
 
   return (
     <IonPage id="main-menu">
@@ -178,7 +178,7 @@ const UserInfo: React.FC = () => {
                   </IonItem>
                   <IonToggle
                     checked={userDetail.isBlacklisted}
-                    onIonChange={toggleBlacklist}
+                    // onIonChange={toggleBlacklist}
                     style={{ margin: "20px 10px 20px 0", float: "right" }}
                   />
                 </IonCardContent>
