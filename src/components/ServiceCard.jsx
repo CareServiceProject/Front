@@ -22,7 +22,7 @@ import { useNavigate } from "react-router-dom";
 import { userCancelService } from "../api/user";
 import { mateFinish, waitingDetail } from "../api/mateApi";
 
-const ServiceCard = ({ data, role, status, onAccept, onReload }) => {
+const ServiceCard = ({ data, role, status, onAccept, onReload, onRate }) => {
   const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
   const [rate, setRate] = useState(0);
@@ -208,7 +208,7 @@ const ServiceCard = ({ data, role, status, onAccept, onReload }) => {
                       text: "제출하기",
                       primary: true,
                       onClick() {
-                        console.log("rate submit");
+                        onRate(data.careCid, rate);
                       },
                       style: {
                         backgroundColor: "var(--ion-color-primary)",

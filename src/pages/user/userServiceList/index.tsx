@@ -8,18 +8,18 @@ import {
   IonPage,
   IonTitle,
   IonToolbar,
-} from '@ionic/react';
-import React, { useEffect, useRef, useState } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
-import ServiceCard from '../../../components/ServiceCard';
-import { userGetServiceList } from '../../../api/user';
-import { mateCareHistory } from '../../../api/mateApi';
-import { userEvaluateApi } from '../../../api/userEvaluateApi';
+} from "@ionic/react";
+import React, { useEffect, useRef, useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
+import ServiceCard from "../../../components/ServiceCard";
+import { userGetServiceList } from "../../../api/user";
+import { mateCareHistory } from "../../../api/mateApi";
+import { userEvaluateApi } from "../../../api/userEvaluateApi";
 
 const UserServiceList: React.FC = () => {
   const router = useNavigate();
   const location = useLocation();
-  const prefix = location.pathname.split('/')[1];
+  const prefix = location.pathname.split("/")[1];
   const status = location.state.status;
   const [data, setData] = useState([]);
 
@@ -27,12 +27,12 @@ const UserServiceList: React.FC = () => {
     const fetchData = async () => {
       try {
         const responseData =
-          prefix === 'user'
+          prefix === "user"
             ? await userGetServiceList({ status })
             : await mateCareHistory({ careStatus: status });
         setData(responseData);
       } catch (error) {
-        console.error('Error fetching data:', error);
+        console.error("Error fetching data:", error);
       }
     };
     fetchData();
@@ -40,26 +40,26 @@ const UserServiceList: React.FC = () => {
 
   // waiting, cancel, proceeding, completed
   const titleDisplay = () => {
-    if (prefix === 'user') {
+    if (prefix === "user") {
       switch (status) {
-        case 'waiting':
-          return '대기중';
-        case 'proceeding':
-          return '진행중';
-        case 'completed':
-          return '완료';
-        case 'cancel':
-          return '취소';
+        case "waiting":
+          return "대기중";
+        case "proceeding":
+          return "진행중";
+        case "completed":
+          return "완료";
+        case "cancel":
+          return "취소";
         default:
       }
     } else {
       switch (status) {
-        case 'IN_PROGRESS':
-          return '진행중';
-        case 'HELP_DONE':
-          return '완료';
-        case 'cancel':
-          return '취소';
+        case "IN_PROGRESS":
+          return "진행중";
+        case "HELP_DONE":
+          return "완료";
+        case "cancel":
+          return "취소";
         default:
       }
     }
@@ -68,12 +68,12 @@ const UserServiceList: React.FC = () => {
     try {
       await userEvaluateApi(careCid, starCount);
       const responseData =
-        prefix === 'user'
+        prefix === "user"
           ? await userGetServiceList({ status })
           : await mateCareHistory({ careStatus: status });
       setData(responseData);
     } catch (error) {
-      console.error('Error evaluating:', error);
+      console.error("Error evaluating:", error);
     }
   };
   // useEffect(() => {
@@ -111,6 +111,7 @@ const UserServiceList: React.FC = () => {
               role={prefix}
               status={status}
               onReload={() => window.location.reload()}
+              onRate={handleEvaluate}
             ></ServiceCard>
           );
         })}
