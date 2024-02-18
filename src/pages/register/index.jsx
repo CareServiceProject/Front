@@ -13,11 +13,10 @@ import React from "react";
 import Logo from "../../components/Logo";
 import { useNavigate } from "react-router-dom";
 
-const Register: React.FC = () => {
+const Register = () => {
   const router = useNavigate();
-  const goSignUp = (type) => {
-    const params = { type };
-    router("/signup", { state: { type } });
+  const goSignUp = (role) => {
+    router("/signup", { state: { role } });
   };
   return (
     <IonPage>
@@ -29,7 +28,7 @@ const Register: React.FC = () => {
           <IonTitle>Sign up</IonTitle>
         </IonToolbar>
       </IonHeader>
-      <IonContent className="ion-padding">
+      <IonContent className="ion-padding login">
         <Logo></Logo>
         <IonButton expand="block" onClick={() => goSignUp("user")}>
           Sign up as a user

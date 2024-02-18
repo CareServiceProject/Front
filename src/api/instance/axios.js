@@ -1,7 +1,8 @@
 import axios from "axios";
 import { localToken } from "../../utils/auth";
+import { Toast } from "antd-mobile";
 
-const base_url = "";
+const base_url = "http://43.203.89.178:8080";
 
 //인스턴스 생성
 const instance = axios.create({
@@ -58,6 +59,9 @@ instance.interceptors.response.use(
         //TODO: history에 푸쉬, 로그인 뒤에 원래 있던 페이지로 이동
       } else if (response.status === 503) {
       } else {
+        Toast.show({
+          content: response.data.message,
+        });
       }
       return response;
     }

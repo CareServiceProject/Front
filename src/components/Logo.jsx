@@ -1,4 +1,4 @@
-import LogoPic from "../assets/Logo.jpg";
+import LogoPic from "../assets/logo-big-greenRed.png";
 
 const Logo = () => {
   return (
@@ -9,7 +9,7 @@ const Logo = () => {
         alignItems: "center",
       }}
     >
-      <img src={LogoPic} style={{ width: "300px", height: "200px" }}></img>
+      <img src={LogoPic}></img>
     </div>
   );
 };
