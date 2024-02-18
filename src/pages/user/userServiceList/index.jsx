@@ -64,7 +64,7 @@ const UserServiceList = () => {
       }
     }
   };
-  const handleEvaluate = async (careCid: number, starCount: number) => {
+  const handleEvaluate = async (careCid, starCount) => {
     try {
       await userEvaluateApi(careCid, starCount);
       const responseData =
