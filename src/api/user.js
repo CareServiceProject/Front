@@ -9,3 +9,8 @@ export const userGetServiceList = (data) => http.get(`/api/users/status`, data);
 
 export const userCancelService = (data) =>
   http.put(`/api/users/cancel-service/${data}`);
+
+export const getUserInfo = () => http.get(`/api/user/userInfo`);
+
+export const editUserInfo = (formdata) =>
+  http.putForm(`/api/user/userInfo`, formdata);

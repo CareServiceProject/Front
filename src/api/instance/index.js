@@ -70,6 +70,26 @@ class Http {
       },
     });
   }
+  putParam(url, param) {
+    return this.createRequest({
+      method: "PUT",
+      url,
+      params: param,
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+  }
+  putForm(url, formData) {
+    return this.createRequest({
+      method: "PUT",
+      url,
+      data: formData,
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
+  }
 
   upload(url, formData) {
     return this.createRequest({

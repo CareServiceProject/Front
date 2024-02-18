@@ -66,7 +66,7 @@ const UserServiceList: React.FC = () => {
   };
   const handleEvaluate = async (careCid: number, starCount: number) => {
     try {
-      await userEvaluateApi(careCid, starCount);
+      await userEvaluateApi(careCid, 2);
       const responseData =
         prefix === "user"
           ? await userGetServiceList({ status })

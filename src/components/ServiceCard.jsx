@@ -191,6 +191,7 @@ const ServiceCard = ({ data, role, status, onAccept, onReload, onRate }) => {
                         allowHalf
                         onChange={(v) => {
                           setRate(v);
+                          console.log(typeof v);
                         }}
                       />
                     </div>

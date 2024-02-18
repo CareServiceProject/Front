@@ -7,12 +7,14 @@ import {
   IonTitle,
   IonToolbar,
 } from "@ionic/react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { localToken } from "../utils/auth";
 import { Toast } from "antd-mobile";
 
 const SlideMenu: React.FC = ({ isAdmin }) => {
   const navigate = useNavigate();
+  const location = useLocation();
+  const prefix = location.pathname.split("/")[1];
   const doLogout = () => {
     localToken.remove();
     Toast.show({
@@ -21,7 +23,7 @@ const SlideMenu: React.FC = ({ isAdmin }) => {
     navigate("/");
   };
   const userProfile = () => {
-    navigate("/user/profile");
+    navigate(`/${prefix}/profile`);
   };
 
   return (
