@@ -54,7 +54,6 @@ const UserRequest: React.FC = () => {
     ) {
       // TODO
       applyRequest(data).then((res) => {
-        console.log(res);
         Toast.show({
           content: "요청하신 동행이 성공적으로 신청 완료되었습니다.",
         });
@@ -65,7 +64,6 @@ const UserRequest: React.FC = () => {
         content: "작성 완료해주세요.",
       });
     }
-    console.log(data);
   };
 
   return (

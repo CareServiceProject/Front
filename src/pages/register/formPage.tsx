@@ -88,7 +88,7 @@ const SignUpForm: React.FC = () => {
   const validate = (ev: Event) => {
     const value = (ev.target as HTMLInputElement).value;
 
-    console.log("vvv", value);
+    
     setIsPasswordValid(undefined);
 
     if (value === "") return;

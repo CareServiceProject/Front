@@ -27,7 +27,6 @@ const ServiceCard = ({ data, role, status, onAccept, onReload, onRate }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [rate, setRate] = useState(0);
   const [datas, setDatas] = useState(data);
-  console.log("dddd", data);
 
   const Contens = ({ isDetail }) => {
     const label = isDetail
@@ -56,7 +55,6 @@ const ServiceCard = ({ data, role, status, onAccept, onReload, onRate }) => {
     const oncancel = (id) => {
       const userCancel = () => {
         userCancelService(id).then((res) => {
-          console.log(res);
           Toast.show({
             content: "성공적으로 취소되었습니다.",
           });
@@ -65,9 +63,7 @@ const ServiceCard = ({ data, role, status, onAccept, onReload, onRate }) => {
           }, 1000);
         });
       };
-      const mateCancel = () => {
-        console.log("zzz");
-      };
+      const mateCancel = () => {};
 
       role === "user" ? userCancel() : mateCancel();
     };
@@ -84,7 +80,6 @@ const ServiceCard = ({ data, role, status, onAccept, onReload, onRate }) => {
     };
     const onDetailClick = () => {
       waitingDetail(data.careCid).then((res) => {
-        console.log(res);
         setDatas(res);
       });
       setIsOpen(true);

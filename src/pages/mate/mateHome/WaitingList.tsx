@@ -33,7 +33,7 @@ const WaitingList: React.FC = () => {
   const fetchData = async () => {
     try {
       const waitingListData = await fetchWaitingCareList();
-      console.log(waitingListData);
+
       setWaitingList(waitingListData);
     } catch (error) {
       console.error("Failed to fetch waiting list:", error);
@@ -44,7 +44,6 @@ const WaitingList: React.FC = () => {
   const handleAccept = (id) => {
     // 여기서 수락 로직을 구현합니다.
     mateApply(id).then((res) => {
-      console.log(res);
       if (res.code === 200) {
         Toast.show(res.message);
         setTimeout(() => {
@@ -52,7 +51,6 @@ const WaitingList: React.FC = () => {
         }, 1000);
       } else Toast.show(res.message);
     });
-    console.log("xxxxx");
   };
 
   return (

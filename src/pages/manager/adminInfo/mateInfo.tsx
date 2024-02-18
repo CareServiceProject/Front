@@ -52,7 +52,6 @@ const MateInfo: React.FC = () => {
   useEffect(() => {
     const fetchUserList = async () => {
       getMateList().then((res: MateInfo[]) => {
-        console.log(res);
         setMateList(res);
       });
     };
@@ -63,7 +62,6 @@ const MateInfo: React.FC = () => {
     const fetchMateDetail = async () => {
       if (selectedMate) {
         getMateDetail(selectedMate.cid).then((res: MateInfo) => {
-          console.log(res);
           setMateDetail(res);
         });
       }

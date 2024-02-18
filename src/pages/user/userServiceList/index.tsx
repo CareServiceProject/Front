@@ -76,21 +76,6 @@ const UserServiceList: React.FC = () => {
       console.error("Error evaluating:", error);
     }
   };
-  // useEffect(() => {
-  //   const userList = () => {
-  //     userGetServiceList({ status: status }).then((res) => {
-  //       console.log(res);
-  //       setData(res);
-  //     });
-  //   };
-  //   const mateList = () => {
-  //     mateCareHistory({ careStatus: status }).then((res) => {
-  //       console.log(res);
-  //       setData(res);
-  //     });
-  //   };
-  //   prefix === 'user' ? userList() : mateList();
-  // }, []);
 
   return (
     <IonPage>

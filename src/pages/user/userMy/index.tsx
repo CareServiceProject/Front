@@ -19,7 +19,6 @@ const UserMy: React.FC = () => {
   useEffect(() => {
     const requestInfo = () => {
       userMyPage().then((res) => {
-        console.log(res);
         setData(res);
       });
     };

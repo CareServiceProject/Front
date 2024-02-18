@@ -25,7 +25,6 @@ const Login: React.FC = () => {
       password,
     };
     login(data).then((res) => {
-      console.log("res", res);
       localToken.set(res.access_token);
       switch (res.roles) {
         case "ROLE_MASTER":

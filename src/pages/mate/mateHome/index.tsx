@@ -21,7 +21,6 @@ const MateHome: React.FC = () => {
       try {
         const data = await fetchWaitingCareList();
         setWaitingCareList(data);
-        console.log(data);
       } catch (error) {
         console.error("Error fetching waiting care list:", error);
       }
