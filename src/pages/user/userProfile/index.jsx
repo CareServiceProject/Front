@@ -15,12 +15,6 @@ import {
 import React, { useEffect, useState } from "react";
 import Logo from "../../../components/Logo";
 import { useNavigate } from "react-router-dom";
-import {
-  Camera,
-  CameraResultType,
-  CameraSource,
-  CameraPhoto,
-} from "@capacitor/camera";
 import { editUserInfo, getUserInfo } from "../../../api/user";
 import DefaultAvatar from "../../../assets/default_avatar.jpg";
 
