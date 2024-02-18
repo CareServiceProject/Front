@@ -89,20 +89,6 @@ const UserProfile: React.FC = () => {
     validate();
   }, [password, confirmPassword]);
 
-  const takePicture = async () => {
-    try {
-      const cameraPhoto = await Camera.getPhoto({
-        resultType: CameraResultType.Uri,
-        source: CameraSource.Photos,
-        quality: 50,
-      });
-
-      setProfilePicture(cameraPhoto.webPath);
-    } catch (error) {
-      console.error("Error taking picture", error);
-    }
-  };
-
   const onChangePic = (evt) => {
     const tgt = evt.target,
       files = tgt.files;
@@ -224,7 +210,9 @@ const UserProfile: React.FC = () => {
           label="휴대폰번호"
           className="ion-margin-top ion-padding ion-margin-bottom"
           required
-          onIonChange={(e) => setPhone(e.detail.value!)}
+          onIonInput={(e) =>
+            setData((prev) => ({ ...prev, phoneNumber: e.target.value }))
+          }
           value={data.phoneNumber}
         ></IonInput>
 

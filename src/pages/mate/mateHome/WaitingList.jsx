@@ -14,17 +14,17 @@ import { useNavigate } from "react-router-dom";
 import { Toast } from "antd-mobile";
 
 // 대기중인 도움 목록의 데이터 형식을 정의한 인터페이스
-interface WaitingListData {
-  id: string;
-  role: string;
-  status: number;
-  // 필요한 다른 속성들을 여기에 추가
-}
+// interface WaitingListData {
+//   id: string;
+//   role: string;
+//   status: number;
+//   // 필요한 다른 속성들을 여기에 추가
+// }
 
-const WaitingList: React.FC = () => {
+const WaitingList = () => {
   const navigate = useNavigate();
   // 대기중인 도움 목록 상태를 선언하고 인터페이스로 타입을 지정
-  const [waitingList, setWaitingList] = useState<WaitingListData[]>([]);
+  const [waitingList, setWaitingList] = useState([]);
 
   useEffect(() => {
     fetchData();

@@ -22,7 +22,7 @@ import toISOLocal from "../../../utils/getLocalISO";
 import { Toast } from "antd-mobile";
 import { applyRequest } from "../../../api/user";
 
-const UserRequest: React.FC = () => {
+const UserRequest = () => {
   const router = useNavigate();
 
   const [destination, setDestination] = useState(null);
@@ -113,7 +113,7 @@ const UserRequest: React.FC = () => {
           label="픽업장소"
           type="text"
           value={pickupLocation}
-          onIonInput={(e) => setPickupLocation(e.target.value!)}
+          onIonInput={(e) => setPickupLocation(e.target.value)}
         ></IonInput>
 
         <IonInput
@@ -121,7 +121,7 @@ const UserRequest: React.FC = () => {
           label="목적지"
           type="text"
           value={destination}
-          onIonInput={(e) => setDestination(e.target.value!)}
+          onIonInput={(e) => setDestination(e.target.value)}
         />
 
         <IonInput

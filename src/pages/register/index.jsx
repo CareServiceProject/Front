@@ -13,7 +13,7 @@ import React from "react";
 import Logo from "../../components/Logo";
 import { useNavigate } from "react-router-dom";
 
-const Register: React.FC = () => {
+const Register = () => {
   const router = useNavigate();
   const goSignUp = (role) => {
     router("/signup", { state: { role } });

@@ -14,7 +14,7 @@ import StatusCard from "../../../components/StatusCard";
 import { useNavigate } from "react-router-dom";
 import { userMyPage } from "../../../api/user";
 
-const UserMy: React.FC = () => {
+const UserMy = () => {
   const [data, setData] = useState({});
   useEffect(() => {
     const requestInfo = () => {

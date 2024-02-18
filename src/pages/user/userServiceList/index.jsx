@@ -16,7 +16,7 @@ import { userGetServiceList } from "../../../api/user";
 import { mateCareHistory } from "../../../api/mateApi";
 import { userEvaluateApi } from "../../../api/userEvaluateApi";
 
-const UserServiceList: React.FC = () => {
+const UserServiceList = () => {
   const router = useNavigate();
   const location = useLocation();
   const prefix = location.pathname.split("/")[1];
@@ -66,7 +66,7 @@ const UserServiceList: React.FC = () => {
   };
   const handleEvaluate = async (careCid: number, starCount: number) => {
     try {
-      await userEvaluateApi(careCid, 2);
+      await userEvaluateApi(careCid, starCount);
       const responseData =
         prefix === "user"
           ? await userGetServiceList({ status })

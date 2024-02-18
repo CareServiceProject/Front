@@ -18,7 +18,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { userSignUp, mateSignUp } from "../../api/authApi";
 import { Toast } from "antd-mobile";
 
-const SignUpForm: React.FC = () => {
+const SignUpForm = () => {
   const router = useNavigate();
   const location = useLocation();
 
@@ -85,10 +85,9 @@ const SignUpForm: React.FC = () => {
     // TODO:인증번호 보내기
   };
 
-  const validate = (ev: Event) => {
-    const value = (ev.target as HTMLInputElement).value;
+  const validate = (ev) => {
+    const value = ev.target .value;
 
-    
     setIsPasswordValid(undefined);
 
     if (value === "") return;

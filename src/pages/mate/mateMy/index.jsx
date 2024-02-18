@@ -17,7 +17,7 @@ import StatusCard from "../../../components/StatusCard";
 import DefaultAvatar from "../../../assets/default_avatar.jpg";
 import { mateCareHistory, mateMy } from "../../../api/mateApi";
 
-const MateMy: React.FC = () => {
+const MateMy = () => {
   const [data, setData] = useState({});
 
   useEffect(() => {

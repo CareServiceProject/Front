@@ -11,7 +11,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { localToken } from "../utils/auth";
 import { Toast } from "antd-mobile";
 
-const SlideMenu: React.FC = ({ isAdmin }) => {
+const SlideMenu = ({ isAdmin }) => {
   const navigate = useNavigate();
   const location = useLocation();
   const prefix = location.pathname.split("/")[1];

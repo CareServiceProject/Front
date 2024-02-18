@@ -1,12 +1,4 @@
-import {
-  IonButton,
-  IonContent,
-  IonHeader,
-  IonInput,
-  IonPage,
-  IonTitle,
-  IonToolbar,
-} from "@ionic/react";
+import { IonButton, IonContent, IonInput, IonPage } from "@ionic/react";
 import React, { useState } from "react";
 import "./login.css";
 import Logo from "../../components/Logo";
@@ -14,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 import { login } from "../../api/authApi";
 import { localToken } from "../../utils/auth";
 
-const Login: React.FC = () => {
+const Login = () => {
   const navigate = useNavigate();
   const [userid, setUserid] = useState("");
   const [password, setPassword] = useState("");

@@ -18,7 +18,7 @@ import { useNavigate } from "react-router-dom";
 import { Client, Message } from "@stomp/stompjs";
 import "./style.css";
 
-const Chatting: React.FC = () => {
+const Chatting = () => {
   const navigate = useNavigate();
   const [text, setText] = useState("");
   const contentRef = useRef();
