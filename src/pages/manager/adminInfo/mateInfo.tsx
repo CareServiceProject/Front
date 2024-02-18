@@ -28,6 +28,7 @@ import {
   getMateDetail,
   approveMate,
   unapproveMate,
+  mateBlacklisted,
 } from "../../../api/managerApi";
 interface MateInfo {
   cid: string;
@@ -80,16 +81,29 @@ const MateInfo: React.FC = () => {
 
   const toggleBlacklist = () => {
     if (selectedMate) {
-      setMateList((prevMateList) => {
-        const updatedList = prevMateList.map((mate) =>
-          mate.mateId === selectedMate.mateId
-            ? { ...mate, blacklisted: !mate.blacklisted }
-            : mate
-        );
+      const { mateId, blacklisted } = selectedMate;
 
-        return updatedList;
-      });
-      closeModal();
+      mateBlacklisted(selectedMate?.cid, !mateDetail?.blacklisted).then(
+        (response: ApprovalResponse) => {
+          console.log("서버 응답:", response);
+
+          if (selectedMate && response.success) {
+            setMateList((prevMateList) => {
+              const updatedList = prevMateList.map((mate) =>
+                mate.mateId === selectedMate.mateId
+                  ? { ...mate, blacklisted: !mate.blacklisted }
+                  : mate
+              );
+
+              return updatedList;
+            });
+            closeModal();
+            console.log(response.message);
+          } else {
+            console.error(response.message);
+          }
+        }
+      );
     }
   };
   interface ApprovalResponse {
