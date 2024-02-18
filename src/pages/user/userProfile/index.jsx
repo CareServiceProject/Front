@@ -114,47 +114,50 @@ const UserProfile = () => {
             alignItems: "center",
             marginTop: "10px",
             justifyContent: "space-between",
+            marginBottom: "26px",
           }}
         >
-          <IonAvatar style={{ width: "110px", height: "110px" }}>
-            <img src={DefaultAvatar} id="previewImg"></img>
-          </IonAvatar>
+          <div>
+            <IonAvatar
+              style={{ width: "100px", height: "100px", marginBottom: "16px" }}
+            >
+              <img src={DefaultAvatar} id="previewImg"></img>
+            </IonAvatar>
 
-          <label
-            style={{
-              border: "1px solid var(--ion-color-primary)",
-              borderRadius: "10px",
-              padding: "10px",
-              color: "var(--ion-color-primary)",
-            }}
-          >
-            <input
-              id="avatar"
-              type="file"
-              accept="image/png, image/jpeg"
-              style={{ display: "none" }}
-              onChange={onChangePic}
-            />
-            프로필 사진 변경
-          </label>
-        </div>
-        <div>
-          <IonInput
-            label="이름"
-            className="ion-margin-top ion-padding"
-            required
-            disabled
-            value={data.name}
-          ></IonInput>
-        </div>
-        <div>
-          <IonInput
-            label="아이디"
-            className="ion-margin-top ion-padding"
-            required
-            disabled
-            value={data.id}
-          ></IonInput>
+            <label
+              style={{
+                border: "1px solid var(--ion-color-primary)",
+                borderRadius: "10px",
+                padding: "10px",
+                color: "var(--ion-color-primary)",
+              }}
+            >
+              <input
+                id="avatar"
+                type="file"
+                accept="image/png, image/jpeg"
+                style={{ display: "none" }}
+                onChange={onChangePic}
+              />
+              프로필 사진 변경
+            </label>
+          </div>
+          <div>
+            <IonInput
+              label="아이디"
+              className="ion-margin-top ion-padding"
+              required
+              disabled
+              value={data.id}
+            ></IonInput>
+            <IonInput
+              label="이름"
+              className="ion-margin-top ion-padding"
+              required
+              disabled
+              value={data.name}
+            ></IonInput>
+          </div>
         </div>
 
         <IonInput
