@@ -15,7 +15,7 @@ import { sendOutline as vvvv } from "ionicons/icons";
 import React, { useEffect, useRef, useState } from "react";
 import DefaultAvatar from "../../../assets/default_avatar.jpg";
 import { useNavigate } from "react-router-dom";
-import { Client, Message } from "@stomp/stompjs";
+import { Client } from "@stomp/stompjs";
 import "./style.css";
 
 const Chatting = () => {
