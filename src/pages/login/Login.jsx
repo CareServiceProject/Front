@@ -63,12 +63,10 @@ const Login = () => {
             <IonButton expand="block" className="ion-margin-top" type="submit">
               Login
             </IonButton>
-            <IonButton routerLink="/register" fill="clear">
+            <IonButton onClick={() => navigate("/register")} fill="clear">
               sign up
             </IonButton>
           </form>
-          {/* <p style={{ textAlign: "center" }}>or</p>
-          <IonButton expand="block">OAuth</IonButton> */}
         </IonContent>
       </IonPage>
     </div>
