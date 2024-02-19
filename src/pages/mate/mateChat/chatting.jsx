@@ -29,7 +29,8 @@ const Chatting = () => {
 
   useEffect(() => {
     const client = new Client({
-      brokerURL: "ws://localhost:8080/ws/chat",
+      webSocketFactory: () => new SockJS("http://43.203.89.178:8080/ws/chat"),
+      // brokerURL: "http://43.203.89.178:8080/ws/chat",
       connectHeaders: {
         login: "user",
         passcode: "password",
@@ -48,7 +49,7 @@ const Chatting = () => {
       console.log("Connected to WebSocket");
       // Do something, all subscribes must be done is this callback
       // This is needed because this will be executed after a (re)connect
-      client.subscribe(`/topic/chat/${roomCid}`, (message) => {
+      client.subscribe(`/queue/chat/message/${roomCid}`, (message) => {
         const newMessages = [...messages, JSON.parse(message.body)];
         setMessages(newMessages);
       });
@@ -77,7 +78,7 @@ const Chatting = () => {
     };
 
     stompClient?.publish({
-      destination: `/app/send/message/${roomCid}`,
+      destination: `/app/chat/message/${roomCid}`,
       body: message,
       skipContentLengthHeader: true,
     });
