@@ -19,8 +19,10 @@ import { useNavigate } from "react-router-dom";
 import { editUserInfo, getUserInfo } from "../../../api/user";
 import DefaultAvatar from "../../../assets/default_avatar.jpg";
 import { lockClosed, lockOpen } from "ionicons/icons";
+import { editMateInfo, mateInfo } from "../../../api/mateApi";
+import { Toast } from "antd-mobile";
 
-const UserProfile = () => {
+const MateProfile = () => {
   const router = useNavigate();
 
   const [avatar, setAvatar] = useState(null);
@@ -38,11 +40,14 @@ const UserProfile = () => {
     phoneNumber: null,
   });
 
-  useEffect(() => {
-    getUserInfo().then((res) => {
+  const requestInfo = () => {
+    mateInfo().then((res) => {
       console.log(res);
       setData(res);
     });
+  };
+  useEffect(() => {
+    requestInfo();
   }, []);
 
   const profileSetting = (e) => {
@@ -57,11 +62,11 @@ const UserProfile = () => {
 
     delete editedData.phoneNumber;
     const formData = new FormData();
-    formData.append("RequestUpdateDto", JSON.stringify(data));
+    formData.append("requestUpdateDto", JSON.stringify(data));
     if (avatar) {
       formData.append("userProfileImage", avatar);
     }
-    editUserInfo(formData).then(() => {
+    editMateInfo(formData).then(() => {
       Toast.show({
         content: "성공적으로 수정되었습니다.",
       });
@@ -234,4 +239,4 @@ const UserProfile = () => {
   );
 };
 
-export default UserProfile;
+export default MateProfile;

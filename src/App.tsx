@@ -40,6 +40,7 @@ import MateJudge from "./pages/mate/mateJudge";
 import MatePass from "./pages/mate/mateJudge/pass";
 import MateFail from "./pages/mate/mateJudge/fail";
 import WaitingList from "./pages/mate/mateHome/WaitingList";
+import MateProfile from "./pages/mate/mateProfile";
 
 setupIonicReact();
 
@@ -58,6 +59,7 @@ const App: React.FC = () => (
       <Route path="/user/request" element={<UserRequest />} />
       <Route path="/waitingList" element={<WaitingList />} />
       <Route path="/user/profile" element={<UserProfile />} />
+      <Route path="/mate/profile" element={<MateProfile />} />
 
       {/* NavBar Contained Page */}
       <Route element={<NavLayout />}>

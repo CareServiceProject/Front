@@ -23,4 +23,4 @@ export const mateCancel = (careCid) => http.put(`/api/mate/cancel/${careCid}`);
 export const mateInfo = () => http.get(`/api/mate/mateInfo`);
 
 //나의 정보 수정
-export const editMateInfo = () => http.put(`/api/mate/mateInfo`);
+export const editMateInfo = (data) => http.putForm(`/api/mate/mateInfo`, data);
