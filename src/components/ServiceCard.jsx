@@ -1,13 +1,10 @@
 import {
-  IonAlert,
   IonAvatar,
   IonButton,
   IonButtons,
   IonCard,
   IonCardContent,
   IonCardHeader,
-  IonCardSubtitle,
-  IonCardTitle,
   IonContent,
   IonHeader,
   IonLabel,
@@ -15,7 +12,7 @@ import {
   IonTitle,
   IonToolbar,
 } from "@ionic/react";
-import React, { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import DefaultAvatar from "../assets/default_avatar.jpg";
 import { Modal, Rate, Toast } from "antd-mobile";
 import { useNavigate } from "react-router-dom";
@@ -85,13 +82,19 @@ const ServiceCard = ({ data, role, status, onAccept, onReload, onRate }) => {
       setIsOpen(true);
     };
     return (
-      <IonCard>
+      <IonCard color="secondary">
         <IonCardHeader>
           <div style={{ display: "flex", justifyContent: "space-between" }}>
-            <IonAvatar className="ion-margin-end">
-              <img src={DefaultAvatar}></img>
+            <IonAvatar
+              className="ion-margin-end"
+              style={{ width: "70px", height: "70px" }}
+            >
+              <img src={data.imageAddress || DefaultAvatar}></img>
             </IonAvatar>
-            {(status === "proceeding" || status === "completed") && (
+            {(status === "proceeding" ||
+              status === "completed" ||
+              status === "IN_PROGRESS" ||
+              status === "HELP_DONE") && (
               <IonButton
                 fill="clear"
                 onClick={() => navigate("/mate/chatting")}
@@ -117,9 +120,9 @@ const ServiceCard = ({ data, role, status, onAccept, onReload, onRate }) => {
                     display: "flex",
                     flex: 1,
                     borderRadius: "8px",
-                    backgroundColor: "var(--ion-color-medium)",
+                    backgroundColor: "white",
                     padding: "5px",
-                    color: "white",
+                    color: "black",
                   }}
                   className="ion-margin-start"
                 >
@@ -160,8 +163,45 @@ const ServiceCard = ({ data, role, status, onAccept, onReload, onRate }) => {
           {/* 메이트 && 완료 */}
           {role === "mate" && status === "HELP_DONE" && (
             <>
-              <IonButton fill="clear">결제완료</IonButton>
-              <IonButton fill="clear">결제미완</IonButton>
+              <IonButton
+                fill="clear"
+                onClick={() => {
+                  Modal.show({
+                    header: "결제가 되었습니까?",
+
+                    closeOnMaskClick: true,
+                    closeOnAction: true,
+                    actions: [
+                      {
+                        key: "paymentDone",
+                        text: "결제완료",
+                        primary: true,
+                        onClick() {
+                          //
+                        },
+                        style: {
+                          backgroundColor: "var(--ion-color-primary)",
+                          border: "none",
+                        },
+                      },
+                      {
+                        key: "paymentNo",
+                        text: "결제미완",
+                        primary: true,
+                        onClick() {
+                          //
+                        },
+                        style: {
+                          backgroundColor: "var(--ion-color-danger)",
+                          border: "none",
+                        },
+                      },
+                    ],
+                  });
+                }}
+              >
+                결제확인
+              </IonButton>
             </>
           )}
 

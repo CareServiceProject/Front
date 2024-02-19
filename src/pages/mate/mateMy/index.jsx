@@ -46,7 +46,7 @@ const MateMy = () => {
           <IonTitle>Page Title</IonTitle>
         </IonToolbar>
       </IonHeader>
-      <IonContent className="ion-padding">
+      <IonContent className="ion-padding ">
         <div
           style={{ display: "flex", alignItems: "center" }}
           className="ion-margin"
@@ -69,7 +69,9 @@ const MateMy = () => {
             {"점"}
           </IonCardContent>
         </IonCard>
+
         <StatusCard data={data}></StatusCard>
+        <div style={{ height: "100px" }}></div>
       </IonContent>
     </IonPage>
   );

@@ -34,7 +34,7 @@ const UserMy = () => {
           <IonTitle>My Page</IonTitle>
         </IonToolbar>
       </IonHeader>
-      <IonContent className="ion-padding">
+      <IonContent className="ion-padding ">
         <div
           style={{ display: "flex", alignItems: "center" }}
           className="ion-margin"
