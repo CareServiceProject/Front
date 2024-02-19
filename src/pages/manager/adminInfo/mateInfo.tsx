@@ -74,7 +74,6 @@ const MateInformation: React.FC = () => {
 
   const openModal = (mate: MateInfo) => {
     setSelectedMate(mate);
-
     getMateDetail(mate.cid).then((res: MateInfo) => {
       setMateDetail(res);
     });
@@ -99,20 +98,16 @@ const MateInformation: React.FC = () => {
     registrationNum: string | undefined
   ): string => {
     if (!registrationNum) return "";
-
     const firstPart = registrationNum.substring(0, 6);
     const secondPart = registrationNum.substring(6);
-
     return `${firstPart}-${secondPart}`;
   };
 
   const handleApproveClick = () => {
     const mateCid = selectedMate?.cid;
-
     if (mateCid) {
       approveMate(mateCid).then((response: ApprovalResponse) => {
         console.log("서버 응답:", response);
-
         if (selectedMate && response.success) {
           setMateList((prevMateList: any) => {
             return prevMateList.map((mate: any) =>
@@ -135,33 +130,41 @@ const MateInformation: React.FC = () => {
       });
     }
   };
+
   const handleUnApproveClick = () => {
     const mateCid = selectedMate?.cid;
     if (mateCid) {
-      unapproveMate(mateCid).then((response: ApprovalResponse) => {
-        console.log("서버 응답:", response);
+      const unapprovedMateDto = {
+        rejectReason: rejectReason, // 미승인 사유를 unapprovedMateDto 객체에 추가
+      };
+      console.log("reason:", rejectReason);
 
-        if (selectedMate && response.success) {
-          setMateList((prevMateList: any) => {
-            return prevMateList.map((mate: any) =>
-              mate.mateId === selectedMate.mateId
-                ? { ...mate, approval: false, mateStatus: false }
-                : mate
-            );
-          });
-          setMateDetail((prevMateDetail) => {
-            if (prevMateDetail) {
-              return { ...prevMateDetail, approval: false };
-            }
-            return null;
-          });
-          setApprovalStatus("가입미승인");
+      unapproveMate(mateCid, unapprovedMateDto).then(
+        (response: ApprovalResponse) => {
+          console.log("서버 응답:", response);
+          if (selectedMate && response.success) {
+            setMateList((prevMateList: any) => {
+              return prevMateList.map((mate: any) =>
+                mate.cid === mateCid
+                  ? { ...mate, approval: false, mateStatus: false }
+                  : mate
+              );
+            });
 
-          console.log(response.message);
-        } else {
-          console.error(response.message);
+            setMateDetail((prevMateDetail) => {
+              if (prevMateDetail && prevMateDetail.cid === mateCid) {
+                return { ...prevMateDetail, approval: false };
+              }
+              return prevMateDetail;
+            });
+
+            setApprovalStatus("가입미승인");
+            console.log(response.message);
+          } else {
+            console.error(response.message);
+          }
         }
-      });
+      );
     }
   };
 
@@ -179,7 +182,6 @@ const MateInformation: React.FC = () => {
       <IonContent className="ion-padding">
         <IonList>
           {mateList
-            .sort((a, b) => (a.mateStatus ? 1 : b.mateStatus ? -1 : 0))
             .sort((a, b) => (a.blacklisted ? 1 : b.blacklisted ? -1 : 0))
             .map((mate) => (
               <IonItem key={mate.mateId} button onClick={() => openModal(mate)}>
