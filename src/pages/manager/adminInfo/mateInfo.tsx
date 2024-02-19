@@ -44,7 +44,7 @@ interface MateInfo {
   imageAddress?: string;
 }
 
-const MateInfo: React.FC = () => {
+const MateInformation: React.FC = () => {
   const [mateList, setMateList] = useState<MateInfo[]>([]);
   const [showModal, setShowModal] = useState(false);
   const [selectedMate, setSelectedMate] = useState<MateInfo | null>(null);
@@ -105,8 +105,8 @@ const MateInfo: React.FC = () => {
         console.log("서버 응답:", response);
 
         if (selectedMate && response.success) {
-          setMateList((prevMateList) => {
-            return prevMateList.map((mate) =>
+          setMateList((prevMateList: any) => {
+            return prevMateList.map((mate: any) =>
               mate.mateId === selectedMate.mateId
                 ? { ...mate, approval: true, mateStatus: true }
                 : mate
@@ -132,8 +132,8 @@ const MateInfo: React.FC = () => {
         console.log("서버 응답:", response);
 
         if (selectedMate && response.success) {
-          setMateList((prevMateList) => {
-            return prevMateList.map((mate) =>
+          setMateList((prevMateList: any) => {
+            return prevMateList.map((mate: any) =>
               mate.mateId === selectedMate.mateId
                 ? { ...mate, approval: false, mateStatus: false }
                 : mate
@@ -329,4 +329,4 @@ const MateInfo: React.FC = () => {
   );
 };
 
-export default MateInfo;
+export default MateInformation;
