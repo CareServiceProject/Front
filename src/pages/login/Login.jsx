@@ -64,7 +64,7 @@ const Login = () => {
               Login
             </IonButton>
             <IonButton onClick={() => navigate("/register")} fill="clear">
-              sign up
+              Sign Up
             </IonButton>
           </form>
         </IonContent>

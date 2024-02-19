@@ -86,7 +86,7 @@ const SignUpForm = () => {
   };
 
   const validate = (ev) => {
-    const value = ev.target .value;
+    const value = ev.target.value;
 
     setIsPasswordValid(undefined);
 
@@ -117,7 +117,7 @@ const SignUpForm = () => {
             ></IonInput>
             <IonSelect
               interface="popover"
-              label="Gender"
+              label="성별"
               labelPlacement="start"
               className="ion-margin-start"
               onIonChange={(e) => setGender(e.detail.value)}
@@ -171,6 +171,7 @@ const SignUpForm = () => {
             className="ion-margin-top ion-padding"
             required
             onIonInput={(e) => setPhone(e.target.value)}
+            type="number"
           ></IonInput>
           <IonInput
             label="주민등록번호"
@@ -178,6 +179,7 @@ const SignUpForm = () => {
             className="ion-margin-top ion-padding"
             required
             onIonInput={(e) => setRegNum(e.target.value)}
+            type="number"
           ></IonInput>
           {/* <div style={{ display: "flex" }}>
             <IonInput

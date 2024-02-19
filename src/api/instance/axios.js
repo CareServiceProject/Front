@@ -2,7 +2,7 @@ import axios from "axios";
 import { localToken } from "../../utils/auth";
 import { Toast } from "antd-mobile";
 
-const base_url = "http://43.203.32.99:8080";
+const base_url = "https://helpu-service.site";
 
 //인스턴스 생성
 const instance = axios.create({
