@@ -41,6 +41,7 @@ interface MateInfo {
   email?: string;
   phoneNum?: string;
   approval?: boolean;
+  unapprovedMateDto: string;
 }
 
 const MateInfo: React.FC = () => {
@@ -68,20 +69,28 @@ const MateInfo: React.FC = () => {
       }
     };
     fetchMateDetail();
-  }, [selectedMate]);
+  }, [selectedMate, showModal]); // showModal이 변경될 때마다 모달이 열리거나 닫히기 때문에 추가
 
   const openModal = (mate: MateInfo) => {
     setSelectedMate(mate);
+
+    // 모달 열릴 때 mateDetail 설정
+    getMateDetail(mate.cid).then((res: MateInfo) => {
+      setMateDetail(res);
+    });
+
     setShowModal(true);
   };
 
   const closeModal = () => {
+    // 모달이 닫힐 때 mateDetail 초기화
+    setMateDetail(null);
     setShowModal(false);
   };
 
   const toggleBlacklist = () => {
     if (selectedMate) {
-      const { mateId, isBlacklisted } = selectedMate;
+      const { mateId } = selectedMate;
 
       mateBlacklisted(selectedMate?.cid, !mateDetail?.isBlacklisted).then(
         (response: ApprovalResponse) => {
@@ -97,7 +106,18 @@ const MateInfo: React.FC = () => {
 
               return updatedList;
             });
-            closeModal();
+
+            // 상태 업데이트
+            setMateDetail((prevMateDetail) => {
+              if (!prevMateDetail) {
+                return prevMateDetail;
+              }
+
+              return {
+                ...prevMateDetail,
+                isBlacklisted: !prevMateDetail.isBlacklisted,
+              };
+            });
             console.log(response.message);
           } else {
             console.error(response.message);
@@ -126,7 +146,12 @@ const MateInfo: React.FC = () => {
                 : mate
             );
           });
-          closeModal();
+          setMateDetail((prevMateDetail) => {
+            if (prevMateDetail) {
+              return { ...prevMateDetail, approval: true };
+            }
+            return null;
+          });
           console.log(response.message);
         } else {
           console.error(response.message);
@@ -148,7 +173,13 @@ const MateInfo: React.FC = () => {
                 : mate
             );
           });
-          closeModal();
+          setMateDetail((prevMateDetail) => {
+            if (prevMateDetail) {
+              return { ...prevMateDetail, approval: false };
+            }
+            return null;
+          });
+
           console.log(response.message);
         } else {
           console.error(response.message);
@@ -271,7 +302,7 @@ const MateInfo: React.FC = () => {
                   <IonItem>
                     <IonLabel>가입승인여부:</IonLabel>
                     <IonText>
-                      {mateDetail.approval ? "가입미승인" : "가입승인"}
+                      {mateDetail.approval ? "가입승인" : "가입미승인"}
                     </IonText>
                   </IonItem>
                   <IonItem>

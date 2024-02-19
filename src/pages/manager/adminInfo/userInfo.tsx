@@ -75,7 +75,48 @@ const UserInfo: React.FC = () => {
   const closeModal = () => {
     setShowModal(false);
   };
+  interface ApprovalResponse {
+    success: boolean;
+    message: string;
+  }
+  const toggleBlacklist = () => {
+    if (selectedUser) {
+      const { userId } = selectedUser;
 
+      userBlacklisted(selectedUser?.cid, !userDetail?.isBlacklisted).then(
+        (response: ApprovalResponse) => {
+          console.log("서버 응답:", response);
+
+          if (selectedUser && response.success) {
+            setUserList((prevUserList) => {
+              const updatedList = prevUserList.map((user) =>
+                user.userId === selectedUser.userId
+                  ? { ...user, blacklisted: !user.isBlacklisted }
+                  : user
+              );
+
+              return updatedList;
+            });
+
+            // 상태 업데이트
+            setUserDetail((prevUserDetail) => {
+              if (!prevUserDetail) {
+                return prevUserDetail;
+              }
+
+              return {
+                ...prevUserDetail,
+                isBlacklisted: !prevUserDetail.isBlacklisted,
+              };
+            });
+            console.log(response.message);
+          } else {
+            console.error(response.message);
+          }
+        }
+      );
+    }
+  };
   // const toggleBlacklist = () => {
   //   if (selectedUser) {
   //     const newBlacklistedState = !selectedUser.isBlacklisted;
@@ -178,7 +219,7 @@ const UserInfo: React.FC = () => {
                   </IonItem>
                   <IonToggle
                     checked={userDetail.isBlacklisted}
-                    // onIonChange={toggleBlacklist}
+                    onIonChange={toggleBlacklist}
                     style={{ margin: "20px 10px 20px 0", float: "right" }}
                   />
                 </IonCardContent>

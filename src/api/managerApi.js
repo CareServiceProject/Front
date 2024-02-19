@@ -12,8 +12,9 @@ export const getMateDetail = (mateCid) =>
 //POST_메이트 승인미승인
 export const approveMate = (mateCid) =>
   http.post(`/api/master/approve/${mateCid}`);
-export const unapproveMate = (mateCid, reason) =>
-  http.post(`/api/master/unapprove/${mateCid}`);
+
+export const unapproveMate = (mateCid, unapprovedMateDto) =>
+  http.postJSON(`/api/master/unapprove/${mateCid}`, unapprovedMateDto);
 
 //PUT_블랙리스트 요청
 export const userBlacklisted = (userCid, isBlacklisted) =>
