@@ -128,6 +128,7 @@ const UserRequest = () => {
           className="ion-margin-top ion-padding"
           label="서비스금액"
           type="number"
+          min="0"
           value={serviceAmount}
           onIonInput={(e) => setServiceAmount(parseInt(e.target.value))}
         />
