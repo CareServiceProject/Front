@@ -68,46 +68,29 @@ const MateInfo: React.FC = () => {
       }
     };
     fetchMateDetail();
-  }, [selectedMate]);
+  }, [selectedMate, showModal]); // showModal이 변경될 때마다 모달이 열리거나 닫히기 때문에 추가
 
   const openModal = (mate: MateInfo) => {
     setSelectedMate(mate);
+
+    // 모달 열릴 때 mateDetail 설정
+    getMateDetail(mate.cid).then((res: MateInfo) => {
+      setMateDetail(res);
+    });
+
     setShowModal(true);
   };
 
   const closeModal = () => {
+    // 모달이 닫힐 때 mateDetail 초기화
+    setMateDetail(null);
     setShowModal(false);
   };
 
-  const toggleBlacklist = (isBlacklisted, mateCid) => {
-    if (selectedMate) {
-      const { mateId, blacklisted } = selectedMate;
-
-      // mateBlacklisted(selectedMate?.cid, !mateDetail?.blacklisted).then(
-      //   (response: ApprovalResponse) => {
-      //     console.log("서버 응답:", response);
-
-      //     if (selectedMate && response.success) {
-      //       setMateList((prevMateList) => {
-      //         const updatedList = prevMateList.map((mate) =>
-      //           mate.mateId === selectedMate.mateId
-      //             ? { ...mate, blacklisted: !mate.blacklisted }
-      //             : mate
-      //         );
-
-      //         return updatedList;
-      //       });
-      //       closeModal();
-      //       console.log(response.message);
-      //     } else {
-      //       console.error(response.message);
-      //     }
-      //   }
-      // );
-      mateBlacklisted(mateCid, isBlacklisted ? false : true).then((res) => {
-        fetchUserList();
-      });
-    }
+  const toggleBlacklist = (isBlacklisted: boolean, mateCid: string) => {
+    mateBlacklisted(mateCid, isBlacklisted ? false : true).then(() => {
+      fetchUserList();
+    });
   };
   interface ApprovalResponse {
     success: boolean;
@@ -129,7 +112,12 @@ const MateInfo: React.FC = () => {
                 : mate
             );
           });
-          closeModal();
+          setMateDetail((prevMateDetail) => {
+            if (prevMateDetail) {
+              return { ...prevMateDetail, approval: true };
+            }
+            return null;
+          });
           console.log(response.message);
         } else {
           console.error(response.message);
@@ -151,7 +139,13 @@ const MateInfo: React.FC = () => {
                 : mate
             );
           });
-          closeModal();
+          setMateDetail((prevMateDetail) => {
+            if (prevMateDetail) {
+              return { ...prevMateDetail, approval: false };
+            }
+            return null;
+          });
+
           console.log(response.message);
         } else {
           console.error(response.message);

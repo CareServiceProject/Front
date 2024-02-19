@@ -74,6 +74,10 @@ const UserInfo: React.FC = () => {
   const closeModal = () => {
     setShowModal(false);
   };
+  interface ApprovalResponse {
+    success: boolean;
+    message: string;
+  }
 
   const toggleBlacklist = (isBlacklisted: boolean, userCid: string) => {
     userBlacklisted(userCid, isBlacklisted ? false : true).then(() => {
