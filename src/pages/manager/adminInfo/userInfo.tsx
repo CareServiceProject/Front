@@ -136,7 +136,20 @@ const UserInfo: React.FC = () => {
             {userDetail && userDetail ? (
               <IonCard>
                 <IonCardHeader>
-                  <IonCardTitle>{userDetail.userId}</IonCardTitle>
+                  <IonCardTitle style={{ fontSize: "23px" }}>
+                    {" "}
+                    <img
+                      src={userDetail.imageAddress || DefaultAvatar}
+                      alt="avatar"
+                      style={{
+                        width: "70px",
+                        height: "70px",
+                        borderRadius: "50%",
+                        marginRight: "20px",
+                      }}
+                    />
+                    {userDetail.userId}
+                  </IonCardTitle>
                 </IonCardHeader>
                 <IonCardContent>
                   <IonItem>
