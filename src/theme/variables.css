@@ -91,7 +91,7 @@ ion-menu-button {
   --color: #92949c;
 }
 
-@media (prefers-color-scheme: dark) {
+@media (prefers-color-scheme: pink) {
   /*
    * Dark Colors
    * ---------------- ---------------------------

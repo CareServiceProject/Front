@@ -29,7 +29,7 @@ const Chatting = () => {
 
   useEffect(() => {
     const client = new Client({
-      webSocketFactory: () => new SockJS("http://43.203.89.178:8080/ws/chat"),
+      webSocketFactory: () => new SockJS("http://43.203.32.99:8080/ws/chat"),
       // brokerURL: "http://43.203.89.178:8080/ws/chat",
       connectHeaders: {
         login: "user",

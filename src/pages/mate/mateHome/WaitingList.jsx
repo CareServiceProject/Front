@@ -63,7 +63,7 @@ const WaitingList = () => {
           <IonTitle>대기중인 도움 목록</IonTitle>
         </IonToolbar>
       </IonHeader>
-      <IonContent>
+      <IonContent className="ion-padding">
         {waitingList.map((item, index) => (
           <ServiceCard
             key={index}
