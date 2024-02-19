@@ -13,97 +13,107 @@ import { IonIcon, IonLabel } from "@ionic/react";
 
 const NavBar = () => {
   const location = useLocation();
+  const endPoint = location.pathname.split("/")[2];
+  console.log(endPoint);
   const prefix = location.pathname.split("/")[1];
   console.log("location", prefix);
   useEffect(() => {}, []);
 
-  const [homeIcon, setHomeIcon] = useState(homeOutline);
-  const [chatIcon, setChatIcon] = useState(chatbubblesOutline);
-  const [happyIcon, setHappyIcon] = useState(happyOutline);
+  // const handleMouseEnter = (icon) => {
+  //   switch (icon) {
+  //     case "home":
+  //       setHomeIcon(home);
+  //       break;
+  //     case "chatbubbles":
+  //       setChatIcon(chatbubbles);
+  //       break;
+  //     case "happy":
+  //       setHappyIcon(happy);
+  //       break;
+  //     default:
+  //       break;
+  //   }
+  // };
 
-  const handleMouseEnter = (icon) => {
-    switch (icon) {
-      case "home":
-        setHomeIcon(home);
-        break;
-      case "chatbubbles":
-        setChatIcon(chatbubbles);
-        break;
-      case "happy":
-        setHappyIcon(happy);
-        break;
-      default:
-        break;
-    }
-  };
-
-  const handleMouseLeave = (icon) => {
-    switch (icon) {
-      case "home":
-        setHomeIcon(homeOutline);
-        break;
-      case "chatbubbles":
-        setChatIcon(chatbubblesOutline);
-        break;
-      case "happy":
-        setHappyIcon(happyOutline);
-        break;
-      default:
-        break;
-    }
-  };
+  // const handleMouseLeave = (icon) => {
+  //   switch (icon) {
+  //     case "home":
+  //       setHomeIcon(homeOutline);
+  //       break;
+  //     case "chatbubbles":
+  //       setChatIcon(chatbubblesOutline);
+  //       break;
+  //     case "happy":
+  //       setHappyIcon(happyOutline);
+  //       break;
+  //     default:
+  //       break;
+  //   }
+  // };
 
   return (
     <nav>
       <div>
-        <NavLink
-          to={`/${prefix}/home`}
-          className="nav-link"
-          onMouseEnter={() => handleMouseEnter("home")}
-          onMouseLeave={() => handleMouseLeave("home")}
-        >
+        <NavLink to={`/${prefix}/home`} className="nav-link">
           <div className="icon-label-container">
-            <IonIcon
-              className="icon"
-              icon={homeIcon}
-              style={{ width: "30px", height: "30px" }}
-            ></IonIcon>
+            {endPoint === "home" ? (
+              <IonIcon
+                className="icon"
+                icon={home}
+                style={{ width: "30px", height: "30px" }}
+              ></IonIcon>
+            ) : (
+              <IonIcon
+                className="icon"
+                icon={homeOutline}
+                style={{ width: "30px", height: "30px" }}
+              ></IonIcon>
+            )}
+
             <IonLabel className="label">홈</IonLabel>
           </div>
         </NavLink>
       </div>
 
       <div>
-        <NavLink
-          to={`/${prefix}/chat`}
-          className="nav-link"
-          onMouseEnter={() => handleMouseEnter("chatbubbles")}
-          onMouseLeave={() => handleMouseLeave("chatbubbles")}
-        >
+        <NavLink to={`/${prefix}/chat`} className="nav-link">
           <div className="icon-label-container">
-            <IonIcon
-              className="icon"
-              icon={chatIcon}
-              style={{ width: "30px", height: "30px" }}
-            ></IonIcon>
+            {endPoint === "chat" ? (
+              <IonIcon
+                className="icon"
+                icon={chatbubbles}
+                style={{ width: "30px", height: "30px" }}
+              ></IonIcon>
+            ) : (
+              <IonIcon
+                className="icon"
+                icon={chatbubblesOutline}
+                style={{ width: "30px", height: "30px" }}
+              ></IonIcon>
+            )}
+
             <IonLabel className="label">채팅</IonLabel>
           </div>
         </NavLink>
       </div>
 
       <div>
-        <NavLink
-          to={`/${prefix}/mypage`}
-          className="nav-link"
-          onMouseEnter={() => handleMouseEnter("happy")}
-          onMouseLeave={() => handleMouseLeave("happy")}
-        >
+        <NavLink to={`/${prefix}/mypage`} className="nav-link">
           <div className="icon-label-container">
-            <IonIcon
-              className="icon"
-              icon={happyIcon}
-              style={{ width: "30px", height: "30px" }}
-            ></IonIcon>
+            {endPoint === "mypage" ? (
+              <IonIcon
+                className="icon"
+                icon={happy}
+                style={{ width: "30px", height: "30px" }}
+              ></IonIcon>
+            ) : (
+              <IonIcon
+                className="icon"
+                icon={happyOutline}
+                style={{ width: "30px", height: "30px" }}
+              ></IonIcon>
+            )}
+
             <IonLabel className="label">마이</IonLabel>
           </div>
         </NavLink>

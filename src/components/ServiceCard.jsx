@@ -18,6 +18,7 @@ import { Modal, Rate, Toast } from "antd-mobile";
 import { useNavigate } from "react-router-dom";
 import { userCancelService } from "../api/user";
 import { mateCancel, mateFinish, waitingDetail } from "../api/mateApi";
+import { enterChattingRoom } from "../api/chatApi";
 
 const ServiceCard = ({ data, role, status, onAccept, onReload, onRate }) => {
   const navigate = useNavigate();
@@ -96,6 +97,11 @@ const ServiceCard = ({ data, role, status, onAccept, onReload, onRate }) => {
       });
       setIsOpen(true);
     };
+
+    const goChat = () => {
+      enterChattingRoom(data.careCid).then(() => {});
+      // navigate("/mate/chatting")
+    };
     return (
       <IonCard color="secondary">
         <IonCardHeader>
@@ -110,10 +116,7 @@ const ServiceCard = ({ data, role, status, onAccept, onReload, onRate }) => {
               status === "completed" ||
               status === "IN_PROGRESS" ||
               status === "HELP_DONE") && (
-              <IonButton
-                fill="clear"
-                onClick={() => navigate("/mate/chatting")}
-              >
+              <IonButton fill="clear" onClick={() => goChat()}>
                 채팅
               </IonButton>
             )}
