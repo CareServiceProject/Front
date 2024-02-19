@@ -11,23 +11,15 @@ import {
   IonModal,
   IonTitle,
   IonToolbar,
-} from '@ionic/react';
-import { useEffect, useRef, useState } from 'react';
-import DefaultAvatar from '../assets/default_avatar.jpg';
-import { Modal, Rate, Toast } from 'antd-mobile';
-import { useNavigate } from 'react-router-dom';
-import { userCancelService } from '../api/user';
-import { mateFinish, waitingDetail } from '../api/mateApi';
+} from "@ionic/react";
+import { useEffect, useRef, useState } from "react";
+import DefaultAvatar from "../assets/default_avatar.jpg";
+import { Modal, Rate, Toast } from "antd-mobile";
+import { useNavigate } from "react-router-dom";
+import { userCancelService } from "../api/user";
+import { mateCancel, mateFinish, waitingDetail } from "../api/mateApi";
 
-const ServiceCard = ({
-  data,
-  role,
-  status,
-  onAccept,
-  onReload,
-  onRate,
-  careCid,
-}) => {
+const ServiceCard = ({ data, role, status, onAccept, onReload, onRate }) => {
   const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
   const [rate, setRate] = useState(0);
@@ -35,22 +27,22 @@ const ServiceCard = ({
 
   const Contens = ({ isDetail }) => {
     const label = isDetail
-      ? ['내용', '일정', '위치', '성별', '금액']
-      : ['내용', '일정', '위치'];
+      ? ["내용", "일정", "위치", "성별", "금액"]
+      : ["내용", "일정", "위치"];
 
     const contentShow = (item) => {
       switch (item) {
-        case '내용':
+        case "내용":
           return datas.content;
-        case '일정':
-          return role === 'user'
+        case "일정":
+          return role === "user"
             ? datas.date
-            : datas.date + '/' + datas.startTime;
-        case '위치':
-          return role === 'user' ? datas.location : datas.arrivalLoc;
-        case '성별':
+            : datas.date + "/" + datas.startTime;
+        case "위치":
+          return role === "user" ? datas.location : datas.arrivalLoc;
+        case "성별":
           return datas.gender;
-        case '금액':
+        case "금액":
           return datas.cost;
         default:
           return datas.content;
@@ -61,34 +53,37 @@ const ServiceCard = ({
       const userCancel = () => {
         userCancelService(id).then((res) => {
           Toast.show({
-            content: '성공적으로 취소되었습니다.',
+            content: "성공적으로 취소되었습니다.",
           });
           setTimeout(() => {
             onReload();
           }, 1000);
         });
       };
-      const mateCancel = () => {
-        const mateCancel = () => {
-          if (typeof onCancelHelpRequest === 'function') {
-            onCancelHelpRequest(id).then((res) => {
-              console.log(res);
-              Toast.show({
-                content: '도움 취소되었습니다.',
-              });
-              onReload();
+
+      const onMateCancel = () => {
+        mateCancel(id)
+          .then((res) => {
+            console.log(res);
+            Toast.show({
+              content: "성공적으로 취소되었습니다.",
             });
-          }
-        };
+            setTimeout(() => {
+              onReload();
+            }, 1000);
+          })
+          .catch((error) => {
+            console.error(error);
+          });
       };
 
-      role === 'user' ? userCancel() : mateCancel();
+      role === "user" ? userCancel() : onMateCancel();
     };
 
     const onFinish = (id) => {
-      mateFinish(id).then((res) => {
+      mateFinish(id).then(() => {
         Toast.show({
-          content: '완료되었습니다.',
+          content: "완료되었습니다.",
         });
         setInterval(() => {
           onReload();
@@ -104,20 +99,20 @@ const ServiceCard = ({
     return (
       <IonCard color="secondary">
         <IonCardHeader>
-          <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+          <div style={{ display: "flex", justifyContent: "space-between" }}>
             <IonAvatar
               className="ion-margin-end"
-              style={{ width: '70px', height: '70px' }}
+              style={{ width: "70px", height: "70px" }}
             >
               <img src={data.imageAddress || DefaultAvatar}></img>
             </IonAvatar>
-            {(status === 'proceeding' ||
-              status === 'completed' ||
-              status === 'IN_PROGRESS' ||
-              status === 'HELP_DONE') && (
+            {(status === "proceeding" ||
+              status === "completed" ||
+              status === "IN_PROGRESS" ||
+              status === "HELP_DONE") && (
               <IonButton
                 fill="clear"
-                onClick={() => navigate('/mate/chatting')}
+                onClick={() => navigate("/mate/chatting")}
               >
                 채팅
               </IonButton>
@@ -130,19 +125,19 @@ const ServiceCard = ({
             return (
               <div
                 key={index}
-                style={{ display: 'flex', alignItems: 'center' }}
+                style={{ display: "flex", alignItems: "center" }}
                 className="ion-margin"
               >
                 <IonLabel>{item}</IonLabel>
 
                 <div
                   style={{
-                    display: 'flex',
+                    display: "flex",
                     flex: 1,
-                    borderRadius: '8px',
-                    backgroundColor: 'white',
-                    padding: '5px',
-                    color: 'black',
+                    borderRadius: "8px",
+                    backgroundColor: "white",
+                    padding: "5px",
+                    color: "black",
                   }}
                   className="ion-margin-start"
                 >
@@ -154,72 +149,66 @@ const ServiceCard = ({
         </IonCardContent>
         <div
           style={{
-            display: 'flex',
-            justifyContent: 'flex-end',
-            flexWrap: 'wrap',
+            display: "flex",
+            justifyContent: "flex-end",
+            flexWrap: "wrap",
           }}
           className="ion-margin"
         >
-          {!isDetail && role === 'mate' && (
+          {!isDetail && role === "mate" && (
             <IonButton fill="clear" onClick={onDetailClick}>
               상세 내역
             </IonButton>
           )}
 
           {/* 유저 && 대기중 || 진행중 */}
-          {((role === 'user' && status === 'waiting') ||
-            status === 'proceeding' ||
-            status === 'IN_PROGRESS') && (
-            <IonButton
-              fill="clear"
-              onClick={() => {
-                oncancel(data.careCid);
-                console.log('도움 취소 버튼이 클릭되었습니다.');
-              }}
-            >
+          {((role === "user" && status === "waiting") ||
+            status === "proceeding" ||
+            status === "IN_PROGRESS") && (
+            <IonButton fill="clear" onClick={() => oncancel(data.careCid)}>
               취소
             </IonButton>
           )}
 
-          {role === 'mate' && status === 'IN_PROGRESS' && (
+          {role === "mate" && status === "IN_PROGRESS" && (
             <IonButton fill="clear" onClick={() => onFinish(data.careCid)}>
               완료
             </IonButton>
           )}
           {/* 메이트 && 완료 */}
-          {role === 'mate' && status === 'HELP_DONE' && (
+          {role === "mate" && status === "HELP_DONE" && (
             <>
               <IonButton
                 fill="clear"
                 onClick={() => {
                   Modal.show({
-                    header: '결제가 되었습니까?',
+                    header: "결제가 되었습니까?",
 
                     closeOnMaskClick: true,
                     closeOnAction: true,
                     actions: [
                       {
-                        key: 'paymentDone',
-                        text: '결제완료',
+                        key: "paymentDone",
+                        text: "결제완료",
                         primary: true,
                         onClick() {
                           //
                         },
                         style: {
-                          backgroundColor: 'var(--ion-color-primary)',
-                          border: 'none',
+                          backgroundColor: "var(--ion-color-primary)",
+                          border: "none",
                         },
                       },
                       {
-                        key: 'paymentNo',
-                        text: '결제미완',
+                        key: "paymentNo",
+                        text: "결제미완",
                         primary: true,
                         onClick() {
                           //
                         },
                         style: {
-                          backgroundColor: 'var(--ion-color-danger)',
-                          border: 'none',
+                          backgroundColor: "var(--ion-color-danger)",
+                          border: "none",
                         },
                       },
                     ],
@@ -232,7 +221,7 @@ const ServiceCard = ({
           )}
 
           {/* 메이트 && 대기중 */}
-          {role === 'mate' && status === 'waiting' && (
+          {role === "mate" && status === "waiting" && (
             <IonButton
               fill="clear"
               onClick={() => {
@@ -244,15 +233,15 @@ const ServiceCard = ({
           )}
 
           {/* 유저 && 완료 */}
-          {role === 'user' && status === 'completed' && (
+          {role === "user" && status === "completed" && (
             <IonButton
               fill="clear"
               onClick={() => {
                 Modal.show({
-                  title: '오늘 동행해드린 메이트는 어떠셨나요?',
-                  header: '평가해주세요!',
+                  title: "오늘 동행해드린 메이트는 어떠셨나요?",
+                  header: "평가해주세요!",
                   content: (
-                    <div style={{ display: 'flex', justifyContent: 'center' }}>
+                    <div style={{ display: "flex", justifyContent: "center" }}>
                       <Rate
                         allowHalf
                         onChange={(v) => {
@@ -266,15 +255,15 @@ const ServiceCard = ({
                   closeOnAction: true,
                   actions: [
                     {
-                      key: 'submit',
-                      text: '제출하기',
+                      key: "submit",
+                      text: "제출하기",
                       primary: true,
                       onClick() {
                         onRate(data.careCid, rate);
                       },
                       style: {
-                        backgroundColor: 'var(--ion-color-primary)',
-                        border: 'none',
+                        backgroundColor: "var(--ion-color-primary)",
+                        border: "none",
                       },
                     },
                   ],

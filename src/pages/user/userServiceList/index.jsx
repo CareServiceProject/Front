@@ -15,6 +15,7 @@ import ServiceCard from "../../../components/ServiceCard";
 import { userGetServiceList } from "../../../api/user";
 import { mateCareHistory } from "../../../api/mateApi";
 import { userEvaluateApi } from "../../../api/userEvaluateApi";
+import { Empty } from "antd-mobile";
 
 const UserServiceList = () => {
   const router = useNavigate();
@@ -88,18 +89,25 @@ const UserServiceList = () => {
         </IonToolbar>
       </IonHeader>
       <IonContent className="ion-padding">
-        {data.map((item, index) => {
-          return (
-            <ServiceCard
-              key={index}
-              data={item}
-              role={prefix}
-              status={status}
-              onReload={() => window.location.reload()}
-              onRate={handleEvaluate}
-            ></ServiceCard>
-          );
-        })}
+        {data.length > 0 ? (
+          data.map((item, index) => {
+            return (
+              <ServiceCard
+                key={index}
+                data={item}
+                role={prefix}
+                status={status}
+                onReload={() => window.location.reload()}
+                onRate={handleEvaluate}
+              ></ServiceCard>
+            );
+          })
+        ) : (
+          <Empty
+            description="조회 내용이 없습니다."
+            style={{ marginTop: "150px" }}
+          />
+        )}
       </IonContent>
     </IonPage>
   );
