@@ -107,7 +107,6 @@ const UserProfile = () => {
         </IonToolbar>
       </IonHeader>
       <IonContent className="ion-padding signUp">
-        <Logo></Logo>
         <div
           style={{
             display: "flex",

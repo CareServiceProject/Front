@@ -17,3 +17,9 @@ export const mateApply = (id) => http.put(`/api/mate/apply/${id}`);
 export const mateMy = (id) => http.get(`/api/mate/mypage`);
 // 완료하기
 export const mateFinish = (id) => http.put(`/api/mate/finish/${id}`);
+
+//나의 정보
+export const mateInfo = () => http.get(`/api/mate/mateInfo`);
+
+//나의 정보 수정
+export const editMateInfo = () => http.put(`/api/mate/mateInfo`);

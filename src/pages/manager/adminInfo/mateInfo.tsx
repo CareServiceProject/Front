@@ -35,12 +35,13 @@ interface MateInfo {
   mateId: number;
   mateName: string;
   registrationNum: string;
-  isBlacklisted: boolean;
-  mateStatus: boolean;
+  blacklisted: boolean;
+  mateStatus: string;
   mateGender?: string;
   email?: string;
   phoneNum?: string;
   approval?: boolean;
+  imageAddress?: string;
 }
 
 const MateInfo: React.FC = () => {
@@ -49,13 +50,12 @@ const MateInfo: React.FC = () => {
   const [selectedMate, setSelectedMate] = useState<MateInfo | null>(null);
   const [rejectReason, setRejectReason] = useState("");
   const [mateDetail, setMateDetail] = useState<MateInfo | null>(null);
-
+  const fetchUserList = async () => {
+    getMateList().then((res: MateInfo[]) => {
+      setMateList(res);
+    });
+  };
   useEffect(() => {
-    const fetchUserList = async () => {
-      getMateList().then((res: MateInfo[]) => {
-        setMateList(res);
-      });
-    };
     fetchUserList();
   }, []);
 
@@ -79,31 +79,34 @@ const MateInfo: React.FC = () => {
     setShowModal(false);
   };
 
-  const toggleBlacklist = () => {
+  const toggleBlacklist = (isBlacklisted, mateCid) => {
     if (selectedMate) {
-      const { mateId, isBlacklisted } = selectedMate;
+      const { mateId, blacklisted } = selectedMate;
 
-      mateBlacklisted(selectedMate?.cid, !mateDetail?.isBlacklisted).then(
-        (response: ApprovalResponse) => {
-          console.log("서버 응답:", response);
+      // mateBlacklisted(selectedMate?.cid, !mateDetail?.blacklisted).then(
+      //   (response: ApprovalResponse) => {
+      //     console.log("서버 응답:", response);
 
-          if (selectedMate && response.success) {
-            setMateList((prevMateList) => {
-              const updatedList = prevMateList.map((mate) =>
-                mate.mateId === selectedMate.mateId
-                  ? { ...mate, blacklisted: !mate.isBlacklisted }
-                  : mate
-              );
+      //     if (selectedMate && response.success) {
+      //       setMateList((prevMateList) => {
+      //         const updatedList = prevMateList.map((mate) =>
+      //           mate.mateId === selectedMate.mateId
+      //             ? { ...mate, blacklisted: !mate.blacklisted }
+      //             : mate
+      //         );
 
-              return updatedList;
-            });
-            closeModal();
-            console.log(response.message);
-          } else {
-            console.error(response.message);
-          }
-        }
-      );
+      //         return updatedList;
+      //       });
+      //       closeModal();
+      //       console.log(response.message);
+      //     } else {
+      //       console.error(response.message);
+      //     }
+      //   }
+      // );
+      mateBlacklisted(mateCid, isBlacklisted ? false : true).then((res) => {
+        fetchUserList();
+      });
     }
   };
   interface ApprovalResponse {
@@ -172,12 +175,12 @@ const MateInfo: React.FC = () => {
         <IonList>
           {mateList
             .sort((a, b) => (a.mateStatus ? 1 : b.mateStatus ? -1 : 0))
-            .sort((a, b) => (a.isBlacklisted ? 1 : b.isBlacklisted ? -1 : 0))
+            .sort((a, b) => (a.blacklisted ? 1 : b.blacklisted ? -1 : 0))
             .map((mate) => (
               <IonItem key={mate.mateId} button onClick={() => openModal(mate)}>
                 <IonLabel style={{ display: "flex", alignItems: "center" }}>
                   <img
-                    src={DefaultAvatar}
+                    src={mate.imageAddress || DefaultAvatar}
                     alt="avatar"
                     style={{
                       width: "70px",
@@ -187,25 +190,19 @@ const MateInfo: React.FC = () => {
                     }}
                   />
                   <IonText>
-                    {mate.mateId} _{" "}
-                    {mate.isBlacklisted ? "블랙리스트메이트" : "일반메이트"}
-                    <br />
+                    {mate.mateId} <br />
                     {mate.mateName} / {mate.mateGender}
-                    <span
-                      style={{
-                        color: mate.approval ? "green" : "red",
-                      }}
-                    >
-                      {mate.approval ? " 가입승인" : " 가입미승인"}
-                    </span>
+                    <p style={{ color: "red" }}>
+                      {mate.blacklisted ? "Blocked" : ""}
+                    </p>
                   </IonText>
                 </IonLabel>
                 <IonToggle
                   slot="end"
-                  checked={mate.isBlacklisted}
+                  checked={!mate.blacklisted}
                   onClick={(e) => {
                     e.stopPropagation();
-                    openModal(mate);
+                    toggleBlacklist(mate.blacklisted, mate.cid);
                   }}
                 />
               </IonItem>
@@ -271,13 +268,21 @@ const MateInfo: React.FC = () => {
                   <IonItem>
                     <IonLabel>가입승인여부:</IonLabel>
                     <IonText>
-                      {mateDetail.approval ? "가입미승인" : "가입승인"}
+                      {mateDetail.mateStatus === "FAILED" ? (
+                        <p style={{ color: "var(--ion-color-danger)" }}>
+                          가입미승인
+                        </p>
+                      ) : (
+                        <p style={{ color: "var(--ion-color-primary)" }}>
+                          가입승인
+                        </p>
+                      )}
                     </IonText>
                   </IonItem>
                   <IonItem>
                     <IonLabel>메이트 상태:</IonLabel>
                     <IonText>
-                      {mateDetail.isBlacklisted
+                      {mateDetail.blacklisted
                         ? "블랙리스트 메이트"
                         : "일반 메이트"}
                     </IonText>
@@ -297,12 +302,6 @@ const MateInfo: React.FC = () => {
                       }}
                     ></IonInput>
                   </IonItem>
-
-                  <IonToggle
-                    checked={mateDetail.isBlacklisted}
-                    onIonChange={toggleBlacklist}
-                    style={{ margin: "20px 15px 20px 0", float: "right" }}
-                  />
                 </IonCardContent>
               </IonCard>
             )}

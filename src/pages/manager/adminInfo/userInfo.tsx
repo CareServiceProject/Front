@@ -30,10 +30,11 @@ interface UserInfo {
   cid: string;
   userId: string;
   userName: string;
-  isBlacklisted: boolean;
+  blacklisted: boolean;
   userGender?: string;
   email: string;
   phone: string;
+  imageAddress: string;
 }
 
 const UserInfo: React.FC = () => {
@@ -41,15 +42,13 @@ const UserInfo: React.FC = () => {
   const [selectedUser, setSelectedUser] = useState<UserInfo | null>(null);
   const [userList, setUserList] = useState<UserInfo[]>([]);
   const [userDetail, setUserDetail] = useState<UserInfo | null>(null);
-
+  const fetchUserList = async () => {
+    getUserList().then((res: UserInfo[]) => {
+      console.log(res);
+      setUserList(res);
+    });
+  };
   useEffect(() => {
-    const fetchUserList = async () => {
-      getUserList().then((res: UserInfo[]) => {
-        console.log(res);
-        setUserList(res);
-      });
-    };
-
     fetchUserList();
   }, []);
 
@@ -76,28 +75,11 @@ const UserInfo: React.FC = () => {
     setShowModal(false);
   };
 
-  // const toggleBlacklist = () => {
-  //   if (selectedUser) {
-  //     const newBlacklistedState = !selectedUser.isBlacklisted;
-
-  //     // 서버에 새로운 블랙리스트 상태를 전송
-  //     userBlacklisted(selectedUser.cid, newBlacklistedState).then(() => {
-  //       setUserList((prevUserList) => {
-  //         const updatedList = prevUserList.map((user) =>
-  //           user.userId === selectedUser.userId
-  //             ? { ...user, blacklisted: newBlacklistedState }
-  //             : user
-  //         );
-  //         updatedList.sort((a, b) =>
-  //           a.isBlacklisted ? 1 : b.isBlacklisted ? -1 : 0
-  //         );
-
-  //         return updatedList;
-  //       });
-  //       closeModal();
-  //     });
-  //   }
-  // };
+  const toggleBlacklist = (isBlacklisted: boolean, userCid: string) => {
+    userBlacklisted(userCid, isBlacklisted ? false : true).then(() => {
+      fetchUserList();
+    });
+  };
 
   return (
     <IonPage id="main-menu">
@@ -116,7 +98,7 @@ const UserInfo: React.FC = () => {
             <IonItem key={user.userId} button onClick={() => openModal(user)}>
               <IonLabel style={{ display: "flex", alignItems: "center" }}>
                 <img
-                  src={DefaultAvatar}
+                  src={user.imageAddress || DefaultAvatar}
                   alt="avatar"
                   style={{
                     width: "70px",
@@ -126,18 +108,19 @@ const UserInfo: React.FC = () => {
                   }}
                 />
                 <IonText>
-                  {user.userId} _{" "}
-                  {user.isBlacklisted ? "일반유저" : "블랙리스트유저"}
-                  <br />
+                  {user.userId} <br />
                   {user.userName} / {user.userGender}{" "}
+                  {user.blacklisted ? (
+                    <p style={{ color: "red" }}>Blocked</p>
+                  ) : null}
                 </IonText>
               </IonLabel>
               <IonToggle
                 slot="end"
-                checked={user.isBlacklisted}
+                checked={!user.blacklisted}
                 onClick={(e) => {
                   e.stopPropagation();
-                  openModal(user);
+                  toggleBlacklist(user.blacklisted, user.cid);
                 }}
               />
             </IonItem>
@@ -168,19 +151,6 @@ const UserInfo: React.FC = () => {
                     <IonLabel>전화번호:</IonLabel>
                     <IonText>{userDetail.phone}</IonText>
                   </IonItem>
-                  <IonItem>
-                    <IonLabel>유저 상태:</IonLabel>
-                    <IonText>
-                      {userDetail.isBlacklisted
-                        ? "일반 유저"
-                        : "블랙리스트 유저"}
-                    </IonText>
-                  </IonItem>
-                  <IonToggle
-                    checked={userDetail.isBlacklisted}
-                    // onIonChange={toggleBlacklist}
-                    style={{ margin: "20px 10px 20px 0", float: "right" }}
-                  />
                 </IonCardContent>
               </IonCard>
             ) : (
