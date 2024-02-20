@@ -5,6 +5,7 @@ import Logo from "../../components/Logo";
 import { useNavigate } from "react-router-dom";
 import { login } from "../../api/authApi";
 import { localToken } from "../../utils/auth";
+import AddressSearch from "../../components/DaumPostCode";
 
 const Login = () => {
   const navigate = useNavigate();

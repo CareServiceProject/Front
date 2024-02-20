@@ -25,6 +25,7 @@ import {
   getUserDetail,
   userBlacklisted,
 } from "../../../api/managerApi";
+import { useNavigate } from "react-router-dom";
 
 interface UserInfo {
   cid: string;
@@ -38,6 +39,7 @@ interface UserInfo {
 }
 
 const UserInfo: React.FC = () => {
+  const navigate = useNavigate();
   const [showModal, setShowModal] = useState(false);
   const [selectedUser, setSelectedUser] = useState<UserInfo | null>(null);
   const [userList, setUserList] = useState<UserInfo[]>([]);
@@ -90,8 +92,8 @@ const UserInfo: React.FC = () => {
       <IonHeader>
         <IonToolbar>
           {" "}
-          <IonButtons slot="start">
-            <IonBackButton defaultHref="/selectAdmin" />
+          <IonButtons slot="start" onClick={() => navigate(-1)}>
+            <IonBackButton defaultHref="/" />
           </IonButtons>
           <IonTitle>유저 관리</IonTitle>
         </IonToolbar>

@@ -14,26 +14,30 @@ import {
 import { sendOutline as vvvv } from "ionicons/icons";
 import React, { useEffect, useRef, useState } from "react";
 import DefaultAvatar from "../../../assets/default_avatar.jpg";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { Client } from "@stomp/stompjs";
+import SockJS from "sockjs-client/dist/sockjs.min.js";
 import "./style.css";
+import { localToken } from "../../../utils/auth";
 
 const Chatting = () => {
   const navigate = useNavigate();
+  const location = useLocation();
+  const roomCid = location.state.roomCid;
+  console.log();
+
   const [text, setText] = useState("");
   const contentRef = useRef();
 
   const [messages, setMessages] = useState([]);
   const [stompClient, setStompClient] = useState(null);
-  const roomCid = 1;
 
   useEffect(() => {
     const client = new Client({
-      webSocketFactory: () => new SockJS("http://43.203.32.99:8080/ws/chat"),
-      // brokerURL: "http://43.203.89.178:8080/ws/chat",
+      webSocketFactory: () => new SockJS("https://helpu-service.site/ws/chat"),
+      // brokerURL: "wss://https://helpu-service.site/ws/chat",
       connectHeaders: {
-        login: "user",
-        passcode: "password",
+        Authorization: localToken.get(),
       },
       debug: function (str) {
         console.log(str);
@@ -50,6 +54,7 @@ const Chatting = () => {
       // Do something, all subscribes must be done is this callback
       // This is needed because this will be executed after a (re)connect
       client.subscribe(`/queue/chat/message/${roomCid}`, (message) => {
+        console.log("mmmmm", message);
         const newMessages = [...messages, JSON.parse(message.body)];
         setMessages(newMessages);
       });
@@ -78,23 +83,12 @@ const Chatting = () => {
     };
 
     stompClient?.publish({
+      Authorization: localToken.get(),
       destination: `/app/chat/message/${roomCid}`,
       body: message,
       skipContentLengthHeader: true,
     });
   };
-
-  // const onSendMsg = () => {
-  //   setMessages((prev) => [...prev, { text: text, from: "me" }]);
-  //   setText("");
-  //   contentRef?.current?.scrollToBottom();
-  // };
-
-  // const onRecieveMsg = () => {
-  //   setMessages((prev) => [...prev, { text: text, from: "other" }]);
-  //   setText("");
-  //   contentRef?.current?.scrollToBottom();
-  // };
 
   return (
     <IonPage>

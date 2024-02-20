@@ -21,6 +21,7 @@ import {
 import toISOLocal from "../../../utils/getLocalISO";
 import { Toast } from "antd-mobile";
 import { applyRequest } from "../../../api/user";
+import AddressSearch from "../../../components/DaumPostCode";
 
 const UserRequest = () => {
   const router = useNavigate();
@@ -32,6 +33,8 @@ const UserRequest = () => {
 
   const [startTime, setStartTime] = useState(toISOLocal(new Date()));
   const [endTime, setEndTime] = useState(toISOLocal(new Date()));
+  const [showPickUpAddress, setShowPickUpAddress] = useState(false);
+  const [showDestinationAddress, setShowDestinationAddress] = useState(false);
 
   const submitForm = () => {
     const data = {
@@ -57,13 +60,25 @@ const UserRequest = () => {
         Toast.show({
           content: "요청하신 동행이 성공적으로 신청 완료되었습니다.",
         });
-        router(-1);
+        setTimeout(() => {
+          router(-1);
+        }, 500);
       });
     } else {
       Toast.show({
-        content: "작성 완료해주세요.",
+        content: "작성을 완료해주세요.",
       });
     }
+  };
+
+  const handleFinishPicLoc = (data) => {
+    setShowPickUpAddress(false);
+    setPickupLocation(data);
+  };
+
+  const handleFinishDest = (data) => {
+    setShowDestinationAddress(false);
+    setDestination(data);
   };
 
   return (
@@ -90,7 +105,6 @@ const UserRequest = () => {
             }}
           ></IonDatetime>
         </IonModal>
-
         <IonLabel>종료 시간</IonLabel>
         <IonDatetimeButton
           datetime="endTime"
@@ -107,22 +121,46 @@ const UserRequest = () => {
             }}
           ></IonDatetime>
         </IonModal>
-
-        <IonInput
-          className="ion-margin-top ion-padding"
-          label="픽업장소"
-          type="text"
-          value={pickupLocation}
-          onIonInput={(e) => setPickupLocation(e.target.value)}
-        ></IonInput>
-
-        <IonInput
-          className="ion-margin-top ion-padding"
-          label="목적지"
-          type="text"
-          value={destination}
-          onIonInput={(e) => setDestination(e.target.value)}
-        />
+        <div style={{ display: "flex" }}>
+          <IonInput
+            className="ion-margin-top ion-padding"
+            label="픽업장소"
+            type="text"
+            value={pickupLocation}
+            onIonInput={(e) => setPickupLocation(e.target.value)}
+          ></IonInput>
+          <IonButton
+            fill="outline"
+            onClick={() => setShowPickUpAddress((prev) => !prev)}
+            className="ion-margin"
+          >
+            {showPickUpAddress ? "닫기" : "주소 검색"}
+          </IonButton>
+        </div>
+        <AddressSearch
+          showAddress={showPickUpAddress}
+          onFinish={handleFinishPicLoc}
+        ></AddressSearch>
+        <AddressSearch
+          showAddress={showDestinationAddress}
+          onFinish={handleFinishDest}
+        ></AddressSearch>
+        <div style={{ display: "flex" }}>
+          <IonInput
+            className="ion-margin-top ion-padding"
+            label="목적지"
+            type="text"
+            value={destination}
+            onIonInput={(e) => setDestination(e.target.value)}
+          />
+          <IonButton
+            fill="outline"
+            onClick={() => setShowDestinationAddress((prev) => !prev)}
+            className="ion-margin"
+          >
+            {showDestinationAddress ? "닫기" : "주소 검색"}
+          </IonButton>
+        </div>
 
         <IonInput
           className="ion-margin-top ion-padding"
@@ -144,7 +182,11 @@ const UserRequest = () => {
           <IonSelectOption value="WOMEN">여</IonSelectOption>
           <IonSelectOption value="MEN">남</IonSelectOption>
         </IonSelect>
-        <IonButton onClick={submitForm} className="ion-margin">
+        <IonButton
+          onClick={submitForm}
+          className="ion-margin"
+          style={{ width: "90%" }}
+        >
           신청하기
         </IonButton>
       </IonContent>

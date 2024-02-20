@@ -99,8 +99,9 @@ const ServiceCard = ({ data, role, status, onAccept, onReload, onRate }) => {
     };
 
     const goChat = () => {
-      enterChattingRoom(data.careCid).then(() => {});
-      // navigate("/mate/chatting")
+      enterChattingRoom(data.careCid).then(() => {
+        navigate("/mate/chatting", { state: { roomCid: data.careCid } });
+      });
     };
     return (
       <IonCard color="secondary">
