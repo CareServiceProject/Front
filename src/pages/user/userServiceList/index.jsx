@@ -89,10 +89,10 @@ const UserServiceList = () => {
       </IonHeader>
       <IonContent className="ion-padding">
         {data.length > 0 ? (
-          data.map((item, index) => {
+          data.map((item) => {
             return (
               <ServiceCard
-                key={index}
+                key={item.careCid}
                 data={item}
                 role={prefix}
                 status={status}

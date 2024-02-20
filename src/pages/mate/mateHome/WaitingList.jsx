@@ -66,7 +66,7 @@ const WaitingList = () => {
         {waitingList.length > 0 ? (
           waitingList.map((item, index) => (
             <ServiceCard
-              key={index}
+              key={item.careCid}
               data={item}
               role="mate"
               status="waiting"

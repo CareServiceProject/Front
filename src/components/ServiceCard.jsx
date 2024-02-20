@@ -87,9 +87,7 @@ const ServiceCard = ({
           Toast.show({
             content: "성공적으로 취소되었습니다.",
           });
-          setTimeout(() => {
-            onReload();
-          }, 1000);
+          onReload();
         });
       };
 
@@ -100,9 +98,7 @@ const ServiceCard = ({
             Toast.show({
               content: "성공적으로 취소되었습니다.",
             });
-            setTimeout(() => {
-              onReload();
-            }, 1000);
+            onReload();
           })
           .catch((error) => {
             console.error(error);
@@ -117,9 +113,7 @@ const ServiceCard = ({
         Toast.show({
           content: "완료되었습니다.",
         });
-        setInterval(() => {
-          onReload();
-        }, 1000);
+        onReload();
       });
     };
     const onDetailClick = () => {
