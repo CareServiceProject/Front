@@ -97,7 +97,7 @@ const Chatting = () => {
           <IonButtons slot="start" onClick={() => navigate(-1)}>
             <IonBackButton defaultHref="/"></IonBackButton>
           </IonButtons>
-          <IonTitle>Page Title</IonTitle>
+          {/* <IonTitle>Page Title</IonTitle> */}
         </IonToolbar>
       </IonHeader>
       <IonContent className="ion-padding" scrollEvents={true} ref={contentRef}>

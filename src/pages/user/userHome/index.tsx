@@ -9,8 +9,9 @@ import {
   IonToolbar,
 } from "@ionic/react";
 import SlideMenu from "../../../components/SlideMenu";
+import "./userHome.css";
 
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import bodyImg from "../../../assets/logo-big-greenRed.png";
 
 const UserHome: React.FC = () => {
@@ -69,7 +70,6 @@ const UserHome: React.FC = () => {
             </Link>
           </div>
           <div
-            onClick={() => navigate("/user/request")}
             style={{
               display: "flex",
               flexDirection: "column",
@@ -95,24 +95,24 @@ const UserHome: React.FC = () => {
                 "0px 4px 8px rgba(0, 0, 0, 0.1)";
             }}
           >
-            {/* <Link
+            <Link
               style={{
-                textDecoration: 'none',
-                color: '#fee0d4',
+                textDecoration: "none",
+                color: "#fee0d4",
               }}
               to="/user/request"
-            > */}
-            <h1
-              style={{
-                fontFamily: "TmoneyRoundWind",
-                color: "black",
-              }}
-              className="body-content"
             >
-              {" "}
-              동행 서비스
-            </h1>
-            {/* </Link> */}
+              <h1
+                style={{
+                  fontFamily: "TmoneyRoundWind",
+                  color: "black",
+                }}
+                className="body-content"
+              >
+                {" "}
+                동행 서비스
+              </h1>
+            </Link>
           </div>
         </IonContent>
       </IonPage>

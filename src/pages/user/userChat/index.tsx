@@ -18,7 +18,7 @@ const UserChatList: React.FC = () => {
           <IonButtons slot="end">
             <IonMenuButton></IonMenuButton>
           </IonButtons>
-          <IonTitle>Page Title</IonTitle>
+          <IonTitle>나의 채팅리스트</IonTitle>
         </IonToolbar>
       </IonHeader>
       <IonContent className="ion-padding">user Chat List</IonContent>

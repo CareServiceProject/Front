@@ -10,17 +10,17 @@ import {
   IonPage,
   IonTitle,
   IonToolbar,
-} from '@ionic/react';
-import React, { useEffect, useState } from 'react';
-import { Rate } from 'antd-mobile';
-import StatusCard from '../../../components/StatusCard';
-import DefaultAvatar from '../../../assets/default_avatar.jpg';
+} from "@ionic/react";
+import React, { useEffect, useState } from "react";
+import { Rate } from "antd-mobile";
+import StatusCard from "../../../components/StatusCard";
+import DefaultAvatar from "../../../assets/default_avatar.jpg";
 import {
   mateCancel,
   mateCareHistory,
   mateInfo,
   mateMy,
-} from '../../../api/mateApi';
+} from "../../../api/mateApi";
 
 const MateMy = () => {
   const [data, setData] = useState({});
@@ -49,17 +49,17 @@ const MateMy = () => {
           <IonButtons slot="end">
             <IonMenuButton></IonMenuButton>
           </IonButtons>
-          <IonTitle>Page Title</IonTitle>
+          <IonTitle>My Page</IonTitle>
         </IonToolbar>
       </IonHeader>
       <IonContent className="ion-padding ">
         <div
-          style={{ display: 'flex', alignItems: 'center' }}
+          style={{ display: "flex", alignItems: "center" }}
           className="ion-margin"
         >
           <IonAvatar
             className="ion-margin-end"
-            style={{ width: '80px', height: '80px' }}
+            style={{ width: "80px", height: "80px" }}
           >
             <img src={data.imageAddress || DefaultAvatar}></img>
           </IonAvatar>
@@ -69,15 +69,15 @@ const MateMy = () => {
           <IonCardHeader>
             <h6>내 별점</h6>
           </IonCardHeader>
-          <IonCardContent>
-            <Rate readOnly value={data.mateRating} allowHalf />{' '}
+          <IonCardContent className="ion-text-center">
+            <Rate readOnly value={data.mateRating} allowHalf />{" "}
             {data.mateRating}
-            {'점'}
+            {"점"}
           </IonCardContent>
         </IonCard>
 
         <StatusCard data={data}></StatusCard>
-        <div style={{ height: '100px' }}></div>
+        <div style={{ height: "100px" }}></div>
       </IonContent>
     </IonPage>
   );
