@@ -182,15 +182,7 @@ const UserRequest = () => {
           <IonSelectOption value="WOMEN">여</IonSelectOption>
           <IonSelectOption value="MEN">남</IonSelectOption>
         </IonSelect>
-<<<<<<< HEAD
-        <IonButton
-          onClick={submitForm}
-          className="ion-margin"
-          style={{ width: "90%" }}
-        >
-=======
         <IonButton onClick={submitForm} className="ion-margin" expand="block">
->>>>>>> ed24190 (ui fix)
           신청하기
         </IonButton>
       </IonContent>
