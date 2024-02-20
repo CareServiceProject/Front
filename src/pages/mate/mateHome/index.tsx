@@ -7,6 +7,7 @@ import {
   IonPage,
   IonTitle,
   IonToolbar,
+  IonInput,
 } from "@ionic/react";
 import { Link } from "react-router-dom";
 import bodyImg from "../../../assets/logo-big-greenRed.png";
@@ -46,24 +47,13 @@ const MateHome: React.FC = () => {
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
-            // width: "313px",
             height: "280px",
+            maxHeight: "40%",
             backgroundColor: "#FFFAF0",
-            margin: "23px auto 20px",
+            margin: "auto",
             textDecoration: "none",
             color: "black",
-            // border: "2px solid #ccc",
-            // borderRadius: "10px",
-            // boxShadow: "0px 10px 20px rgba(0, 0, 0, 0.1)",
-            // transition: "box-shadow 0.3s ease",
           }}
-          // className="mateLogo-container"
-          // onMouseEnter={(e) => {
-          //   e.currentTarget.style.boxShadow = "0px 6px 12px rgba(0, 0, 0, 0.2)";
-          // }}
-          // onMouseLeave={(e) => {
-          //   e.currentTarget.style.boxShadow = "0px 4px 8px rgba(0, 0, 0, 0.1)";
-          // }}
         >
           <Link to="/mate/home">
             <img
@@ -72,7 +62,7 @@ const MateHome: React.FC = () => {
               style={{
                 flexDirection: "column",
                 cursor: "pointer",
-                width: "250px",
+                width: "350px",
                 height: "100%",
                 objectFit: "cover",
               }}
@@ -86,12 +76,14 @@ const MateHome: React.FC = () => {
             flexDirection: "column",
             alignItems: "center",
             justifyContent: "center",
-            margin: "0% auto 0",
+            textAlign: "center",
+            margin: "auto",
             backgroundColor: "#ffffff",
-            width: "500px",
+            maxWidth: "80%",
+            width: "55%",
+            maxHeight: "30%",
             height: "227px",
             cursor: "pointer",
-            // border: "2px solid #ccc",
             borderRadius: "10px",
             boxShadow: "0px 10px 20px rgba(0, 0, 0, 0.1)",
             transition: "box-shadow 0.3s ease",
@@ -106,24 +98,37 @@ const MateHome: React.FC = () => {
         >
           <Link
             to="/waitingList"
-            style={{ textDecoration: "none", color: "black" }}
+            style={{
+              flexDirection: "column",
+              alignItems: "center",
+              display: "table-cell",
+              verticalAlign: "middle",
+              textDecoration: "none",
+              color: "black",
+            }}
           >
-            <h2
+            <h1
               style={{
-                // fontFamily: "TmoneyRoundWind",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                margin: "auto",
+                textDecoration: "none",
                 color: "black",
               }}
             >
-              <div style={{}} className="request-top">
-                신규요청
-              </div>
-            </h2>
+              <div style={{ textAlign: "center" }}>신규 요청</div>
+            </h1>
+
             <h1>
               <div
                 style={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  margin: "auto",
                   textDecoration: "none",
                   color: "gray",
-                  paddingLeft: "10px",
                 }}
                 className="request-count"
               >

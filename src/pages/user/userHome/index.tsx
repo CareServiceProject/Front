@@ -31,24 +31,13 @@ const UserHome: React.FC = () => {
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
-            // width: "313px",
             height: "280px",
+            maxHeight: "40%",
             backgroundColor: "#FFFAF0",
-            margin: "23px auto 20px",
+            margin: "auto",
             textDecoration: "none",
             color: "black",
-            // border: "2px solid #ccc",
-            // borderRadius: "10px",
-            // boxShadow: "0px 10px 20px rgba(0, 0, 0, 0.1)",
-            // transition: "box-shadow 0.3s ease",
           }}
-          // className="logo-container"
-          // onMouseEnter={(e) => {
-          //   e.currentTarget.style.boxShadow = "0px 6px 12px rgba(0, 0, 0, 0.2)";
-          // }}
-          // onMouseLeave={(e) => {
-          //   e.currentTarget.style.boxShadow = "0px 4px 8px rgba(0, 0, 0, 0.1)";
-          // }}
         >
           <Link to="/user/home">
             <img
@@ -57,10 +46,9 @@ const UserHome: React.FC = () => {
               style={{
                 flexDirection: "column",
                 cursor: "pointer",
-                width: "250px",
+                width: "350px",
                 height: "100%",
                 objectFit: "cover",
-                // border: "1px clear #ccc",
               }}
               className="logo-img"
             />
@@ -72,12 +60,14 @@ const UserHome: React.FC = () => {
             flexDirection: "column",
             alignItems: "center",
             justifyContent: "center",
-            margin: "0% auto 0",
+            textAlign: "center",
+            margin: "auto",
             backgroundColor: "#ffffff",
-            width: "500px",
+            maxWidth: "80%",
+            width: "55%",
+            maxHeight: "30%",
             height: "227px",
             cursor: "pointer",
-            // border: "2px solid #ccc",
             borderRadius: "10px",
             boxShadow: "0px 10px 20px rgba(0, 0, 0, 0.1)",
             transition: "box-shadow 0.3s ease",
@@ -99,7 +89,6 @@ const UserHome: React.FC = () => {
           >
             <h2
               style={{
-                // fontFamily: "TmoneyRoundWind",
                 color: "black",
               }}
               className="body-content"
