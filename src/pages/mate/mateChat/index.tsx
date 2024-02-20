@@ -23,7 +23,7 @@ const MateChatList: React.FC = () => {
         </IonToolbar>
       </IonHeader>
       <IonContent className="ion-padding">
-        <ChatList></ChatList>
+        <ChatList role="mate"></ChatList>
       </IonContent>
     </IonPage>
   );

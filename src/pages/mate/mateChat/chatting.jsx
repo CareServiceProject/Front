@@ -6,7 +6,6 @@ import {
   IonContent,
   IonHeader,
   IonIcon,
-  IonInput,
   IonPage,
   IonTitle,
   IonToolbar,
@@ -17,28 +16,28 @@ import DefaultAvatar from "../../../assets/default_avatar.jpg";
 import { useLocation, useNavigate } from "react-router-dom";
 import { Client } from "@stomp/stompjs";
 import SockJS from "sockjs-client/dist/sockjs.min.js";
-import "./style.css";
 import { localToken } from "../../../utils/auth";
 
 const Chatting = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const roomCid = location.state.roomCid;
-  console.log();
+  const senderId = location.state.senderId;
+  const history = location.state.history;
 
   const [text, setText] = useState("");
   const contentRef = useRef();
 
-  const [messages, setMessages] = useState([]);
+  const [messages, setMessages] = useState(history);
   const [stompClient, setStompClient] = useState(null);
 
+  const token = {
+    Authorization: `Bearer ${localToken.get()}`,
+  };
   useEffect(() => {
     const client = new Client({
       webSocketFactory: () => new SockJS("https://helpu-service.site/ws/chat"),
-      // brokerURL: "wss://https://helpu-service.site/ws/chat",
-      connectHeaders: {
-        Authorization: localToken.get(),
-      },
+      headers: token,
       debug: function (str) {
         console.log(str);
       },
@@ -50,14 +49,18 @@ const Chatting = () => {
     setStompClient(client);
 
     client.onConnect = function (frame) {
-      console.log("Connected to WebSocket");
+      console.log("연결이 되었다");
       // Do something, all subscribes must be done is this callback
       // This is needed because this will be executed after a (re)connect
-      client.subscribe(`/queue/chat/message/${roomCid}`, (message) => {
-        console.log("mmmmm", message);
-        const newMessages = [...messages, JSON.parse(message.body)];
-        setMessages(newMessages);
-      });
+      client.subscribe(
+        `/queue/chat/message/${roomCid}`,
+        (chat) => {
+          const recieved = JSON.parse(chat.body);
+          console.log("mmmmm", recieved);
+          setMessages((prev) => [...prev, recieved]);
+        },
+        token
+      );
     };
 
     client.onStompError = function (frame) {
@@ -79,15 +82,20 @@ const Chatting = () => {
   const sendMessage = () => {
     const message = {
       message: text,
-      sender: "me",
+      sender: senderId,
     };
 
     stompClient?.publish({
-      Authorization: localToken.get(),
+      headers: {
+        "content-type": "application/json",
+        Authorization: localToken.get(),
+      },
+
       destination: `/app/chat/message/${roomCid}`,
-      body: message,
+      body: JSON.stringify(message),
       skipContentLengthHeader: true,
     });
+    setText("");
   };
 
   return (
@@ -119,7 +127,7 @@ const Chatting = () => {
             }}
           >
             {messages.map((msg, index) => {
-              return msg.sender === "me" ? (
+              return msg.sender === senderId ? (
                 <div
                   key={index}
                   style={{
@@ -131,7 +139,7 @@ const Chatting = () => {
                 >
                   <div
                     style={{
-                      backgroundColor: "var(--ion-color-secondary)",
+                      backgroundColor: "var(--ion-color-primary)",
                       padding: "6px",
                       borderRadius: "8px",
                       maxWidth: "200px",
@@ -169,7 +177,7 @@ const Chatting = () => {
                   ></img>
                   <div
                     style={{
-                      backgroundColor: "var(--ion-color-medium)",
+                      backgroundColor: "white",
                       padding: "6px",
                       borderRadius: "8px",
                       maxWidth: "200px",

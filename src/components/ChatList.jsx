@@ -10,30 +10,49 @@ import {
   chevronForwardOutline,
   chevronForwardCircleOutline,
 } from "ionicons/icons";
-import React from "react";
 import DefaultAvatar from "../assets/default_avatar.jpg";
 import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { mateChatList, userChatList } from "../api/chatApi";
 
-const ChatList = () => {
+const ChatList = ({ role }) => {
   const navigate = useNavigate();
-  const history = [1, 2, 3, 4, 5];
+  const [list, setList] = useState([]);
+
+  const getUserChatList = () => {
+    userChatList().then((res) => {
+      console.log(res);
+      setList(res);
+    });
+  };
+  const getMateChatList = () => {
+    mateChatList().then((res) => {
+      console.log(res);
+      setList(res);
+    });
+  };
+  useEffect(() => {
+    role === "mate" ? getMateChatList() : getUserChatList;
+  });
   return (
     <IonList>
       <IonListHeader>
-        <IonLabel>메이트와 실시간으로 채팅해보세요</IonLabel>
+        <IonLabel>실시간으로 채팅해보세요!</IonLabel>
       </IonListHeader>
-      {history.map((item, index) => {
+      {list.map((item, index) => {
         return (
           <IonItem
             key={index}
             onClick={() => {
-              navigate("/mate/chatting");
+              role === "mate"
+                ? navigate("/mate/chatting")
+                : navigate("/user/chatting");
             }}
           >
             <IonAvatar className="ion-margin-end">
               <img src={DefaultAvatar}></img>
             </IonAvatar>
-            <IonLabel>{item}</IonLabel>
+            <IonLabel>zz</IonLabel>
             <IonIcon icon={chevronForwardOutline}></IonIcon>
           </IonItem>
         );

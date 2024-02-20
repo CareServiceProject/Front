@@ -9,14 +9,14 @@ import {
   IonToolbar,
   IonInput,
 } from "@ionic/react";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import bodyImg from "../../../assets/logo-big-greenRed.png";
 import { fetchWaitingCareList } from "../../../api/mateApi";
-import ServiceCard from "../../../components/ServiceCard";
 import "./style.css";
 
 const MateHome: React.FC = () => {
   const [waitingCareList, setWaitingCareList] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchWaitingCare = async () => {
@@ -55,7 +55,7 @@ const MateHome: React.FC = () => {
             color: "black",
           }}
         >
-          <Link to="/mate/home">
+          <div>
             <img
               src={bodyImg}
               alt="Logo"
@@ -68,7 +68,7 @@ const MateHome: React.FC = () => {
               }}
               className="mllogo-img"
             />
-          </Link>
+          </div>
         </div>
         <div
           style={{
@@ -96,8 +96,8 @@ const MateHome: React.FC = () => {
             e.currentTarget.style.boxShadow = "0px 4px 8px rgba(0, 0, 0, 0.1)";
           }}
         >
-          <Link
-            to="/waitingList"
+          <div
+            onClick={() => navigate("/waitingList")}
             style={{
               flexDirection: "column",
               alignItems: "center",
@@ -135,7 +135,7 @@ const MateHome: React.FC = () => {
                 {waitingCareList.length} 건
               </div>
             </h1>
-          </Link>
+          </div>
         </div>
       </IonContent>
     </IonPage>

@@ -1,6 +1,6 @@
-import http from './instance';
+import http from "./instance";
 
-const API_URL = '/api';
+const API_URL = "/api";
 
 // 대기중 목록
 export const fetchWaitingCareList = async () =>

@@ -1,23 +1,4 @@
-import {
-  IonAvatar,
-  IonButtons,
-  IonCard,
-  IonCardContent,
-  IonCardHeader,
-  IonContent,
-  IonHeader,
-  IonMenuButton,
-  IonPage,
-  IonTitle,
-  IonToolbar,
-  IonGrid,
-  IonRow,
-  IonCol,
-  IonButton,
-} from "@ionic/react";
 import React, { useState, useEffect } from "react";
-import { Rate } from "antd-mobile";
-import StatusCard from "../../../components/StatusCard";
 import DefaultAvatar from "../../../assets/default_avatar.jpg";
 import { Link, useNavigate } from "react-router-dom";
 import "./style.css";

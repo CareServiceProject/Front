@@ -57,7 +57,7 @@ const WaitingList = () => {
     <IonPage>
       <IonHeader>
         <IonToolbar>
-          <IonButtons slot="start" onClick={() => router(-1)}>
+          <IonButtons slot="start" onClick={() => navigate(-1)}>
             <IonBackButton defaultHref="/"></IonBackButton>
           </IonButtons>
           <IonTitle>대기중인 도움 목록</IonTitle>
