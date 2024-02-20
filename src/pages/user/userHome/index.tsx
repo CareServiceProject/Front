@@ -32,7 +32,7 @@ const UserHome: React.FC = () => {
             alignItems: "center",
             justifyContent: "center",
             // width: "313px",
-            height: "300px",
+            height: "280px",
             backgroundColor: "#FFFAF0",
             margin: "23px auto 20px",
             textDecoration: "none",
