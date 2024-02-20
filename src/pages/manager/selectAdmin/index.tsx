@@ -6,6 +6,7 @@ import {
   IonCardTitle,
   IonContent,
   IonHeader,
+  IonItem,
   IonMenuButton,
   IonPage,
   IonTitle,
@@ -36,11 +37,13 @@ const SelectAdmin: React.FC = () => {
             <IonTitle>관리계정선택</IonTitle>
           </IonToolbar>
         </IonHeader>
-        <Logo></Logo>
+        <IonItem lines="none" style={{ marginTop: "35px" }}>
+          <Logo></Logo>
+        </IonItem>
         <IonContent className="ion-padding">
           <IonCard onClick={() => handleCardClick("UserInfo")}>
             <IonCardHeader>
-              <IonCardTitle style={{ padding: "10px" }}>User</IonCardTitle>
+              <IonCardTitle style={{ padding: "5px" }}>User</IonCardTitle>
             </IonCardHeader>
             <IonCardContent style={{ padding: "10px 0 20px 25px" }}>
               Click here to navigate to User Info page.
@@ -49,7 +52,7 @@ const SelectAdmin: React.FC = () => {
 
           <IonCard onClick={() => handleCardClick("MateInfo")}>
             <IonCardHeader>
-              <IonCardTitle style={{ padding: "10px" }}>Mate</IonCardTitle>
+              <IonCardTitle style={{ padding: "5px" }}>Mate</IonCardTitle>
             </IonCardHeader>
             <IonCardContent style={{ padding: "10px 0 20px 25px" }}>
               Click here to navigate to Mate Info page.

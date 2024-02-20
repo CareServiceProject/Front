@@ -1,6 +1,6 @@
-import http from "./instance";
+import http from './instance';
 
-const API_URL = "/api";
+const API_URL = '/api';
 
 // 대기중 목록
 export const fetchWaitingCareList = async () =>
@@ -24,3 +24,6 @@ export const mateInfo = () => http.get(`/api/mate/mateInfo`);
 
 //나의 정보 수정
 export const editMateInfo = (data) => http.putForm(`/api/mate/mateInfo`, data);
+
+export const completePayment = (careCid) =>
+  http.put(`/api/mate/iscompletedPayment/${careCid}`);

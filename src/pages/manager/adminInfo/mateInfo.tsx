@@ -52,6 +52,8 @@ const MateInformation: React.FC = () => {
   const [selectedMate, setSelectedMate] = useState<MateInfo | null>(null);
   const [rejectReason, setRejectReason] = useState("");
   const [mateDetail, setMateDetail] = useState<MateInfo | null>(null);
+  const [approvalStatus, setApprovalStatus] = useState<string | null>(null);
+
   const fetchUserList = async () => {
     getMateList().then((res: MateInfo[]) => {
       setMateList(res);
@@ -74,17 +76,13 @@ const MateInformation: React.FC = () => {
 
   const openModal = (mate: MateInfo) => {
     setSelectedMate(mate);
-
-    // 모달 열릴 때 mateDetail 설정
     getMateDetail(mate.cid).then((res: MateInfo) => {
       setMateDetail(res);
     });
-
     setShowModal(true);
   };
 
   const closeModal = () => {
-    // 모달이 닫힐 때 mateDetail 초기화
     setMateDetail(null);
     setShowModal(false);
   };
@@ -98,14 +96,20 @@ const MateInformation: React.FC = () => {
     success: boolean;
     message: string;
   }
+  const addHyphenToResidentNumber = (
+    registrationNum: string | undefined
+  ): string => {
+    if (!registrationNum) return "";
+    const firstPart = registrationNum.substring(0, 6);
+    const secondPart = registrationNum.substring(6);
+    return `${firstPart}-${secondPart}`;
+  };
 
   const handleApproveClick = () => {
     const mateCid = selectedMate?.cid;
-
     if (mateCid) {
       approveMate(mateCid).then((response: ApprovalResponse) => {
         console.log("서버 응답:", response);
-
         if (selectedMate && response.success) {
           setMateList((prevMateList: any) => {
             return prevMateList.map((mate: any) =>
@@ -120,6 +124,7 @@ const MateInformation: React.FC = () => {
             }
             return null;
           });
+          setApprovalStatus("가입승인");
           console.log(response.message);
         } else {
           console.error(response.message);
@@ -127,32 +132,41 @@ const MateInformation: React.FC = () => {
       });
     }
   };
+
   const handleUnApproveClick = () => {
     const mateCid = selectedMate?.cid;
     if (mateCid) {
-      unapproveMate(mateCid).then((response: ApprovalResponse) => {
-        console.log("서버 응답:", response);
+      const unapprovedMateDto = {
+        rejectReason: rejectReason, // 미승인 사유를 unapprovedMateDto 객체에 추가
+      };
+      console.log("reason:", rejectReason);
 
-        if (selectedMate && response.success) {
-          setMateList((prevMateList: any) => {
-            return prevMateList.map((mate: any) =>
-              mate.mateId === selectedMate.mateId
-                ? { ...mate, approval: false, mateStatus: false }
-                : mate
-            );
-          });
-          setMateDetail((prevMateDetail) => {
-            if (prevMateDetail) {
-              return { ...prevMateDetail, approval: false };
-            }
-            return null;
-          });
+      unapproveMate(mateCid, unapprovedMateDto).then(
+        (response: ApprovalResponse) => {
+          console.log("서버 응답:", response);
+          if (selectedMate && response.success) {
+            setMateList((prevMateList: any) => {
+              return prevMateList.map((mate: any) =>
+                mate.cid === mateCid
+                  ? { ...mate, approval: false, mateStatus: false }
+                  : mate
+              );
+            });
 
-          console.log(response.message);
-        } else {
-          console.error(response.message);
+            setMateDetail((prevMateDetail) => {
+              if (prevMateDetail && prevMateDetail.cid === mateCid) {
+                return { ...prevMateDetail, approval: false };
+              }
+              return prevMateDetail;
+            });
+
+            setApprovalStatus("가입미승인");
+            console.log(response.message);
+          } else {
+            console.error(response.message);
+          }
         }
-      });
+      );
     }
   };
 
@@ -170,7 +184,6 @@ const MateInformation: React.FC = () => {
       <IonContent className="ion-padding">
         <IonList>
           {mateList
-            .sort((a, b) => (a.mateStatus ? 1 : b.mateStatus ? -1 : 0))
             .sort((a, b) => (a.blacklisted ? 1 : b.blacklisted ? -1 : 0))
             .map((mate) => (
               <IonItem key={mate.mateId} button onClick={() => openModal(mate)}>
@@ -187,7 +200,7 @@ const MateInformation: React.FC = () => {
                   />
                   <IonText>
                     {mate.mateId} <br />
-                    {mate.mateName} / {mate.mateGender}
+                    {mate.mateName} / {mate.mateGender}{" "}
                     <p style={{ color: "red" }}>
                       {mate.blacklisted ? "Blocked" : ""}
                     </p>
@@ -228,15 +241,16 @@ const MateInformation: React.FC = () => {
                         width: "70px",
                         height: "70px",
                         borderRadius: "50%",
-                        margin: "20px 20px 0 20px",
+                        margin: "10px 10px 0 15px",
                       }}
                     />
                     <IonCardTitle
                       style={{
-                        margin: "20px 20px 0 10px",
+                        margin: "55px 20px 0 0",
+                        fontSize: "23px",
                       }}
                     >
-                      {mateDetail.mateName}
+                      {mateDetail.mateId}
                     </IonCardTitle>
                   </div>
                 </IonCardHeader>
@@ -247,7 +261,9 @@ const MateInformation: React.FC = () => {
                   </IonItem>
                   <IonItem>
                     <IonLabel>주민번호:</IonLabel>
-                    <IonText>{mateDetail.registrationNum}</IonText>
+                    <IonText>
+                      {addHyphenToResidentNumber(mateDetail?.registrationNum)}
+                    </IonText>
                   </IonItem>
                   <IonItem>
                     <IonLabel>성별:</IonLabel>
@@ -264,23 +280,31 @@ const MateInformation: React.FC = () => {
                   <IonItem>
                     <IonLabel>가입승인여부:</IonLabel>
                     <IonText>
-                      {mateDetail.mateStatus === "FAILED" ? (
-                        <p style={{ color: "var(--ion-color-danger)" }}>
-                          가입미승인
+                      {approvalStatus ? (
+                        <p
+                          style={{
+                            color:
+                              approvalStatus === "가입미승인"
+                                ? "var(--ion-color-danger)"
+                                : "var(--ion-color-primary)",
+                          }}
+                        >
+                          {approvalStatus}
                         </p>
                       ) : (
-                        <p style={{ color: "var(--ion-color-primary)" }}>
-                          가입승인
+                        <p
+                          style={{
+                            color:
+                              mateDetail?.mateStatus === "FAILED"
+                                ? "var(--ion-color-danger)"
+                                : "var(--ion-color-primary)",
+                          }}
+                        >
+                          {mateDetail?.mateStatus === "FAILED"
+                            ? "가입미승인"
+                            : "가입승인"}
                         </p>
                       )}
-                    </IonText>
-                  </IonItem>
-                  <IonItem>
-                    <IonLabel>메이트 상태:</IonLabel>
-                    <IonText>
-                      {mateDetail.blacklisted
-                        ? "블랙리스트 메이트"
-                        : "일반 메이트"}
                     </IonText>
                   </IonItem>
                   <IonItem lines="none">
@@ -304,8 +328,8 @@ const MateInformation: React.FC = () => {
             <IonButton
               onClick={handleApproveClick}
               style={{
-                margin: "10px",
-                width: "250px",
+                margin: "5px 5px 10px 5px",
+                width: "180px",
                 fontSize: "1.5em",
                 height: "50px",
               }}
@@ -316,8 +340,8 @@ const MateInformation: React.FC = () => {
               onClick={handleUnApproveClick}
               color="danger"
               style={{
-                margin: "20px",
-                width: "250px",
+                margin: "5px 5px 10px 5px",
+                width: "180px",
                 fontSize: "1.5em",
                 height: "50px",
               }}

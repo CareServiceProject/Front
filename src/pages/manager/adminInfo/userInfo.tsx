@@ -76,10 +76,6 @@ const UserInfo: React.FC = () => {
   const closeModal = () => {
     setShowModal(false);
   };
-  interface ApprovalResponse {
-    success: boolean;
-    message: string;
-  }
 
   const toggleBlacklist = (isBlacklisted: boolean, userCid: string) => {
     userBlacklisted(userCid, isBlacklisted ? false : true).then(() => {
@@ -100,37 +96,40 @@ const UserInfo: React.FC = () => {
       </IonHeader>
       <IonContent className="ion-padding">
         <IonList>
-          {userList.map((user) => (
-            <IonItem key={user.userId} button onClick={() => openModal(user)}>
-              <IonLabel style={{ display: "flex", alignItems: "center" }}>
-                <img
-                  src={user.imageAddress || DefaultAvatar}
-                  alt="avatar"
-                  style={{
-                    width: "70px",
-                    height: "70px",
-                    borderRadius: "50%",
-                    marginRight: "20px",
+          {" "}
+          {userList
+            .sort((a, b) => (a.blacklisted ? 1 : b.blacklisted ? -1 : 0))
+            .map((user) => (
+              <IonItem key={user.userId} button onClick={() => openModal(user)}>
+                <IonLabel style={{ display: "flex", alignItems: "center" }}>
+                  <img
+                    src={user.imageAddress || DefaultAvatar}
+                    alt="avatar"
+                    style={{
+                      width: "70px",
+                      height: "70px",
+                      borderRadius: "50%",
+                      marginRight: "20px",
+                    }}
+                  />
+                  <IonText>
+                    {user.userId} <br />
+                    {user.userName} / {user.userGender}{" "}
+                    {user.blacklisted ? (
+                      <p style={{ color: "red" }}>Blocked</p>
+                    ) : null}
+                  </IonText>
+                </IonLabel>
+                <IonToggle
+                  slot="end"
+                  checked={!user.blacklisted}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    toggleBlacklist(user.blacklisted, user.cid);
                   }}
                 />
-                <IonText>
-                  {user.userId} <br />
-                  {user.userName} / {user.userGender}{" "}
-                  {user.blacklisted ? (
-                    <p style={{ color: "red" }}>Blocked</p>
-                  ) : null}
-                </IonText>
-              </IonLabel>
-              <IonToggle
-                slot="end"
-                checked={!user.blacklisted}
-                onClick={(e) => {
-                  e.stopPropagation();
-                  toggleBlacklist(user.blacklisted, user.cid);
-                }}
-              />
-            </IonItem>
-          ))}
+              </IonItem>
+            ))}
         </IonList>
 
         <IonModal isOpen={showModal} onDidDismiss={closeModal}>
@@ -138,7 +137,20 @@ const UserInfo: React.FC = () => {
             {userDetail && userDetail ? (
               <IonCard>
                 <IonCardHeader>
-                  <IonCardTitle>{userDetail.userId}</IonCardTitle>
+                  <IonCardTitle style={{ fontSize: "23px" }}>
+                    {" "}
+                    <img
+                      src={userDetail.imageAddress || DefaultAvatar}
+                      alt="avatar"
+                      style={{
+                        width: "70px",
+                        height: "70px",
+                        borderRadius: "50%",
+                        marginRight: "20px",
+                      }}
+                    />
+                    {userDetail.userId}
+                  </IonCardTitle>
                 </IonCardHeader>
                 <IonCardContent>
                   <IonItem>
