@@ -23,19 +23,18 @@ const UserServiceList = () => {
   const prefix = location.pathname.split("/")[1];
   const status = location.state.status;
   const [data, setData] = useState([]);
-
+  const fetchData = async () => {
+    try {
+      const responseData =
+        prefix === "user"
+          ? await userGetServiceList({ status })
+          : await mateCareHistory({ careStatus: status });
+      setData(responseData);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const responseData =
-          prefix === "user"
-            ? await userGetServiceList({ status })
-            : await mateCareHistory({ careStatus: status });
-        setData(responseData);
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      }
-    };
     fetchData();
   }, [prefix, status]);
 
@@ -97,7 +96,7 @@ const UserServiceList = () => {
                 data={item}
                 role={prefix}
                 status={status}
-                onReload={() => window.location.reload()}
+                onReload={() => fetchData()}
                 onRate={handleEvaluate}
               ></ServiceCard>
             );

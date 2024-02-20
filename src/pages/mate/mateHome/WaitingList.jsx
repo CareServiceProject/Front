@@ -11,7 +11,7 @@ import {
 import ServiceCard from "../../../components/ServiceCard";
 import { fetchWaitingCareList, mateApply } from "../../../api/mateApi";
 import { useNavigate } from "react-router-dom";
-import { Toast } from "antd-mobile";
+import { Empty, Toast } from "antd-mobile";
 
 // 대기중인 도움 목록의 데이터 형식을 정의한 인터페이스
 // interface WaitingListData {
@@ -46,9 +46,7 @@ const WaitingList = () => {
     mateApply(id).then((res) => {
       if (res.code === 200) {
         Toast.show(res.message);
-        setTimeout(() => {
-          window.location.reload();
-        }, 1000);
+        fetchData();
       } else Toast.show(res.message);
     });
   };
@@ -65,15 +63,22 @@ const WaitingList = () => {
       </IonHeader>
 
       <IonContent className="ion-padding">
-        {waitingList.map((item, index) => (
-          <ServiceCard
-            key={index}
-            data={item}
-            role="mate"
-            status="waiting"
-            onAccept={handleAccept}
+        {waitingList.length > 0 ? (
+          waitingList.map((item, index) => (
+            <ServiceCard
+              key={index}
+              data={item}
+              role="mate"
+              status="waiting"
+              onAccept={handleAccept}
+            />
+          ))
+        ) : (
+          <Empty
+            description="조회된 내용이 없습니다."
+            style={{ marginTop: "150px" }}
           />
-        ))}
+        )}
       </IonContent>
     </IonPage>
   );

@@ -152,7 +152,7 @@ const MateProfile = () => {
                 style={{ display: "none" }}
                 onChange={onChangePic}
               />
-              프로필 사진 변경
+              사진 변경
             </label>
           </div>
           <div>
