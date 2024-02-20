@@ -19,12 +19,19 @@ import React, { useState, useEffect } from "react";
 import { Rate } from "antd-mobile";
 import StatusCard from "../../../components/StatusCard";
 import DefaultAvatar from "../../../assets/default_avatar.jpg";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import "./style.css";
 import bodyImg from "../../../assets/logo-big-greenRed.png";
+import { localToken } from "../../../utils/auth";
 
 const MateJudge: React.FC = () => {
   const [isApproved, setIsApproved] = useState<boolean | null>(null);
+
+  const navigate = useNavigate();
+  const handleLogOut = () => {
+    localToken.remove();
+    navigate("/");
+  };
 
   useEffect(() => {
     fetch("http://43.203.32.99:8080/api/master/approve/{mateCid}")
@@ -67,7 +74,7 @@ const MateJudge: React.FC = () => {
           transition: "box-shadow 0.3s ease",
         }}
       >
-        <Link to="/">
+        <div>
           <img
             src={bodyImg}
             alt="Logo"
@@ -79,7 +86,7 @@ const MateJudge: React.FC = () => {
               objectFit: "cover",
             }}
           />
-        </Link>
+        </div>
       </div>
       <div
         style={{
@@ -101,6 +108,22 @@ const MateJudge: React.FC = () => {
         </h2>
       </div>
       <div style={{ textAlign: "center" }}></div>
+      <button
+        onClick={handleLogOut}
+        className="btn-guide"
+        style={{
+          backgroundColor: "#ffffff",
+          color: "black",
+          fontSize: "18px",
+          border: "2px solid black",
+          borderRadius: "10px",
+          transition: "box-shadow 0.3s ease",
+          padding: "20px",
+          width: "100%",
+        }}
+      >
+        로그아웃
+      </button>
     </div>
   );
 };

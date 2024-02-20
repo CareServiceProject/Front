@@ -123,8 +123,8 @@ const SignUpForm = () => {
               onIonChange={(e) => setGender(e.detail.value)}
               style={{ background: "white", padding: "0 12px 0 12px" }}
             >
-              <IonSelectOption value={1}>여</IonSelectOption>
-              <IonSelectOption value={2}>남</IonSelectOption>
+              <IonSelectOption value="여자">여</IonSelectOption>
+              <IonSelectOption value="남자">남</IonSelectOption>
             </IonSelect>
           </div>
           <IonInput

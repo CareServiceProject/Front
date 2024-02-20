@@ -104,7 +104,7 @@ const UserServiceList = () => {
           })
         ) : (
           <Empty
-            description="조회 내용이 없습니다."
+            description="조회된 내용이 없습니다."
             style={{ marginTop: "150px" }}
           />
         )}

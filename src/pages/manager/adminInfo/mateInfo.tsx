@@ -52,7 +52,7 @@ const MateInformation: React.FC = () => {
   const [selectedMate, setSelectedMate] = useState<MateInfo | null>(null);
   const [rejectReason, setRejectReason] = useState("");
   const [mateDetail, setMateDetail] = useState<MateInfo | null>(null);
-  const [approvalStatus, setApprovalStatus] = useState<string | null>(null);
+  const [approvalStatus, setApprovalStatus] = useState<string>("대기중");
 
   const fetchUserList = async () => {
     getMateList().then((res: MateInfo[]) => {
@@ -286,7 +286,9 @@ const MateInformation: React.FC = () => {
                             color:
                               approvalStatus === "가입미승인"
                                 ? "var(--ion-color-danger)"
-                                : "var(--ion-color-primary)",
+                                : approvalStatus === "가입승인"
+                                ? "var(--ion-color-primary)"
+                                : "blue",
                           }}
                         >
                           {approvalStatus}

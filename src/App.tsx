@@ -60,6 +60,9 @@ const App: React.FC = () => (
       <Route path="/waitingList" element={<WaitingList />} />
       <Route path="/user/profile" element={<UserProfile />} />
       <Route path="/mate/profile" element={<MateProfile />} />
+      <Route path="/mate/Judge" element={<MateJudge />} />
+      <Route path="/mate/Pass" element={<MatePass />} />
+      <Route path="/mate/Fail" element={<MateFail />} />
 
       {/* NavBar Contained Page */}
       <Route element={<NavLayout />}>
@@ -67,9 +70,6 @@ const App: React.FC = () => (
         <Route path="/user/mypage" element={<UserMy />} />
         <Route path="/user/chat" element={<UserChatList />} />
         <Route path="/mate/home" element={<MateHome />} />
-        <Route path="/mate/Judge" element={<MateJudge />} />
-        <Route path="/mate/Pass" element={<MatePass />} />
-        <Route path="/mate/Fail" element={<MateFail />} />
         <Route path="/mate/chat" element={<MateChatList />} />
         <Route path="/mate/mypage" element={<MateMy />} />
       </Route>

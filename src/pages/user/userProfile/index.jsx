@@ -49,15 +49,16 @@ const UserProfile = () => {
     e.preventDefault();
     if (pswDisabled) setIsPasswordValid(undefined);
     if (isPasswordValid === false) return;
-    const editedData = data;
+    const editedData = { ...data };
     editedData.phone_number = data.phoneNumber;
     if (password && !pswDisabled) {
       editedData.password = password;
     }
 
     delete editedData.phoneNumber;
+    delete editedData.profileImage;
     const formData = new FormData();
-    formData.append("RequestUpdateDto", JSON.stringify(data));
+    formData.append("RequestUpdateDto", JSON.stringify(editedData));
     if (avatar) {
       formData.append("userProfileImage", avatar);
     }

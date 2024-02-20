@@ -54,17 +54,19 @@ const MateProfile = () => {
     e.preventDefault();
     if (pswDisabled) setIsPasswordValid(undefined);
     if (isPasswordValid === false) return;
-    const editedData = data;
+    const editedData = { ...data };
     editedData.phone_number = data.phoneNumber;
     if (password && !pswDisabled) {
       editedData.password = password;
     }
 
     delete editedData.phoneNumber;
+
+    delete editedData.profileImage;
     const formData = new FormData();
-    formData.append("requestUpdateDto", JSON.stringify(data));
+    formData.append("requestUpdateDto", JSON.stringify(editedData));
     if (avatar) {
-      formData.append("userProfileImage", avatar);
+      formData.append("mateProfileImage", avatar);
     }
     editMateInfo(formData).then(() => {
       Toast.show({

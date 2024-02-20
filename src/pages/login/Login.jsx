@@ -27,7 +27,13 @@ const Login = () => {
           navigate("/user/home");
           break;
         case "ROLE_MATE":
-          navigate("/mate/home");
+          if (res.register_status === "PREPARING") {
+            navigate("mate/Judge");
+          } else if (res.register_status === "FAILED") {
+            navigate("mate/Fail");
+          } else {
+            navigate("/mate/home");
+          }
           break;
         default:
           break;
