@@ -131,8 +131,12 @@ const ServiceCard = ({
 
     const goChat = () => {
       enterChattingRoom(data.roomCid).then((res) => {
-        navigate("/mate/chatting", {
-          state: { roomCid: data.roomCid, senderId: "mate1", history: res },
+        navigate(role === "mate" ? "/mate/chatting" : "/user/chatting", {
+          state: {
+            roomCid: data.roomCid,
+            senderId: data.myId,
+            history: res.message ? [] : res,
+          },
         });
       });
     };
@@ -242,7 +246,7 @@ const ServiceCard = ({
                       {
                         key: "paymentNo",
                         text: "결제미완",
-                        primary: false,
+                        primary: true,
                         onClick: () => {
                           completePayment(data.careCid, false)
                             .then(() => handlePaymentCompletion(false))

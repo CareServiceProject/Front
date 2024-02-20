@@ -17,6 +17,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { Client } from "@stomp/stompjs";
 import SockJS from "sockjs-client/dist/sockjs.min.js";
 import { localToken } from "../../../utils/auth";
+import { formatTimestamp } from "../../../utils/timeFormat";
 
 const Chatting = () => {
   const navigate = useNavigate();
@@ -34,6 +35,11 @@ const Chatting = () => {
   const token = {
     Authorization: `Bearer ${localToken.get()}`,
   };
+
+  useEffect(() => {
+    contentRef?.current?.scrollToBottom();
+  }, []);
+
   useEffect(() => {
     const client = new Client({
       webSocketFactory: () => new SockJS("https://helpu-service.site/ws/chat"),
@@ -80,6 +86,10 @@ const Chatting = () => {
   }, []);
 
   const sendMessage = () => {
+    if (text.trim() === "") {
+      setText("");
+      return;
+    }
     const message = {
       message: text,
       sender: senderId,
@@ -96,6 +106,7 @@ const Chatting = () => {
       skipContentLengthHeader: true,
     });
     setText("");
+    contentRef?.current?.scrollToBottom();
   };
 
   return (
@@ -114,7 +125,7 @@ const Chatting = () => {
             display: "flex",
             flexDirection: "column",
             minHeight: "100%",
-            paddingBottom: "60px",
+            paddingBottom: "80px",
           }}
           className="aaaaaa"
         >
@@ -137,18 +148,23 @@ const Chatting = () => {
                     alignSelf: "end",
                   }}
                 >
-                  <div
-                    style={{
-                      backgroundColor: "var(--ion-color-primary)",
-                      padding: "6px",
-                      borderRadius: "8px",
-                      maxWidth: "200px",
-                    }}
-                  >
-                    {msg.message}
+                  <div style={{ display: "flex", alignItems: "end" }}>
+                    <span style={{ fontSize: "10px", color: "gray" }}>
+                      {formatTimestamp(msg.timeStamp || msg.sendAt)}
+                    </span>
+                    <div
+                      style={{
+                        backgroundColor: "var(--ion-color-primary)",
+                        padding: "6px",
+                        borderRadius: "8px",
+                        maxWidth: "200px",
+                      }}
+                    >
+                      {msg.message || msg.content}
+                    </div>
                   </div>
                   <img
-                    src={DefaultAvatar}
+                    src={msg.profileImage || DefaultAvatar}
                     style={{
                       width: "30px",
                       height: "30px",
@@ -163,11 +179,10 @@ const Chatting = () => {
                   style={{
                     marginBottom: "6px",
                     display: "flex",
-                    alignItems: "center",
                   }}
                 >
                   <img
-                    src={DefaultAvatar}
+                    src={msg.profileImage || DefaultAvatar}
                     style={{
                       width: "30px",
                       height: "30px",
@@ -175,15 +190,25 @@ const Chatting = () => {
                       marginRight: "10px",
                     }}
                   ></img>
-                  <div
-                    style={{
-                      backgroundColor: "white",
-                      padding: "6px",
-                      borderRadius: "8px",
-                      maxWidth: "200px",
-                    }}
-                  >
-                    {msg.message}
+                  <div>
+                    <span>{msg.sender}</span>
+                    <div style={{ display: "flex", alignItems: "end" }}>
+                      <div
+                        style={{
+                          display: "flex",
+                          backgroundColor: "white",
+                          padding: "6px",
+                          borderRadius: "8px",
+                          maxWidth: "200px",
+                          marginTop: "3px",
+                        }}
+                      >
+                        {msg.message || msg.content}
+                      </div>
+                      <span style={{ fontSize: "10px", color: "gray" }}>
+                        {formatTimestamp(msg.timeStamp)}
+                      </span>
+                    </div>
                   </div>
                 </div>
               );

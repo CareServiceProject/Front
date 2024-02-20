@@ -13,7 +13,8 @@ import {
 import DefaultAvatar from "../assets/default_avatar.jpg";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { mateChatList, userChatList } from "../api/chatApi";
+import { enterChattingRoom, mateChatList, userChatList } from "../api/chatApi";
+import { formatTimestamp } from "../utils/timeFormat";
 
 const ChatList = ({ role }) => {
   const navigate = useNavigate();
@@ -21,7 +22,6 @@ const ChatList = ({ role }) => {
 
   const getUserChatList = () => {
     userChatList().then((res) => {
-      console.log(res);
       setList(res);
     });
   };
@@ -31,9 +31,17 @@ const ChatList = ({ role }) => {
       setList(res);
     });
   };
+
+  const onChat = (item) => {
+    enterChattingRoom(item.chatRoomCid).then((res) => {
+      navigate(role === "mate" ? "/mate/chatting" : "/user/chatting", {
+        state: { roomCid: item.chatRoomCid, senderId: item.myId, history: res },
+      });
+    });
+  };
   useEffect(() => {
-    role === "mate" ? getMateChatList() : getUserChatList;
-  });
+    role === "mate" ? getMateChatList() : getUserChatList();
+  }, []);
   return (
     <IonList>
       <IonListHeader>
@@ -44,16 +52,18 @@ const ChatList = ({ role }) => {
           <IonItem
             key={index}
             onClick={() => {
-              role === "mate"
-                ? navigate("/mate/chatting")
-                : navigate("/user/chatting");
+              onChat(item);
             }}
+            style={{ height: "60px" }}
           >
             <IonAvatar className="ion-margin-end">
-              <img src={DefaultAvatar}></img>
+              <img src={item.profileImage || DefaultAvatar}></img>
             </IonAvatar>
-            <IonLabel>zz</IonLabel>
-            <IonIcon icon={chevronForwardOutline}></IonIcon>
+            <IonLabel>{item.name}</IonLabel>
+            <span style={{ fontSize: "10px", color: "gray" }}>
+              {formatTimestamp(item.time)}
+            </span>
+            {/* <IonIcon icon={chevronForwardOutline}></IonIcon> */}
           </IonItem>
         );
       })}
