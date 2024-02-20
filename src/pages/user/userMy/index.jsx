@@ -40,7 +40,7 @@ const UserMy = () => {
           className="ion-margin"
         >
           <IonAvatar className="ion-margin-end">
-            <img src={DefaultAvatar}></img>
+            <img src={data.imageAddress || DefaultAvatar}></img>
           </IonAvatar>
           <h2>{data.userId}님</h2>
         </div>

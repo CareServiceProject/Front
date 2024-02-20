@@ -1,10 +1,11 @@
 import { IonButton, IonContent, IonInput, IonPage } from "@ionic/react";
-import React, { useState } from "react";
+import { useState } from "react";
 import "./login.css";
 import Logo from "../../components/Logo";
 import { useNavigate } from "react-router-dom";
 import { login } from "../../api/authApi";
 import { localToken } from "../../utils/auth";
+import AddressSearch from "../../components/DaumPostCode";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -63,7 +64,13 @@ const Login = () => {
             <IonButton expand="block" className="ion-margin-top" type="submit">
               Login
             </IonButton>
-            <IonButton onClick={() => navigate("/register")} fill="clear">
+            <IonButton
+              color="primary"
+              className="ion-margin-top"
+              onClick={() => navigate("/register")}
+              expand="block"
+              fill="clear"
+            >
               Sign Up
             </IonButton>
           </form>

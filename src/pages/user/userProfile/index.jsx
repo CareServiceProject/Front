@@ -19,6 +19,7 @@ import { useNavigate } from "react-router-dom";
 import { editUserInfo, getUserInfo } from "../../../api/user";
 import DefaultAvatar from "../../../assets/default_avatar.jpg";
 import { lockClosed, lockOpen } from "ionicons/icons";
+import { Toast } from "antd-mobile";
 
 const UserProfile = () => {
   const router = useNavigate();
@@ -40,7 +41,6 @@ const UserProfile = () => {
 
   useEffect(() => {
     getUserInfo().then((res) => {
-      console.log(res);
       setData(res);
     });
   }, []);
@@ -127,7 +127,10 @@ const UserProfile = () => {
             <IonAvatar
               style={{ width: "100px", height: "100px", marginBottom: "16px" }}
             >
-              <img src={DefaultAvatar} id="previewImg"></img>
+              <img
+                src={data.profileImage || DefaultAvatar}
+                id="previewImg"
+              ></img>
             </IonAvatar>
 
             <label

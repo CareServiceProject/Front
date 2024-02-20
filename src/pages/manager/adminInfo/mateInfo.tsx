@@ -30,6 +30,7 @@ import {
   unapproveMate,
   mateBlacklisted,
 } from "../../../api/managerApi";
+import { useNavigate } from "react-router-dom";
 interface MateInfo {
   cid: string;
   mateId: number;
@@ -45,6 +46,7 @@ interface MateInfo {
 }
 
 const MateInformation: React.FC = () => {
+  const navigate = useNavigate();
   const [mateList, setMateList] = useState<MateInfo[]>([]);
   const [showModal, setShowModal] = useState(false);
   const [selectedMate, setSelectedMate] = useState<MateInfo | null>(null);
@@ -173,8 +175,8 @@ const MateInformation: React.FC = () => {
       <IonHeader>
         <IonToolbar>
           {" "}
-          <IonButtons slot="start">
-            <IonBackButton defaultHref="/selectAdmin" />
+          <IonButtons slot="start" onClick={() => navigate(-1)}>
+            <IonBackButton defaultHref="/" />
           </IonButtons>
           <IonTitle>메이트 관리</IonTitle>
         </IonToolbar>

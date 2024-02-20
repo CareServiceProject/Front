@@ -130,8 +130,9 @@ const ServiceCard = ({
     };
 
     const goChat = () => {
-      enterChattingRoom(data.careCid).then(() => {});
-      // navigate("/mate/chatting")
+      enterChattingRoom(data.careCid).then(() => {
+        navigate("/mate/chatting", { state: { roomCid: data.careCid } });
+      });
     };
 
     return (

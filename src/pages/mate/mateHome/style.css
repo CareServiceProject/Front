@@ -34,3 +34,7 @@
 .kk {
   color: kkk;
 } */
+
+ion-content::part(background) {
+  background: #fffaf0;
+}
