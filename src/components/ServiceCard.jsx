@@ -39,6 +39,23 @@ const ServiceCard = ({
   const [isOpen, setIsOpen] = useState(false);
   const [rate, setRate] = useState(0);
   const [datas, setDatas] = useState(data);
+  const [isPaymentCompleted, setIsPaymentCompleted] = useState(false);
+
+  const handleCompletePayment = async (careCid) => {
+    try {
+      await completePayment(careCid, true);
+      setIsPaymentCompleted(true);
+    } catch (error) {
+      console.error('결제 완료 요청 중 오류 발생:', error);
+    }
+  };
+
+  useEffect(() => {
+    // 결제가 완료되었을 때 모달을 닫음
+    if (isPaymentCompleted) {
+      setIsOpen(false);
+    }
+  }, [isPaymentCompleted]);
 
   const Contens = ({ isDetail }) => {
     const label = isDetail
@@ -116,6 +133,7 @@ const ServiceCard = ({
       enterChattingRoom(data.careCid).then(() => {});
       // navigate("/mate/chatting")
     };
+
     return (
       <IonCard color="secondary">
         <IonCardHeader>
@@ -193,14 +211,13 @@ const ServiceCard = ({
             </IonButton>
           )}
           {/* 메이트 && 완료 */}
-          {role === 'mate' && status === 'HELP_DONE' && (
+          {!isPaymentCompleted && role === 'mate' && status === 'HELP_DONE' && (
             <>
               <IonButton
                 fill="clear"
                 onClick={() => {
                   Modal.show({
                     header: '결제가 되었습니까?',
-
                     closeOnMaskClick: true,
                     closeOnAction: true,
                     actions: [
@@ -208,9 +225,11 @@ const ServiceCard = ({
                         key: 'paymentDone',
                         text: '결제완료',
                         primary: true,
-                        onClick() {
-                          completePayment(data.careCid);
-                          console.log('결제 완료');
+                        onClick: () => {
+                          completePayment(data.careCid, true)
+                            .then(() => handlePaymentCompletion(true))
+                            .catch((error) => console.error(error));
+                          handleCompletePayment(data.careCid);
                         },
                         style: {
                           backgroundColor: 'var(--ion-color-primary)',
@@ -221,8 +240,10 @@ const ServiceCard = ({
                         key: 'paymentNo',
                         text: '결제미완',
                         primary: false,
-                        onClick() {
-                          console.log('결제 미완료');
+                        onClick: () => {
+                          completePayment(data.careCid, false)
+                            .then(() => handlePaymentCompletion(false))
+                            .catch((error) => console.error(error));
                         },
                         style: {
                           backgroundColor: 'var(--ion-color-danger)',

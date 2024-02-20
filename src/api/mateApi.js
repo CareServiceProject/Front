@@ -25,5 +25,8 @@ export const mateInfo = () => http.get(`/api/mate/mateInfo`);
 //나의 정보 수정
 export const editMateInfo = (data) => http.putForm(`/api/mate/mateInfo`, data);
 
-export const completePayment = (careCid) =>
-  http.put(`/api/mate/iscompletedPayment/${careCid}`);
+export const completePayment = (careCid, isCompletedPayment) => {
+  return http.put(
+    `/api/mate/confirmPayment/${careCid}?isCompletedPayment=${isCompletedPayment}`
+  );
+};
