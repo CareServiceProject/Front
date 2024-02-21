@@ -90,6 +90,22 @@ ion-back-button,
 ion-menu-button {
   --color: #92949c;
 }
+.adm-rate-star,
+div .adm-rate-star,
+div .adm-rate {
+  --active-color: orange;
+  --inactive-color: gray;
+  --inactive-color-half: gray;
+}
+
+.adm-rate-star-active,
+div .adm-rate-star-active {
+  color: orange;
+}
+
+.adm-center-popup-wrap div {
+  background-color: white;
+}
 
 @media (prefers-color-scheme: pink) {
   /*
