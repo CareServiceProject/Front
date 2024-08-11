@@ -13,4 +13,4 @@ export const userCancelService = (data) =>
 export const getUserInfo = () => http.get(`/api/user/userInfo`);
 
 export const editUserInfo = (formdata) =>
-  http.putForm(`/api/user/userInfo`, formdata);
+  http.putForm(`/api/user/userInfo`,formdata);

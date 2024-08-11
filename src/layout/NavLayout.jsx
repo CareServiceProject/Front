@@ -8,7 +8,7 @@ const NavLayout = () => {
     <>
       <SlideMenu></SlideMenu>
       <NavBar></NavBar>
-      <Outlet></Outlet>
+      <Outlet />
     </>
   );
 };

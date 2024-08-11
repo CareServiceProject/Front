@@ -90,6 +90,10 @@ ion-back-button,
 ion-menu-button {
   --color: #92949c;
 }
+ion-content {
+  max-width: 400px;
+  align-self: center;
+}
 
 @media (prefers-color-scheme: dark) {
   /*

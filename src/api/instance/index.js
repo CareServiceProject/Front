@@ -3,6 +3,7 @@ import request from "./axios";
 
 class Http {
   static instance = null;
+  //스태틱 메서드
   static getInstance() {
     if (Http.instance) {
       return Http.instance;
@@ -11,6 +12,7 @@ class Http {
     return Http.instance;
   }
 
+  //프로토타입 메서드
   async createRequest(config) {
     const response = await request(config);
     return response.data;
@@ -103,4 +105,4 @@ class Http {
   }
 }
 
-export default Http.getInstance();
+export default Http.getInstance(); //자신의 스태틱 메서드 호출
