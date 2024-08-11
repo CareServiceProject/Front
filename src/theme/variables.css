@@ -106,6 +106,10 @@ div .adm-rate-star-active {
 .adm-center-popup-wrap div {
   background-color: white;
 }
+ion-content {
+  max-width: 400px;
+  align-self: center;
+}
 
 @media (prefers-color-scheme: pink) {
   /*
