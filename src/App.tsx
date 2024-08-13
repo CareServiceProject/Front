@@ -40,6 +40,7 @@ import MateJudge from "./pages/mate/mateJudge";
 import MatePass from "./pages/mate/mateJudge/pass";
 import MateFail from "./pages/mate/mateJudge/fail";
 import WaitingList from "./pages/mate/mateHome/WaitingList";
+import MateProfile from "./pages/mate/mateProfile";
 
 setupIonicReact();
 
@@ -55,9 +56,14 @@ const App: React.FC = () => (
       <Route path="/userInfo" element={<UserInfo />} />
       <Route path="/mateInfo" element={<MateInfo />} />
       <Route path="/mate/chatting" element={<Chatting />} />
+      <Route path="/user/chatting" element={<Chatting />} />
       <Route path="/user/request" element={<UserRequest />} />
       <Route path="/waitingList" element={<WaitingList />} />
       <Route path="/user/profile" element={<UserProfile />} />
+      <Route path="/mate/profile" element={<MateProfile />} />
+      <Route path="/mate/Judge" element={<MateJudge />} />
+      <Route path="/mate/Pass" element={<MatePass />} />
+      <Route path="/mate/Fail" element={<MateFail />} />
 
       {/* NavBar Contained Page */}
       <Route element={<NavLayout />}>
@@ -65,9 +71,6 @@ const App: React.FC = () => (
         <Route path="/user/mypage" element={<UserMy />} />
         <Route path="/user/chat" element={<UserChatList />} />
         <Route path="/mate/home" element={<MateHome />} />
-        <Route path="/mate/Judge" element={<MateJudge />} />
-        <Route path="/mate/Pass" element={<MatePass />} />
-        <Route path="/mate/Fail" element={<MateFail />} />
         <Route path="/mate/chat" element={<MateChatList />} />
         <Route path="/mate/mypage" element={<MateMy />} />
       </Route>

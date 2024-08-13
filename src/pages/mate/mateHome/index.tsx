@@ -7,14 +7,16 @@ import {
   IonPage,
   IonTitle,
   IonToolbar,
+  IonInput,
 } from "@ionic/react";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import bodyImg from "../../../assets/logo-big-greenRed.png";
 import { fetchWaitingCareList } from "../../../api/mateApi";
-import ServiceCard from "../../../components/ServiceCard";
+import "./style.css";
 
 const MateHome: React.FC = () => {
   const [waitingCareList, setWaitingCareList] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchWaitingCare = async () => {
@@ -39,35 +41,34 @@ const MateHome: React.FC = () => {
           <IonTitle></IonTitle>
         </IonToolbar>
       </IonHeader>
-      <IonContent style={{ backgroundColor: "pink" }}>
+      <IonContent>
         <div
           style={{
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
-            width: "auto",
-            height: "250px",
-            backgroundColor: "#ffffff",
-            margin: "23px 30px 20px",
+            height: "280px",
+            maxHeight: "40%",
+            backgroundColor: "#FFFAF0",
+            margin: "auto",
             textDecoration: "none",
             color: "black",
           }}
-          className="mateLogo-container"
         >
-          <Link to="/other-page">
+          <div>
             <img
               src={bodyImg}
               alt="Logo"
               style={{
                 flexDirection: "column",
                 cursor: "pointer",
-                width: "200px",
+                width: "350px",
                 height: "100%",
                 objectFit: "cover",
               }}
               className="mllogo-img"
             />
-          </Link>
+          </div>
         </div>
         <div
           style={{
@@ -75,28 +76,66 @@ const MateHome: React.FC = () => {
             flexDirection: "column",
             alignItems: "center",
             justifyContent: "center",
-            margin: "10% auto 0",
+            textAlign: "center",
+            margin: "auto",
             backgroundColor: "#ffffff",
-            width: "313px",
+            maxWidth: "80%",
+            width: "55%",
+            maxHeight: "30%",
             height: "227px",
             cursor: "pointer",
+            borderRadius: "10px",
+            boxShadow: "0px 10px 20px rgba(0, 0, 0, 0.1)",
+            transition: "box-shadow 0.3s ease",
           }}
           className="request-container"
+          onMouseEnter={(e) => {
+            e.currentTarget.style.boxShadow = "0px 6px 12px rgba(0, 0, 0, 0.2)";
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.boxShadow = "0px 4px 8px rgba(0, 0, 0, 0.1)";
+          }}
         >
-          <Link to="/waitingList">
-            <div
-              style={{ textDecoration: "none", color: "black" }}
-              className="request-top"
+          <div
+            onClick={() => navigate("/waitingList")}
+            style={{
+              flexDirection: "column",
+              alignItems: "center",
+              display: "table-cell",
+              verticalAlign: "middle",
+              textDecoration: "none",
+              color: "black",
+            }}
+          >
+            <h1
+              style={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                margin: "auto",
+                textDecoration: "none",
+                color: "black",
+              }}
             >
-              신규요청
-            </div>
-            <div
-              style={{ textDecoration: "none", color: "black" }}
-              className="request-count"
-            >
-              {waitingCareList.length} 건
-            </div>
-          </Link>
+              <div style={{ textAlign: "center" }}>신규 요청</div>
+            </h1>
+
+            <h1>
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  margin: "auto",
+                  textDecoration: "none",
+                  color: "gray",
+                }}
+                className="request-count"
+              >
+                {waitingCareList.length} 건
+              </div>
+            </h1>
+          </div>
         </div>
       </IonContent>
     </IonPage>

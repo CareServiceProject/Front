@@ -6,7 +6,6 @@ import {
   IonContent,
   IonHeader,
   IonIcon,
-  IonInput,
   IonPage,
   IonTitle,
   IonToolbar,
@@ -14,26 +13,37 @@ import {
 import { sendOutline as vvvv } from "ionicons/icons";
 import React, { useEffect, useRef, useState } from "react";
 import DefaultAvatar from "../../../assets/default_avatar.jpg";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { Client } from "@stomp/stompjs";
-import "./style.css";
+import SockJS from "sockjs-client/dist/sockjs.min.js";
+import { localToken } from "../../../utils/auth";
+import { formatTimestamp } from "../../../utils/timeFormat";
 
 const Chatting = () => {
   const navigate = useNavigate();
+  const location = useLocation();
+  const roomCid = location.state.roomCid;
+  const senderId = location.state.senderId;
+  const history = location.state.history;
+
   const [text, setText] = useState("");
   const contentRef = useRef();
 
-  const [messages, setMessages] = useState([]);
+  const [messages, setMessages] = useState(history);
   const [stompClient, setStompClient] = useState(null);
-  const roomCid = 1;
+
+  const token = {
+    Authorization: `Bearer ${localToken.get()}`,
+  };
+
+  useEffect(() => {
+    contentRef?.current?.scrollToBottom();
+  }, []);
 
   useEffect(() => {
     const client = new Client({
-      brokerURL: "ws://localhost:8080/ws/chat",
-      connectHeaders: {
-        login: "user",
-        passcode: "password",
-      },
+      webSocketFactory: () => new SockJS("https://helpu-service.site/ws/chat"),
+      headers: token,
       debug: function (str) {
         console.log(str);
       },
@@ -45,13 +55,18 @@ const Chatting = () => {
     setStompClient(client);
 
     client.onConnect = function (frame) {
-      console.log("Connected to WebSocket");
+      console.log("연결이 되었다");
       // Do something, all subscribes must be done is this callback
       // This is needed because this will be executed after a (re)connect
-      client.subscribe(`/topic/chat/${roomCid}`, (message) => {
-        const newMessages = [...messages, JSON.parse(message.body)];
-        setMessages(newMessages);
-      });
+      client.subscribe(
+        `/queue/chat/message/${roomCid}`,
+        (chat) => {
+          const recieved = JSON.parse(chat.body);
+          console.log("mmmmm", recieved);
+          setMessages((prev) => [...prev, recieved]);
+        },
+        token
+      );
     };
 
     client.onStompError = function (frame) {
@@ -71,29 +86,28 @@ const Chatting = () => {
   }, []);
 
   const sendMessage = () => {
+    if (text.trim() === "") {
+      setText("");
+      return;
+    }
     const message = {
       message: text,
-      sender: "me",
+      sender: senderId,
     };
 
     stompClient?.publish({
-      destination: `/app/send/message/${roomCid}`,
-      body: message,
+      headers: {
+        "content-type": "application/json",
+        Authorization: localToken.get(),
+      },
+
+      destination: `/app/chat/message/${roomCid}`,
+      body: JSON.stringify(message),
       skipContentLengthHeader: true,
     });
+    setText("");
+    contentRef?.current?.scrollToBottom();
   };
-
-  // const onSendMsg = () => {
-  //   setMessages((prev) => [...prev, { text: text, from: "me" }]);
-  //   setText("");
-  //   contentRef?.current?.scrollToBottom();
-  // };
-
-  // const onRecieveMsg = () => {
-  //   setMessages((prev) => [...prev, { text: text, from: "other" }]);
-  //   setText("");
-  //   contentRef?.current?.scrollToBottom();
-  // };
 
   return (
     <IonPage>
@@ -102,7 +116,7 @@ const Chatting = () => {
           <IonButtons slot="start" onClick={() => navigate(-1)}>
             <IonBackButton defaultHref="/"></IonBackButton>
           </IonButtons>
-          <IonTitle>Page Title</IonTitle>
+          {/* <IonTitle>Page Title</IonTitle> */}
         </IonToolbar>
       </IonHeader>
       <IonContent className="ion-padding" scrollEvents={true} ref={contentRef}>
@@ -111,7 +125,7 @@ const Chatting = () => {
             display: "flex",
             flexDirection: "column",
             minHeight: "100%",
-            paddingBottom: "60px",
+            paddingBottom: "80px",
           }}
           className="aaaaaa"
         >
@@ -124,7 +138,7 @@ const Chatting = () => {
             }}
           >
             {messages.map((msg, index) => {
-              return msg.sender === "me" ? (
+              return msg.sender === senderId ? (
                 <div
                   key={index}
                   style={{
@@ -134,18 +148,23 @@ const Chatting = () => {
                     alignSelf: "end",
                   }}
                 >
-                  <div
-                    style={{
-                      backgroundColor: "var(--ion-color-secondary)",
-                      padding: "6px",
-                      borderRadius: "8px",
-                      maxWidth: "200px",
-                    }}
-                  >
-                    {msg.message}
+                  <div style={{ display: "flex", alignItems: "end" }}>
+                    <span style={{ fontSize: "10px", color: "gray" }}>
+                      {formatTimestamp(msg.timeStamp || msg.sendAt)}
+                    </span>
+                    <div
+                      style={{
+                        backgroundColor: "var(--ion-color-primary)",
+                        padding: "6px",
+                        borderRadius: "8px",
+                        maxWidth: "200px",
+                      }}
+                    >
+                      {msg.message || msg.content}
+                    </div>
                   </div>
                   <img
-                    src={DefaultAvatar}
+                    src={msg.profileImage || DefaultAvatar}
                     style={{
                       width: "30px",
                       height: "30px",
@@ -160,11 +179,10 @@ const Chatting = () => {
                   style={{
                     marginBottom: "6px",
                     display: "flex",
-                    alignItems: "center",
                   }}
                 >
                   <img
-                    src={DefaultAvatar}
+                    src={msg.profileImage || DefaultAvatar}
                     style={{
                       width: "30px",
                       height: "30px",
@@ -172,15 +190,25 @@ const Chatting = () => {
                       marginRight: "10px",
                     }}
                   ></img>
-                  <div
-                    style={{
-                      backgroundColor: "var(--ion-color-medium)",
-                      padding: "6px",
-                      borderRadius: "8px",
-                      maxWidth: "200px",
-                    }}
-                  >
-                    {msg.message}
+                  <div>
+                    <span>{msg.sender}</span>
+                    <div style={{ display: "flex", alignItems: "end" }}>
+                      <div
+                        style={{
+                          display: "flex",
+                          backgroundColor: "white",
+                          padding: "6px",
+                          borderRadius: "8px",
+                          maxWidth: "200px",
+                          marginTop: "3px",
+                        }}
+                      >
+                        {msg.message || msg.content}
+                      </div>
+                      <span style={{ fontSize: "10px", color: "gray" }}>
+                        {formatTimestamp(msg.timeStamp)}
+                      </span>
+                    </div>
                   </div>
                 </div>
               );

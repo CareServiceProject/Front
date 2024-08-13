@@ -34,13 +34,13 @@ const UserMy = () => {
           <IonTitle>My Page</IonTitle>
         </IonToolbar>
       </IonHeader>
-      <IonContent className="ion-padding">
+      <IonContent className="ion-padding ">
         <div
           style={{ display: "flex", alignItems: "center" }}
           className="ion-margin"
         >
           <IonAvatar className="ion-margin-end">
-            <img src={DefaultAvatar}></img>
+            <img src={data.imageAddress || DefaultAvatar}></img>
           </IonAvatar>
           <h2>{data.userId}님</h2>
         </div>

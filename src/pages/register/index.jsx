@@ -12,6 +12,7 @@ import {
 import React from "react";
 import Logo from "../../components/Logo";
 import { useNavigate } from "react-router-dom";
+import "./style.css";
 
 const Register = () => {
   const router = useNavigate();
@@ -25,12 +26,16 @@ const Register = () => {
           <IonButtons slot="start" onClick={() => router(-1)}>
             <IonBackButton defaultHref="/"></IonBackButton>
           </IonButtons>
-          <IonTitle>Sign up</IonTitle>
+          {/* <IonTitle>Sign up</IonTitle> */}
         </IonToolbar>
       </IonHeader>
       <IonContent className="ion-padding login">
         <Logo></Logo>
-        <IonButton expand="block" onClick={() => goSignUp("user")}>
+        <IonButton
+          className="user-button"
+          expand="block"
+          onClick={() => goSignUp("user")}
+        >
           Sign up as a user
         </IonButton>
         <IonButton

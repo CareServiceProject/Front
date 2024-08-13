@@ -1,13 +1,10 @@
 import {
-  IonAlert,
   IonAvatar,
   IonButton,
   IonButtons,
   IonCard,
   IonCardContent,
   IonCardHeader,
-  IonCardSubtitle,
-  IonCardTitle,
   IonContent,
   IonHeader,
   IonLabel,
@@ -15,18 +12,50 @@ import {
   IonTitle,
   IonToolbar,
 } from "@ionic/react";
-import React, { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import DefaultAvatar from "../assets/default_avatar.jpg";
 import { Modal, Rate, Toast } from "antd-mobile";
 import { useNavigate } from "react-router-dom";
-import { userCancelService } from "../api/user";
-import { mateFinish, waitingDetail } from "../api/mateApi";
 
-const ServiceCard = ({ data, role, status, onAccept, onReload, onRate }) => {
+import { userCancelService } from "../api/user";
+import {
+  mateCancel,
+  mateFinish,
+  waitingDetail,
+  completePayment,
+} from "../api/mateApi";
+import { enterChattingRoom } from "../api/chatApi";
+
+const ServiceCard = ({
+  data,
+  role,
+  status,
+  onAccept,
+  onReload,
+  onRate,
+  careCid,
+}) => {
   const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
   const [rate, setRate] = useState(0);
   const [datas, setDatas] = useState(data);
+  const [isPaymentCompleted, setIsPaymentCompleted] = useState(false);
+
+  const handleCompletePayment = async (careCid) => {
+    try {
+      await completePayment(careCid, true);
+      setIsPaymentCompleted(true);
+    } catch (error) {
+      console.error("결제 완료 요청 중 오류 발생:", error);
+    }
+  };
+
+  useEffect(() => {
+    // 결제가 완료되었을 때 모달을 닫음
+    if (isPaymentCompleted) {
+      setIsOpen(false);
+    }
+  }, [isPaymentCompleted]);
 
   const Contens = ({ isDetail }) => {
     const label = isDetail
@@ -58,24 +87,33 @@ const ServiceCard = ({ data, role, status, onAccept, onReload, onRate }) => {
           Toast.show({
             content: "성공적으로 취소되었습니다.",
           });
-          setTimeout(() => {
-            onReload();
-          }, 1000);
+          onReload();
         });
       };
-      const mateCancel = () => {};
 
-      role === "user" ? userCancel() : mateCancel();
+      const onMateCancel = () => {
+        mateCancel(id)
+          .then((res) => {
+            console.log(res);
+            Toast.show({
+              content: "성공적으로 취소되었습니다.",
+            });
+            onReload();
+          })
+          .catch((error) => {
+            console.error(error);
+          });
+      };
+
+      role === "user" ? userCancel() : onMateCancel();
     };
 
     const onFinish = (id) => {
-      mateFinish(id).then((res) => {
+      mateFinish(id).then(() => {
         Toast.show({
           content: "완료되었습니다.",
         });
-        setInterval(() => {
-          onReload();
-        }, 1000);
+        onReload();
       });
     };
     const onDetailClick = () => {
@@ -84,18 +122,34 @@ const ServiceCard = ({ data, role, status, onAccept, onReload, onRate }) => {
       });
       setIsOpen(true);
     };
+
+    const goChat = () => {
+      enterChattingRoom(data.roomCid).then((res) => {
+        navigate(role === "mate" ? "/mate/chatting" : "/user/chatting", {
+          state: {
+            roomCid: data.roomCid,
+            senderId: data.myId,
+            history: res.message ? [] : res,
+          },
+        });
+      });
+    };
+
     return (
-      <IonCard>
+      <IonCard color="secondary">
         <IonCardHeader>
           <div style={{ display: "flex", justifyContent: "space-between" }}>
-            <IonAvatar className="ion-margin-end">
-              <img src={DefaultAvatar}></img>
+            <IonAvatar
+              className="ion-margin-end"
+              style={{ width: "70px", height: "70px" }}
+            >
+              <img src={data.imageAddress || DefaultAvatar}></img>
             </IonAvatar>
-            {(status === "proceeding" || status === "completed") && (
-              <IonButton
-                fill="clear"
-                onClick={() => navigate("/mate/chatting")}
-              >
+            {(status === "proceeding" ||
+              status === "completed" ||
+              status === "IN_PROGRESS" ||
+              status === "HELP_DONE") && (
+              <IonButton fill="clear" onClick={() => goChat()}>
                 채팅
               </IonButton>
             )}
@@ -117,9 +171,9 @@ const ServiceCard = ({ data, role, status, onAccept, onReload, onRate }) => {
                     display: "flex",
                     flex: 1,
                     borderRadius: "8px",
-                    backgroundColor: "var(--ion-color-medium)",
+                    backgroundColor: "white",
                     padding: "5px",
-                    color: "white",
+                    color: "black",
                   }}
                   className="ion-margin-start"
                 >
@@ -158,10 +212,51 @@ const ServiceCard = ({ data, role, status, onAccept, onReload, onRate }) => {
             </IonButton>
           )}
           {/* 메이트 && 완료 */}
-          {role === "mate" && status === "HELP_DONE" && (
+          {!isPaymentCompleted && role === "mate" && status === "HELP_DONE" && (
             <>
-              <IonButton fill="clear">결제완료</IonButton>
-              <IonButton fill="clear">결제미완</IonButton>
+              <IonButton
+                fill="clear"
+                onClick={() => {
+                  Modal.show({
+                    header: "결제가 되었습니까?",
+                    closeOnMaskClick: true,
+                    closeOnAction: true,
+                    actions: [
+                      {
+                        key: "paymentDone",
+                        text: "결제완료",
+                        primary: true,
+                        onClick: () => {
+                          completePayment(data.careCid, true)
+                            .then(() => handlePaymentCompletion(true))
+                            .catch((error) => console.error(error));
+                          handleCompletePayment(data.careCid);
+                        },
+                        style: {
+                          backgroundColor: "var(--ion-color-primary)",
+                          border: "none",
+                        },
+                      },
+                      {
+                        key: "paymentNo",
+                        text: "결제미완",
+                        primary: true,
+                        onClick: () => {
+                          completePayment(data.careCid, false)
+                            .then(() => handlePaymentCompletion(false))
+                            .catch((error) => console.error(error));
+                        },
+                        style: {
+                          backgroundColor: "var(--ion-color-danger)",
+                          border: "none",
+                        },
+                      },
+                    ],
+                  });
+                }}
+              >
+                결제확인
+              </IonButton>
             </>
           )}
 

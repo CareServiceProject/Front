@@ -1,3 +1,7 @@
 ion-content::part(background) {
   background: #fffaf0;
 }
+
+ion-content.body-content {
+  text-align: center;
+}

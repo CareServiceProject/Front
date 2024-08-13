@@ -12,7 +12,7 @@ http://ionicframework.com/docs/theming/ */
   --ion-color-primary-tint: #15d19b;
 
   /** secondary **/
-  --ion-color-secondary: #3dc2ff;
+  --ion-color-secondary: linear-gradient(to bottom, #e1f0da, #99bc85);
   --ion-color-secondary-rgb: 61, 194, 255;
   --ion-color-secondary-contrast: #ffffff;
   --ion-color-secondary-contrast-rgb: 255, 255, 255;
@@ -90,12 +90,27 @@ ion-back-button,
 ion-menu-button {
   --color: #92949c;
 }
-ion-content {
-  max-width: 400px;
-  align-self: center;
+.adm-rate-star,
+div .adm-rate-star,
+div .adm-rate {
+  --active-color: orange;
+  --inactive-color: gray;
+  --inactive-color-half: gray;
 }
 
-@media (prefers-color-scheme: dark) {
+.adm-rate-star-active,
+div .adm-rate-star-active {
+  color: orange;
+}
+
+.adm-center-popup-wrap div {
+  background-color: white;
+}
+ion-app {
+  max-width: 400px;
+}
+
+@media (prefers-color-scheme: pink) {
   /*
    * Dark Colors
    * ---------------- ---------------------------

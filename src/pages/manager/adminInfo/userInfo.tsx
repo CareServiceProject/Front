@@ -25,31 +25,32 @@ import {
   getUserDetail,
   userBlacklisted,
 } from "../../../api/managerApi";
+import { useNavigate } from "react-router-dom";
 
 interface UserInfo {
   cid: string;
   userId: string;
   userName: string;
-  isBlacklisted: boolean;
+  blacklisted: boolean;
   userGender?: string;
   email: string;
   phone: string;
+  imageAddress: string;
 }
 
 const UserInfo: React.FC = () => {
+  const navigate = useNavigate();
   const [showModal, setShowModal] = useState(false);
   const [selectedUser, setSelectedUser] = useState<UserInfo | null>(null);
   const [userList, setUserList] = useState<UserInfo[]>([]);
   const [userDetail, setUserDetail] = useState<UserInfo | null>(null);
-
+  const fetchUserList = async () => {
+    getUserList().then((res: UserInfo[]) => {
+      console.log(res);
+      setUserList(res);
+    });
+  };
   useEffect(() => {
-    const fetchUserList = async () => {
-      getUserList().then((res: UserInfo[]) => {
-        console.log(res);
-        setUserList(res);
-      });
-    };
-
     fetchUserList();
   }, []);
 
@@ -76,27 +77,10 @@ const UserInfo: React.FC = () => {
     setShowModal(false);
   };
 
-  const toggleBlacklist = () => {
-    if (selectedUser) {
-      const newBlacklistedState = !selectedUser.isBlacklisted;
-
-      // 서버에 새로운 블랙리스트 상태를 전송
-      userBlacklisted(selectedUser.cid, newBlacklistedState).then(() => {
-        setUserList((prevUserList) => {
-          const updatedList = prevUserList.map((user) =>
-            user.userId === selectedUser.userId
-              ? { ...user, blacklisted: newBlacklistedState }
-              : user
-          );
-          updatedList.sort((a, b) =>
-            a.isBlacklisted ? 1 : b.isBlacklisted ? -1 : 0
-          );
-
-          return updatedList;
-        });
-        closeModal();
-      });
-    }
+  const toggleBlacklist = (isBlacklisted: boolean, userCid: string) => {
+    userBlacklisted(userCid, isBlacklisted ? false : true).then(() => {
+      fetchUserList();
+    });
   };
 
   return (
@@ -104,44 +88,48 @@ const UserInfo: React.FC = () => {
       <IonHeader>
         <IonToolbar>
           {" "}
-          <IonButtons slot="start">
-            <IonBackButton defaultHref="/selectAdmin" />
+          <IonButtons slot="start" onClick={() => navigate(-1)}>
+            <IonBackButton defaultHref="/" />
           </IonButtons>
           <IonTitle>유저 관리</IonTitle>
         </IonToolbar>
       </IonHeader>
       <IonContent className="ion-padding">
         <IonList>
-          {userList.map((user) => (
-            <IonItem key={user.userId} button onClick={() => openModal(user)}>
-              <IonLabel style={{ display: "flex", alignItems: "center" }}>
-                <img
-                  src={DefaultAvatar}
-                  alt="avatar"
-                  style={{
-                    width: "70px",
-                    height: "70px",
-                    borderRadius: "50%",
-                    marginRight: "20px",
+          {" "}
+          {userList
+            .sort((a, b) => (a.blacklisted ? 1 : b.blacklisted ? -1 : 0))
+            .map((user) => (
+              <IonItem key={user.userId} button onClick={() => openModal(user)}>
+                <IonLabel style={{ display: "flex", alignItems: "center" }}>
+                  <img
+                    src={user.imageAddress || DefaultAvatar}
+                    alt="avatar"
+                    style={{
+                      width: "70px",
+                      height: "70px",
+                      borderRadius: "50%",
+                      marginRight: "20px",
+                    }}
+                  />
+                  <IonText>
+                    {user.userId} <br />
+                    {user.userName} / {user.userGender}{" "}
+                    {user.blacklisted ? (
+                      <p style={{ color: "red" }}>Blocked</p>
+                    ) : null}
+                  </IonText>
+                </IonLabel>
+                <IonToggle
+                  slot="end"
+                  checked={!user.blacklisted}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    toggleBlacklist(user.blacklisted, user.cid);
                   }}
                 />
-                <IonText>
-                  {user.userId} _{" "}
-                  {user.isBlacklisted ? "일반유저" : "블랙리스트유저"}
-                  <br />
-                  {user.userName} / {user.userGender}{" "}
-                </IonText>
-              </IonLabel>
-              <IonToggle
-                slot="end"
-                checked={user.isBlacklisted}
-                onClick={(e) => {
-                  e.stopPropagation();
-                  openModal(user);
-                }}
-              />
-            </IonItem>
-          ))}
+              </IonItem>
+            ))}
         </IonList>
 
         <IonModal isOpen={showModal} onDidDismiss={closeModal}>
@@ -149,7 +137,20 @@ const UserInfo: React.FC = () => {
             {userDetail && userDetail ? (
               <IonCard>
                 <IonCardHeader>
-                  <IonCardTitle>{userDetail.userId}</IonCardTitle>
+                  <IonCardTitle style={{ fontSize: "23px" }}>
+                    {" "}
+                    <img
+                      src={userDetail.imageAddress || DefaultAvatar}
+                      alt="avatar"
+                      style={{
+                        width: "70px",
+                        height: "70px",
+                        borderRadius: "50%",
+                        marginRight: "20px",
+                      }}
+                    />
+                    {userDetail.userId}
+                  </IonCardTitle>
                 </IonCardHeader>
                 <IonCardContent>
                   <IonItem>
@@ -168,19 +169,6 @@ const UserInfo: React.FC = () => {
                     <IonLabel>전화번호:</IonLabel>
                     <IonText>{userDetail.phone}</IonText>
                   </IonItem>
-                  <IonItem>
-                    <IonLabel>유저 상태:</IonLabel>
-                    <IonText>
-                      {userDetail.isBlacklisted
-                        ? "일반 유저"
-                        : "블랙리스트 유저"}
-                    </IonText>
-                  </IonItem>
-                  <IonToggle
-                    checked={userDetail.isBlacklisted}
-                    onIonChange={toggleBlacklist}
-                    style={{ margin: "20px 10px 20px 0", float: "right" }}
-                  />
                 </IonCardContent>
               </IonCard>
             ) : (

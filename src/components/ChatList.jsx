@@ -10,31 +10,60 @@ import {
   chevronForwardOutline,
   chevronForwardCircleOutline,
 } from "ionicons/icons";
-import React from "react";
 import DefaultAvatar from "../assets/default_avatar.jpg";
 import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { enterChattingRoom, mateChatList, userChatList } from "../api/chatApi";
+import { formatTimestamp } from "../utils/timeFormat";
 
-const ChatList = () => {
+const ChatList = ({ role }) => {
   const navigate = useNavigate();
-  const history = [1, 2, 3, 4, 5];
+  const [list, setList] = useState([]);
+
+  const getUserChatList = () => {
+    userChatList().then((res) => {
+      setList(res);
+    });
+  };
+  const getMateChatList = () => {
+    mateChatList().then((res) => {
+      console.log(res);
+      setList(res);
+    });
+  };
+
+  const onChat = (item) => {
+    enterChattingRoom(item.chatRoomCid).then((res) => {
+      navigate(role === "mate" ? "/mate/chatting" : "/user/chatting", {
+        state: { roomCid: item.chatRoomCid, senderId: item.myId, history: res },
+      });
+    });
+  };
+  useEffect(() => {
+    role === "mate" ? getMateChatList() : getUserChatList();
+  }, []);
   return (
     <IonList>
       <IonListHeader>
-        <IonLabel>메이트와 실시간으로 채팅해보세요</IonLabel>
+        <IonLabel>실시간으로 채팅해보세요!</IonLabel>
       </IonListHeader>
-      {history.map((item, index) => {
+      {list.map((item, index) => {
         return (
           <IonItem
             key={index}
             onClick={() => {
-              navigate("/mate/chatting");
+              onChat(item);
             }}
+            style={{ height: "60px" }}
           >
             <IonAvatar className="ion-margin-end">
-              <img src={DefaultAvatar}></img>
+              <img src={item.profileImage || DefaultAvatar}></img>
             </IonAvatar>
-            <IonLabel>{item}</IonLabel>
-            <IonIcon icon={chevronForwardOutline}></IonIcon>
+            <IonLabel>{item.name}</IonLabel>
+            <span style={{ fontSize: "10px", color: "gray" }}>
+              {formatTimestamp(item.time)}
+            </span>
+            {/* <IonIcon icon={chevronForwardOutline}></IonIcon> */}
           </IonItem>
         );
       })}

@@ -15,6 +15,7 @@ import ServiceCard from "../../../components/ServiceCard";
 import { userGetServiceList } from "../../../api/user";
 import { mateCareHistory } from "../../../api/mateApi";
 import { userEvaluateApi } from "../../../api/userEvaluateApi";
+import { Empty } from "antd-mobile";
 
 const UserServiceList = () => {
   const router = useNavigate();
@@ -22,19 +23,18 @@ const UserServiceList = () => {
   const prefix = location.pathname.split("/")[1];
   const status = location.state.status;
   const [data, setData] = useState([]);
-
+  const fetchData = async () => {
+    try {
+      const responseData =
+        prefix === "user"
+          ? await userGetServiceList({ status })
+          : await mateCareHistory({ careStatus: status });
+      setData(responseData);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const responseData =
-          prefix === "user"
-            ? await userGetServiceList({ status })
-            : await mateCareHistory({ careStatus: status });
-        setData(responseData);
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      }
-    };
     fetchData();
   }, [prefix, status]);
 
@@ -88,18 +88,25 @@ const UserServiceList = () => {
         </IonToolbar>
       </IonHeader>
       <IonContent className="ion-padding">
-        {data.map((item, index) => {
-          return (
-            <ServiceCard
-              key={index}
-              data={item}
-              role={prefix}
-              status={status}
-              onReload={() => window.location.reload()}
-              onRate={handleEvaluate}
-            ></ServiceCard>
-          );
-        })}
+        {data.length > 0 ? (
+          data.map((item) => {
+            return (
+              <ServiceCard
+                key={item.careCid}
+                data={item}
+                role={prefix}
+                status={status}
+                onReload={() => fetchData()}
+                onRate={handleEvaluate}
+              ></ServiceCard>
+            );
+          })
+        ) : (
+          <Empty
+            description="조회된 내용이 없습니다."
+            style={{ marginTop: "150px" }}
+          />
+        )}
       </IonContent>
     </IonPage>
   );

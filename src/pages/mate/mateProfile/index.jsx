@@ -19,9 +19,10 @@ import { useNavigate } from "react-router-dom";
 import { editUserInfo, getUserInfo } from "../../../api/user";
 import DefaultAvatar from "../../../assets/default_avatar.jpg";
 import { lockClosed, lockOpen } from "ionicons/icons";
+import { editMateInfo, mateInfo } from "../../../api/mateApi";
 import { Toast } from "antd-mobile";
 
-const UserProfile = () => {
+const MateProfile = () => {
   const router = useNavigate();
 
   const [avatar, setAvatar] = useState(null);
@@ -39,10 +40,14 @@ const UserProfile = () => {
     phoneNumber: null,
   });
 
-  useEffect(() => {
-    getUserInfo().then((res) => {
+  const requestInfo = () => {
+    mateInfo().then((res) => {
+      console.log(res);
       setData(res);
     });
+  };
+  useEffect(() => {
+    requestInfo();
   }, []);
 
   const profileSetting = (e) => {
@@ -56,13 +61,14 @@ const UserProfile = () => {
     }
 
     delete editedData.phoneNumber;
+
     delete editedData.profileImage;
     const formData = new FormData();
-    formData.append("RequestUpdateDto", JSON.stringify(editedData));
+    formData.append("requestUpdateDto", JSON.stringify(editedData));
     if (avatar) {
-      formData.append("userProfileImage", avatar);
+      formData.append("mateProfileImage", avatar);
     }
-    editUserInfo(formData).then(() => {
+    editMateInfo(formData).then(() => {
       Toast.show({
         content: "성공적으로 수정되었습니다.",
       });
@@ -128,10 +134,7 @@ const UserProfile = () => {
             <IonAvatar
               style={{ width: "100px", height: "100px", marginBottom: "16px" }}
             >
-              <img
-                src={data.profileImage || DefaultAvatar}
-                id="previewImg"
-              ></img>
+              <img src={DefaultAvatar} id="previewImg"></img>
             </IonAvatar>
 
             <label
@@ -149,7 +152,7 @@ const UserProfile = () => {
                 style={{ display: "none" }}
                 onChange={onChangePic}
               />
-              프로필 사진 변경
+              사진 변경
             </label>
           </div>
           <div>
@@ -238,4 +241,4 @@ const UserProfile = () => {
   );
 };
 
-export default UserProfile;
+export default MateProfile;

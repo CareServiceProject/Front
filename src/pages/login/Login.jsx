@@ -1,10 +1,11 @@
 import { IonButton, IonContent, IonInput, IonPage } from "@ionic/react";
-import React, { useState } from "react";
+import { useState } from "react";
 import "./login.css";
 import Logo from "../../components/Logo";
 import { useNavigate } from "react-router-dom";
 import { login } from "../../api/authApi";
 import { localToken } from "../../utils/auth";
+import AddressSearch from "../../components/DaumPostCode";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -26,7 +27,13 @@ const Login = () => {
           navigate("/user/home");
           break;
         case "ROLE_MATE":
-          navigate("/mate/home");
+          if (res.register_status === "PREPARING") {
+            navigate("mate/Judge");
+          } else if (res.register_status === "FAILED") {
+            navigate("mate/Fail");
+          } else {
+            navigate("/mate/home");
+          }
           break;
         default:
           break;
@@ -63,12 +70,16 @@ const Login = () => {
             <IonButton expand="block" className="ion-margin-top" type="submit">
               Login
             </IonButton>
-            <IonButton routerLink="/register" fill="clear">
-              sign up
+            <IonButton
+              color="primary"
+              className="ion-margin-top"
+              onClick={() => navigate("/register")}
+              expand="block"
+              fill="clear"
+            >
+              Sign Up
             </IonButton>
           </form>
-          {/* <p style={{ textAlign: "center" }}>or</p>
-          <IonButton expand="block">OAuth</IonButton> */}
         </IonContent>
       </IonPage>
     </div>
